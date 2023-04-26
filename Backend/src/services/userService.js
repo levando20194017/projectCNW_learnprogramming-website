@@ -84,8 +84,18 @@ let getAllUsers = (userId) => {
         }
     })
 }
+let createNewUser = () => {
+    return new Promise((resolve, reject) => {
+        try {
+
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
 module.exports = {
     handleUserLogin: handleUserLogin,
     checkUserEmail: checkUserEmail,
-    getAllUsers: getAllUsers
+    getAllUsers: getAllUsers,
+    createNewUser: createNewUser
 }
