@@ -18,7 +18,7 @@ let handleLogin = async (req, res) => {
     })
 }
 let handleGetAllUsers = async (req, res) => {
-    let id = req.body.id; // ALL, id
+    let id = req.query.id; // ALL, id
     if (!id) {
         return res.status(200).json({
             errCode: 1,
@@ -33,8 +33,14 @@ let handleGetAllUsers = async (req, res) => {
         users
     })
 }
+let handleCreateNewUser = async (req, res) => {
+    let message = await userService.createNewUser(req.body);
+    console.log(message);
+    return res.status(200).json(message)
+}
 
 module.exports = {
     handleLogin: handleLogin,
-    handleGetAllUsers: handleGetAllUsers
+    handleGetAllUsers: handleGetAllUsers,
+    handleCreateNewUser: handleCreateNewUser
 }
