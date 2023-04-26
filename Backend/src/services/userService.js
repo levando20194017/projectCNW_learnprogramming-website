@@ -1,5 +1,16 @@
 import db from '../models/index'
 import bcrypt from 'bcryptjs'
+const salt = bcrypt.genSaltSync(10);
+let hashUserPassword = (password) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let hashPassword = await bcrypt.hashSync(password, salt);
+            resolve(hashPassword);
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
 let handleUserLogin = (email, password) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -84,10 +95,32 @@ let getAllUsers = (userId) => {
         }
     })
 }
-let createNewUser = () => {
-    return new Promise((resolve, reject) => {
+let createNewUser = (data) => {
+    return new Promise(async (resolve, reject) => {
         try {
+            let checkEmail = await checkUserEmail(data.email);
+            if (checkEmail === true) {
+                resolve({
+                    errCode: 1,
+                    message: 'Your email is already exist, please try another email'
+                })
+            }
+            let hashPasswordFormBcrypt = await hashUserPassword(data.password);
+            await db.User.create({
+                email: data.email,
+                password: hashPasswordFormBcrypt,
+                fullName: data.fullName,
+                address: data.address,
+                gender: data.gender === '1' ? true : false,
+                phoneNumber: data.phoneNumber,
+                img_url: data.gender === '1' ? 'https://cdn2.iconfinder.com/data/icons/flat-style-svg-icons-part-1/512/user_man_male_profile_account-512.png' : 'https://cdn2.iconfinder.com/data/icons/peppyicons/512/women_blue-512.png',
+                role: false
+            })
+            resolve({
+                errCode: 0,
+                message: "Ok",
 
+            });
         } catch (e) {
             reject(e)
         }
