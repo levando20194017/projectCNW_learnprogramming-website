@@ -161,26 +161,37 @@ let updateUserData = (data) => {
                     message: "Missing required parameters!"
                 })
             }
-            let user = await db.User.findOne({
-                where: { id: data.id },
-                raw: false
-            });
-            if (user) {
-                user.email = data.email
-                user.fullName = data.fullName
-                user.address = data.address
-                user.phoneNumber = data.phoneNumber
-                user.gender = (data.gender === '1') ? true : false
 
-                await user.save();
-                resolve({
-                    errCode: 0,
-                    message: "Update user success!"
-                })
+            let hashPasswordFormBcrypt = await hashUserPassword(data.password);
+            let checkEmail = await checkUserEmail(data.email);
+            if (checkEmail === false) {
+                let user = await db.User.findOne({
+                    where: { id: data.id },
+                    raw: false
+                });
+                if (user) {
+                    user.email = data.email || user.email
+                    user.password = hashPasswordFormBcrypt || user.password
+                    user.fullName = data.fullName || user.fullName
+                    user.address = data.address || user.address
+                    user.phoneNumber = data.phoneNumber || user.phoneNumber
+                    user.gender = (data.gender === '1') ? true : false
+
+                    await user.save();
+                    resolve({
+                        errCode: 0,
+                        message: "Update user success!"
+                    })
+                } else {
+                    resolve({
+                        errCode: 1,
+                        message: 'User not found!'
+                    })
+                }
             } else {
                 resolve({
-                    errCode: 1,
-                    message: 'User not found!'
+                    errCode: 3,
+                    message: "Email is already exist"
                 })
             }
         } catch (e) {
