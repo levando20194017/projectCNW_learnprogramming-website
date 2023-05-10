@@ -23,7 +23,7 @@ module.exports = {
             duration: {
                 type: Sequelize.STRING
             },
-            order: {
+            orderBy: {
                 type: Sequelize.INTEGER
             },
             createdAt: {

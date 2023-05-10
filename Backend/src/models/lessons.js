@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         courseID: DataTypes.INTEGER,
         title: DataTypes.STRING,
         description: DataTypes.TEXT,
-        order: DataTypes.INTEGER,
+        orderBy: DataTypes.INTEGER,
     }, {
         sequelize,
         modelName: 'Lessons',

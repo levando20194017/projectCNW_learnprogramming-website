@@ -17,7 +17,7 @@ module.exports = {
             description: {
                 type: Sequelize.TEXT
             },
-            order: {
+            orderBy: {
                 type: Sequelize.INTEGER
             },
             createdAt: {
