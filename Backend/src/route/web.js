@@ -2,7 +2,8 @@ import express from "express";
 import homeController from "../controller/homeController";
 import userController from "../controller/userController";
 import courseController from "../controller/courseController";
-import lessonController from "../controller/lessonController"
+import lessonController from "../controller/lessonController";
+import videoController from "../controller/videoController"
 
 let router = express.Router();
 
@@ -31,6 +32,11 @@ let initWebRoutes = (app) => {
     router.post('/api/create-new-lesson', lessonController.handleCreateNewLesson)
     router.put('/api/edit-lesson', lessonController.handleEditLesson)
     router.delete('/api/delete-lesson', lessonController.handleDeleteLesson)
+
+    router.get('/api/get-all-videos', videoController.handleGetAllVideos)
+    router.post('/api/create-new-video', videoController.handleCreateNewVideo)
+    router.put('/api/edit-video', videoController.handleEditVideo)
+    router.delete('/api/delete-video', videoController.handleDeleteVideo)
 
     return app.use("/", router)
 }

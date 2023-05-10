@@ -5,14 +5,14 @@ let handleGetAllLessons = async (req, res) => {
         return res.status(200).json({
             errCode: 1,
             message: "Missing required parameters",
-            user: []
+            lesson: []
         })
     }
-    let users = await lessonService.getAllLessons(id);
+    let lessons = await lessonService.getAllLessons(id);
     return res.status(200).json({
         errCode: 0,
         message: 'Ok',
-        users
+        lessons
     })
 }
 let handleCreateNewLesson = async (req, res) => {
