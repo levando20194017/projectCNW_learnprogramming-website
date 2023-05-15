@@ -5,9 +5,10 @@ import courseController from "../controller/courseController";
 import lessonController from "../controller/lessonController";
 import videoController from "../controller/videoController";
 import postController from "../controller/postController";
-import commentController from "../controller/commentController"
-import likePostController from "../controller/likePostController"
-import likeCommentController from "../controller/likeCommentController"
+import commentController from "../controller/commentController";
+import likePostController from "../controller/likePostController";
+import likeCommentController from "../controller/likeCommentController";
+import enrollmentController from "../controller/enrollmentController";
 import { auth } from "../middleware/auth";
 
 // const auth = (req, res, next) => {
@@ -78,7 +79,7 @@ let initWebRoutes = (app) => {
     router.get('/api/comment/get-all-likes', likeCommentController.handleGetAllLikes)
     router.post('/api/comment/isliked', likeCommentController.handleCreateIsLiked)
 
-
+    router.post('/api/course/register', enrollmentController.handleRegisterCourse)
     return app.use("/", router)
 }
 
