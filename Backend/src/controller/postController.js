@@ -16,7 +16,8 @@ let handleGetAllPosts = async (req, res) => {
     })
 }
 let handleCreateNewPost = async (req, res) => {
-    let message = await postService.createNewPost(req.body, req.session.user.id);
+    req.body.userID = req.session.user.id;
+    let message = await postService.createNewPost(req.body);
     console.log(message);
     return res.status(200).json(message)
 }
