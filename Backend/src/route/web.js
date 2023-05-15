@@ -7,6 +7,7 @@ import videoController from "../controller/videoController";
 import postController from "../controller/postController";
 import commentController from "../controller/commentController"
 import likePostController from "../controller/likePostController"
+import likeCommentController from "../controller/likeCommentController"
 import { auth } from "../middleware/auth";
 
 // const auth = (req, res, next) => {
@@ -71,8 +72,11 @@ let initWebRoutes = (app) => {
     router.delete('/api/comment/delete', commentController.handleDeleteComment)
     router.put('/api/comment/edit', commentController.handleEditComment)
 
-    router.get('/api/get-all-likes', likePostController.handleGetAllLikes)
+    router.get('/api/post/get-all-likes', likePostController.handleGetAllLikes)
     router.post('/api/post/isliked', likePostController.handleCreateIsLiked)
+
+    router.get('/api/comment/get-all-likes', likeCommentController.handleGetAllLikes)
+    router.post('/api/comment/isliked', likeCommentController.handleCreateIsLiked)
 
 
     return app.use("/", router)
