@@ -3,8 +3,28 @@ import homeController from "../controller/homeController";
 import userController from "../controller/userController";
 import courseController from "../controller/courseController";
 import lessonController from "../controller/lessonController";
-import videoController from "../controller/videoController"
+import videoController from "../controller/videoController";
+import postController from "../controller/postController";
 
+const auth = (req, res, next) => {
+    // Kiểm tra xem user có đăng nhập hay không
+    console.log(req.session.user);
+    if (!req.session.user) {
+        return res.status(401).json({
+            message: "Bạn cần đăng nhập để thực hiện chức năng này",
+        });
+    }
+
+    // Kiểm tra xem user có phải là admin hay không
+    if (req.session.user.role == false) {
+        return res.status(403).json({
+            message: "Bạn không có quyền thực hiện chức năng này",
+        });
+    }
+
+    // Nếu user đăng nhập và là admin, cho phép tiếp tục thực hiện
+    next();
+};
 let router = express.Router();
 
 let initWebRoutes = (app) => {
@@ -19,24 +39,30 @@ let initWebRoutes = (app) => {
 
     router.get('/api/get-all-users', userController.handleGetAllUsers)
     router.post('/api/login', userController.handleLogin)
-    router.post('/api/create-new-user', userController.handleCreateNewUser)
+    router.post('/api/create-new-user', auth, userController.handleCreateNewUser)
     router.put('/api/edit-user', userController.handleEditUser)
-    router.delete('/api/delete-user', userController.handleDeleteUser)
+    router.delete('/api/delete-user', auth, userController.handleDeleteUser)
 
     router.get('/api/get-all-courses', courseController.handleGetAllCourses)
-    router.post('/api/create-new-course', courseController.handleCreateNewCourse)
-    router.delete('/api/delete-course', courseController.handleDeleteCourse)
-    router.put('/api/edit-course', courseController.handleEditCourse)
+    router.post('/api/create-new-course', auth, courseController.handleCreateNewCourse)
+    router.delete('/api/delete-course', auth, courseController.handleDeleteCourse)
+    router.put('/api/edit-course', auth, courseController.handleEditCourse)
 
     router.get('/api/get-all-lessons', lessonController.handleGetAllLessons)
-    router.post('/api/create-new-lesson', lessonController.handleCreateNewLesson)
-    router.put('/api/edit-lesson', lessonController.handleEditLesson)
-    router.delete('/api/delete-lesson', lessonController.handleDeleteLesson)
+    router.post('/api/create-new-lesson', auth, lessonController.handleCreateNewLesson)
+    router.put('/api/edit-lesson', auth, lessonController.handleEditLesson)
+    router.delete('/api/delete-lesson', auth, lessonController.handleDeleteLesson)
 
     router.get('/api/get-all-videos', videoController.handleGetAllVideos)
-    router.post('/api/create-new-video', videoController.handleCreateNewVideo)
-    router.put('/api/edit-video', videoController.handleEditVideo)
-    router.delete('/api/delete-video', videoController.handleDeleteVideo)
+    router.post('/api/create-new-video', auth, videoController.handleCreateNewVideo)
+    router.put('/api/edit-video', auth, videoController.handleEditVideo)
+    router.delete('/api/delete-video', auth, videoController.handleDeleteVideo)
+
+    router.get('/api/get-all-posts', postController.handleGetAllPosts)
+    router.post('/api/post/add', postController.handleCreateNewPost)
+    router.delete('/api/post/delete', postController.handleDeletePost)
+    router.put('/api/post/edit', postController.handleEditPost)
+
 
     return app.use("/", router)
 }

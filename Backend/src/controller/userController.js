@@ -11,6 +11,10 @@ let handleLogin = async (req, res) => {
         })
     }
     let userData = await userService.handleUserLogin(email, password);
+    if (userData.errCode === 0) {
+        req.session.user = userData.user;
+        // console.log(req.session.user)
+    }
     return res.status(200).json({
         errCode: userData.errCode,
         message: userData.message,
