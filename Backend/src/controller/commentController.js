@@ -1,6 +1,7 @@
 import commentService from '../services/commentService'
 let handleGetAllComments = async (req, res) => {
-    let id = req.query.id; // ALL, id
+    let id = req.params.id; // ALL, id
+    //id của bài viết
     if (!id) {
         return res.status(200).json({
             errCode: 1,
@@ -16,7 +17,8 @@ let handleGetAllComments = async (req, res) => {
     })
 }
 let handleCreateNewComment = async (req, res) => {
-    let message = await commentService.createNewComment(req.body, req.session.user.id);
+    req.body.userID = req.session.user.id;
+    let message = await commentService.createNewComment(req.body);
     console.log(message);
     return res.status(200).json(message)
 }
@@ -37,7 +39,7 @@ let handleEditComment = async (req, res) => {
 }
 module.exports = {
     handleGetAllComments: handleGetAllComments,
-    handleCreateNewPost: handleCreateNewComment,
+    handleCreateNewComment: handleCreateNewComment,
     handleDeleteComment: handleDeleteComment,
     handleEditComment: handleEditComment
 }

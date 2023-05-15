@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         timeType: DataTypes.STRING
     }, {
         sequelize,
-        modelName: 'Erollments',
+        modelName: 'Enrollments',
     });
     return Enrollments;
 };

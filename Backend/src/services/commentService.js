@@ -1,14 +1,14 @@
 import db from '../models/index'
-let getAllComments = (userId) => {
+let getAllComments = (postId) => {
     return new Promise(async (resolve, reject) => {
         try {
             let comments = '';
-            if (userId == 'ALL') {
-                comments = await db.Comment.findAll()
-            }
-            if (userId && userId !== 'ALL') {
-                comments = await db.Comment.findAll({
-                    where: { userID: userId },
+            // if (userId == 'ALL') {
+            //     comments = await db.Comment.findAll()
+            // }
+            if (postId && postId !== 'ALL') {
+                comments = await db.Comments.findAll({
+                    where: { postID: postId },
                 })
             }
             resolve(comments);
@@ -17,12 +17,12 @@ let getAllComments = (userId) => {
         }
     })
 }
-let createNewComment = (data, userID) => {
+let createNewComment = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (userID) {
-                await db.Post.create({
-                    userID: userID,
+            if (data.userID) {
+                await db.Comments.create({
+                    userID: data.userID,
                     postID: data.postID,
                     content: data.content,
                     img_url: data.img_url,
@@ -46,12 +46,12 @@ let createNewComment = (data, userID) => {
 let deleteComment = (commentID, user) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let comment = db.Comment.findOne({
+            let comment = db.Comments.findOne({
                 where: { id: commentID }
             })
             if (comment) {
                 if (user.role === true || user.id === comment.userID) {
-                    await db.Comment.destroy({
+                    await db.Comments.destroy({
                         where: { id: commentID }
                     });
                     resolve({
@@ -84,17 +84,17 @@ let updateCommentData = (data, user) => {
                     message: "Missing required parameters!"
                 })
             }
-            let comment = await db.Comment.findOne({
+            let comment = await db.Comments.findOne({
                 where: { id: data.id },
                 raw: false
             });
             if (comment) {
                 if (user.role === true || user.id === comment.userID) {
                     comment.content = data.content || comment.content
-                    post.img_url = data.img_url || post.img_url
-                    post.date = data.date || post.date
+                    comment.img_url = data.img_url || comment.img_url
+                    comment.date = data.date || comment.date
 
-                    await course.save();
+                    await comment.save();
                     resolve({
                         errCode: 0,
                         message: "Update comment success!"

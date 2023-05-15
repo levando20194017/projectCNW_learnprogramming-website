@@ -17,12 +17,12 @@ let getAllPosts = (userId) => {
         }
     })
 }
-let createNewPost = (data, userID) => {
+let createNewPost = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (userID) {
+            if (data.userID) {
                 await db.Posts.create({
-                    userID: userID,
+                    userID: data.userID,
                     title: data.title,
                     content: data.content,
                     img_url: data.img_url,
@@ -95,7 +95,7 @@ let updatePostData = (data, user) => {
                     post.img_url = data.img_url || post.img_url
                     post.date = data.date || post.date
 
-                    await course.save();
+                    await post.save();
                     resolve({
                         errCode: 0,
                         message: "Update post success!"
