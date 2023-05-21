@@ -175,6 +175,7 @@ let updateUserData = (data) => {
                     user.fullName = data.fullName || user.fullName
                     user.address = data.address || user.address
                     user.phoneNumber = data.phoneNumber || user.phoneNumber
+                    user.img_url = data.img_url || user.img_url
                     user.gender = (data.gender === '1') ? true : false
 
                     await user.save();

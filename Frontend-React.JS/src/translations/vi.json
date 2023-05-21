@@ -26,16 +26,23 @@
         "userpass-wrong": "Sai tên đăng nhập hoặc mật khẩu!"
     },
     "menu": {
-        "system": {
-            "header": "Hệ thống",
-            "system-administrator": {
-                "header": "Quản trị hệ thống",
-                "user-manage": "Quản lý người sử dụng",
-                "product-manage": "Quản lý gói",
-                "register-package-group-or-account": "Đăng ký gói dịch vụ cho nhóm/tài khoản"
+        "admin": {
+            "header": "Admin",
+            "user": "Người dùng",
+            "manage-user": {
+                "user": "Quản lý người dùng",
+                "progress": "Quản lý tiến độ"
             },
-            "system-parameter": {
-                "header": "Tham số hệ thống"
+            "course": "Khóa học",
+            "manage-course": {
+                "course": "Quản lý khóa học",
+                "lesson": "Quản lý bài giảng",
+                "video": "Quản lý video"
+            },
+            "post": "Bài viết",
+            "manage-post": {
+                "post": "Quản lý bài viết",
+                "comment": "Quản lý bình luận"
             }
         }
     },
