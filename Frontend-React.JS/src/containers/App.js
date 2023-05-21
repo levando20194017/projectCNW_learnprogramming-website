@@ -6,7 +6,7 @@ import { history } from '../redux'
 import { ToastContainer } from 'react-toastify';
 
 
-import { userIsAuthenticated, userIsNotAuthenticated } from '../hoc/authentication';
+import { userIsAuthenticated, userIsNotAuthenticated, adminIsAuthenticated, adminIsNotAuthenticated } from '../hoc/authentication';
 
 import { path } from '../utils'
 
@@ -45,13 +45,13 @@ class App extends Component {
                 <Router history={history}>
                     <div className="main-container">
                         <ConfirmModal />
-                        {this.props.isLoggedIn && <Header />}
+                        {this.props.adminIsLoggedIn && <Header />}
 
                         <span className="content-container">
                             <Switch>
                                 <Route path={path.HOME} exact component={(Home)} />
-                                <Route path={path.LOGIN} component={userIsNotAuthenticated(Login)} />
-                                <Route path={path.SYSTEM} component={userIsAuthenticated(System)} />
+                                <Route path={path.LOGIN} component={adminIsNotAuthenticated(Login)} />
+                                <Route path={path.SYSTEM} component={adminIsAuthenticated(System)} />
                             </Switch>
                         </span>
 
@@ -71,7 +71,8 @@ class App extends Component {
 const mapStateToProps = state => {
     return {
         started: state.app.started,
-        isLoggedIn: state.user.isLoggedIn
+        userIsLoggedIn: state.user.isLoggedIn,
+        adminIsLoggedIn: state.admin.isLoggedIn
     };
 };
 

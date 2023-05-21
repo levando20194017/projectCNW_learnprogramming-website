@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-class RegisterPackageGroupOrAcc extends Component {
+class CourseManage extends Component {
 
     constructor(props) {
         super(props);
@@ -13,7 +13,7 @@ class RegisterPackageGroupOrAcc extends Component {
     render() {
         return (
             <div className="text-center">
-                register package group or account
+                Course Manage
             </div>)
     }
 
@@ -30,4 +30,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterPackageGroupOrAcc);
+export default connect(mapStateToProps, mapDispatchToProps)(CourseManage);
