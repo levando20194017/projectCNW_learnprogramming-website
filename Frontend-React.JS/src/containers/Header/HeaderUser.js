@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import * as actions from "../../store/actions";
 import Navigator from '../../components/Navigator';
 import { adminMenu } from './menuApp';
-import './Header.scss';
+import './HeaderAdmin.scss';
 
-class Header extends Component {
+class HeaderUser extends Component {
 
     render() {
         const { processLogout, userInfo } = this.props;
@@ -42,4 +42,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderUser);

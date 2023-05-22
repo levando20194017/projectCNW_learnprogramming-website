@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-class Home extends Component {
+import HeaderAdmin from '../Header/HeaderAdmin';
+class HomePage extends Component {
 
     state = {
 
@@ -13,7 +14,10 @@ class Home extends Component {
 
     render() {
         return (
-            <div className="text-center" >Home</div>
+            <div className="text-center" >
+                {/* <HeaderAdmin /> */}
+                Chào mừng bạn đến với CodeCrush
+            </div>
         )
     }
 
@@ -29,4 +33,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
