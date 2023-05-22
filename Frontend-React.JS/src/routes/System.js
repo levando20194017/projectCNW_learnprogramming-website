@@ -9,7 +9,8 @@ import VideoManage from '../containers/System/Courses/VideoManage';
 import PostManage from '../containers/System/Posts/PostManage';
 import CommentManage from '../containers/System/Posts/CommentManage';
 
-import Home from '../containers/System/Home'
+
+import Home from '../containers/System/HomePage'
 
 class System extends Component {
     render() {
@@ -28,6 +29,7 @@ class System extends Component {
 
                         <Route path="/system/post-manage" component={PostManage} />
                         <Route path="/system/comment-manage" component={CommentManage} />
+
 
                         <Route component={() => { return (<Redirect to={systemMenuPath} />) }} />
                     </Switch>
