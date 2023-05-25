@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import HeaderAdmin from '../Header/HeaderAdmin';
+import HeaderAdmin from '../../Header/HeaderAdmin';
 class HomePage extends Component {
 
     state = {

@@ -6,15 +6,15 @@ import HeaderAdmin from '../containers/Header/HeaderAdmin';
 class Home extends Component {
 
     render() {
-        const { isLoggedIn } = this.props;
-        let linkToRedirect = isLoggedIn ? '/' : '/login';
+        const { userIsLoggedIn, adminIsLoggedIn } = this.props;
+        let linkToRedirect = userIsLoggedIn || adminIsLoggedIn ? '/' : '/login';
 
         return (
-            // <Redirect to={linkToRedirect} />
-            <div>
-                <HeaderAdmin />
-                Xin chào các bạn đến với CodeCrush
-            </div>
+            <Redirect to={linkToRedirect} />
+            // <div>
+            //     <HeaderAdmin />
+            //     Xin chào các bạn đến với CodeCrush
+            // </div>
         );
     }
 
@@ -22,7 +22,8 @@ class Home extends Component {
 
 const mapStateToProps = state => {
     return {
-        isLoggedIn: state.user.isLoggedIn
+        userIsLoggedIn: state.user.isLoggedIn,
+        adminIsLoggedIn: state.admin.isLoggedIn
     };
 };
 
