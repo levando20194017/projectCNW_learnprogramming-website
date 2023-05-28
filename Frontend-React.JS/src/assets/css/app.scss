@@ -1,9 +1,16 @@
 /*!
- * Beagle v1.7.1
+ * Beagle v1.7.1Themes
  * https://foxythemes.net
  *
  * Copyright (c) 2019 Foxy Themes
  */
+@import "../lib/perfect-scrollbar/css/perfect-scrollbar.css";
+@import "../lib/material-design-icons/css/material-design-iconic-font.min.css";
+@import "../lib/jquery.vectormap/jquery-jvectormap-1.2.2.css";
+@import "../lib/jqvmap/jqvmap.min.css";
+@import "../lib/datetimepicker/css/bootstrap-datetimepicker.min.css";
+@import "../lib/datatables/datatables.net-bs4/css/dataTables.bootstrap4.css";
+@import "../lib/datatables/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css";
 
 @media print {
 
@@ -16638,7 +16645,7 @@ canvas {
 }
 
 .be-left-sidebar .sidebar-elements li.parent>a:before {
-    content: '\f2f2';
+    // content: '\f2f2';
     float: right;
     font-family: "Material Icons";
     font-size: 1.615rem;
@@ -16652,7 +16659,7 @@ canvas {
 }
 
 .be-left-sidebar .sidebar-elements li.parent.open>a:before {
-    content: '\f2f8'
+    // content: '\f2f8'
 }
 
 .be-left-sidebar .sidebar-elements li.open>ul {
@@ -32601,4 +32608,9 @@ fieldset[disabled] .full-calendar .fc-button:hover {
 
 .user-timeline-compact>li.latest:before {
     background-color: #f6c163
+}
+
+.nav-item.dropdown i {
+    font-size: 150%;
+    // margin-top: 20px;
 }

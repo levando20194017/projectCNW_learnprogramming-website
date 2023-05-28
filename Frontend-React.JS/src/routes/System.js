@@ -9,7 +9,6 @@ import VideoManage from '../containers/System/Courses/VideoManage';
 import PostManage from '../containers/System/Posts/PostManage';
 import CommentManage from '../containers/System/Posts/CommentManage';
 
-
 // import HomePage from '../containers/System/Home/HomePage'
 
 class System extends Component {

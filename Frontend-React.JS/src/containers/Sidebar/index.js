@@ -1,15 +1,62 @@
+
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import * as actions from "../../store/actions";
-import '../../assets/css/app.css'
-
+import '../../assets/css/app.scss'
 
 class Sidebar extends Component {
+
+    constructor(props) {
+        super(props);
+        const arr = [false, false, false];
+        this.state = {
+            showMenu: arr
+        };
+
+        this.handleTabMenuClick = (tabMenus, tabMenu, index) => {
+            const $ = document.querySelector.bind(document);
+            const isOpen = $('.parent.open');
+            const isOpenMenu = Array.from(tabMenus).indexOf(isOpen);
+
+            const newShowMenu = [...this.state.showMenu];
+            if (isOpenMenu == index) {
+                isOpen.classList.remove('open');
+                newShowMenu[index] = false;
+            } else {
+                if (isOpen) {
+                    isOpen.classList.remove('open');
+                    newShowMenu[isOpenMenu] = false;
+                }
+                tabMenu.classList.add('open')
+                newShowMenu[index] = true;
+            }
+            this.setState({ showMenu: newShowMenu });
+        }
+
+    }
+
+    componentDidMount() {
+        const $$ = document.querySelectorAll.bind(document);
+        const tabMenus = $$('.parent')
+        Array.from(tabMenus).forEach((tabMenu, index) => {
+            tabMenu.addEventListener('click', this.handleTabMenuClick.bind(this, tabMenus, tabMenu, index));
+        });
+    }
+
+    componentWillUnmount() {
+        const tabMenus = document.querySelector('.parent');
+        Array.from(tabMenus).forEach(tabMenu => {
+            tabMenu.removeEventListener('click', this.handleTabMenuClick);
+
+        });
+    }
 
     render() {
         const { processLogout, userInfo } = this.props;
         return (
+
             <div class="be-wrapper be-fixed-sidebar">
                 <div className="be-left-sidebar">
                     <div className="left-sidebar-wrapper">
@@ -21,14 +68,15 @@ class Sidebar extends Component {
                                         <li className="divider">Menu</li>
                                         <li className="active">
                                             <a href="index.html">
-                                                <i className="icon mdi mdi-home"></i>
-                                                <span>Dashboard</span>
+                                                <i class="fas fa-home"></i>
+                                                <span style={{ marginLeft: "12px" }}>Dashboard</span>
                                             </a>
                                         </li>
                                         <li className="parent">
                                             <a href="#">
-                                                <i className="icon mdi mdi-face"></i>
-                                                <span>Users</span>
+                                                <i class="fas fa-user-graduate" style={{ fontSize: "110%" }}></i>
+                                                <span style={{ marginLeft: "13px" }}>Users</span>
+                                                <span style={{ marginLeft: "110px", fontSize: "120%" }}>{this.state.showMenu[0] ? <i class="fas fa-caret-up"></i> : <i class="fas fa-caret-down"></i>}</span>
                                             </a>
                                             <ul className="sub-menu">
                                                 <li><a href="#">Manage users</a></li>
@@ -38,8 +86,9 @@ class Sidebar extends Component {
                                         </li>
                                         <li className="parent">
                                             <a href="#">
-                                                <i className="icon mdi mdi-chart-donut"></i>
-                                                <span>Courses</span>
+                                                <i class="fab fa-leanpub" style={{ fontSize: "110%" }}></i>
+                                                <span style={{ marginLeft: "9px" }}>Courses</span>
+                                                <span style={{ marginLeft: "94px", fontSize: "120%" }}>{this.state.showMenu[1] ? <i class="fas fa-caret-up"></i> : <i class="fas fa-caret-down"></i>}</span>
                                             </a>
                                             <ul className="sub-menu">
                                                 <li><a href="#">Manage courses</a></li>
@@ -49,8 +98,9 @@ class Sidebar extends Component {
                                         </li>
                                         <li className="parent">
                                             <a href="#">
-                                                <i className="icon mdi mdi-dot-circle"></i>
-                                                <span>Posts</span>
+                                                <i class="fas fa-comment-alt" style={{ fontSize: "110%" }}></i>
+                                                <span style={{ marginLeft: "13px" }}>Posts</span>
+                                                <span style={{ marginLeft: "108px", fontSize: "120%" }}>{this.state.showMenu[2] ? <i class="fas fa-caret-up"></i> : <i class="fas fa-caret-down"></i>}</span>
                                             </a>
                                             <ul className="sub-menu">
                                                 <li><a href="#">Manage posts</a></li>
