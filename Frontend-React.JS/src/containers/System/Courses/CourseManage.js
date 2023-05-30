@@ -100,54 +100,58 @@ class CourseManage extends Component {
     render() {
         let allCourses = this.state.arrCourses;
         return (
-            <div className="user-container">
-                <div className="title text-center">Manage courses</div>
-                <div className='btn btn-primary px-3' onClick={this.handleAddNewCourse}><i className='fas fa-plus'></i>Add new course</div>
-                <ModalCourse
-                    isOpen={this.state.isOpenModal}
-                    toggleFromParent={this.toggleCourseModal}
-                    createNewCourse={this.createNewCourse}
-                />
-                <ModalEditCourse
-                    isOpen={this.state.isOpenEditModal}
-                    toggleEditFromParent={this.toggleEditCourseModal}
-                    editCourse={this.editCourse}
-                    courseId={this.state.courseId}
-                />
-                <div className="users-table mt-3 mx-1">
-                    <table id="customers">
-                        <tbody>
-                            <tr>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Image</th>
-                                <th>Time</th>
-                                <th>Actions</th>
-                            </tr>
+            <div className="be-content">
+                <div className="main-content container-fluid">
+                    <div className="user-container">
+                        <div className="title text-center">Manage courses</div>
+                        <div className='btn btn-primary px-3' onClick={this.handleAddNewCourse}><i className='fas fa-plus'></i>Add new course</div>
+                        <ModalCourse
+                            isOpen={this.state.isOpenModal}
+                            toggleFromParent={this.toggleCourseModal}
+                            createNewCourse={this.createNewCourse}
+                        />
+                        <ModalEditCourse
+                            isOpen={this.state.isOpenEditModal}
+                            toggleEditFromParent={this.toggleEditCourseModal}
+                            editCourse={this.editCourse}
+                            courseId={this.state.courseId}
+                        />
+                        <div className="users-table mt-3 mx-1">
+                            <table id="customers">
+                                <tbody>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Image</th>
+                                        <th>Time</th>
+                                        <th>Actions</th>
+                                    </tr>
 
-                            {
-                                allCourses && allCourses.map((item, index) => {
-                                    return (
-                                        <tr>
-                                            <td>{item.title}</td>
-                                            <td>{item.description}</td>
-                                            <td>{item.img_url}</td>
-                                            <td>{item.createdAt}</td>
-                                            <td>
-                                                <button className="btn-edit"><i className="fas fa-pencil-alt"
-                                                    onClick={() => this.handleEditCourse(item.id)}></i></button>
-                                                <button className="btn-delete"><i className="fas fa-trash"
-                                                    onClick={() => { this.handleDeleteCourse(item.id) }}></i></button>
-                                            </td>
-                                        </tr>
-                                    )
-                                })
-                            }
-                        </tbody>
+                                    {
+                                        allCourses && allCourses.map((item, index) => {
+                                            return (
+                                                <tr>
+                                                    <td>{item.title}</td>
+                                                    <td>{item.description}</td>
+                                                    <td>{item.img_url}</td>
+                                                    <td>{item.createdAt}</td>
+                                                    <td>
+                                                        <button className="btn-edit"><i className="fas fa-pencil-alt"
+                                                            onClick={() => this.handleEditCourse(item.id)}></i></button>
+                                                        <button className="btn-delete"><i className="fas fa-trash"
+                                                            onClick={() => { this.handleDeleteCourse(item.id) }}></i></button>
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })
+                                    }
+                                </tbody>
 
 
-                    </table>
+                            </table>
 
+                        </div>
+                    </div>
                 </div>
             </div>
         );

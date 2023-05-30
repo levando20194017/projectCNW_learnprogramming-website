@@ -15,9 +15,9 @@ import { path } from '../utils'
 import Login from '../containers/Auth/Login';
 import HeaderAdmin from './Header/HeaderAdmin';
 import System from '../routes/System';
-import HomePage from '../containers/System/HomePage'
+import HomePage from './System/home/HomePage'
 import UserDashboard from './UserDashboard';
-
+import Sidebar from './Sidebar';
 import { CustomToastCloseButton } from '../components/CustomToast';
 import ConfirmModal from '../components/ConfirmModal';
 
@@ -48,6 +48,7 @@ class App extends Component {
                     <div className="main-container">
                         <ConfirmModal />
                         {this.props.adminIsLoggedIn && <HeaderAdmin />}
+                        {this.props.adminIsLoggedIn && <Sidebar />}
 
                         <span className="content-container">
                             <Switch>
