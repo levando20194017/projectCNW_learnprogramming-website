@@ -32614,3 +32614,126 @@ fieldset[disabled] .full-calendar .fc-button:hover {
     font-size: 150%;
     // margin-top: 20px;
 }
+
+.card {
+    height: auto;
+    width: 80%;
+    margin-left: 10%;
+}
+
+.course-body {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.5s ease;
+    /* thêm transition */
+}
+
+.course-body.hide {
+    height: 100vh;
+    border-bottom: 1px solid rgb(187, 184, 184);
+}
+
+.course-title {
+    height: 50px;
+    background: rgb(255, 252, 252);
+    transition: background-color 0.5s ease;
+    cursor: pointer;
+    border-bottom: 1px solid rgb(187, 184, 184);
+}
+
+.course-title.active {
+    background-color: gainsboro;
+    color: black;
+}
+
+.course-title:hover {
+    background-color: gainsboro;
+}
+
+.course-title h4 {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.course-content {
+    padding: 10px 20px;
+}
+
+.course-img {
+    display: flex;
+    margin-left: 10%;
+    justify-content: center;
+    align-items: center;
+    height: 350px;
+}
+
+.course-img img {
+    width: 70%;
+    height: 350px;
+}
+
+.course-description {
+    width: 90%;
+    padding-left: 50px;
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.video-title {
+    display: block;
+    height: 50px;
+    padding-left: 4%;
+    transition: background-color 0.7s ease;
+    padding-top: 16px;
+    font-size: 16px;
+    border-bottom: 1px solid rgb(187, 184, 184);
+}
+
+.video-title:hover {
+    background-color: gainsboro;
+    color: black;
+    font-weight: 600;
+}
+
+.videos-list {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.5s ease;
+    /* thêm transition */
+}
+
+.videos-list.hide {
+    height: auto;
+}
+
+.videos-list .video-title a {
+    text-decoration: none;
+    color: rgb(65, 64, 64);
+}
+
+
+.lesson-title {
+    display: block;
+    background: rgb(240, 239, 239);
+    height: 50px;
+    border-bottom: 1px solid rgb(187, 184, 184);
+    padding-top: 6px;
+    transition: background-color 0.5s ease;
+}
+
+.lesson-title h5 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.lesson-title:hover {
+    background-color: gainsboro;
+    transition: 0.8 ease-out;
+    cursor: pointer;
+}
+
+.lesson-title.active {
+    background-color: gainsboro;
+    color: black;
+    font-weight: 600;
+}
