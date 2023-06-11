@@ -5,7 +5,10 @@ import './signup.scss'
 import { handleSignUpApi } from '../../../services/userService';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 class SignUp extends Component {
     static propTypes = {
         history: PropTypes.object.isRequired,
@@ -53,16 +56,37 @@ class SignUp extends Component {
             })
             try {
                 const response = await handleSignUpApi(this.state.email, this.state.password, this.state.fullName);
-                if (response.data && response.data.errCode === 0) {
+                if (response && response.errCode === 0) {
                     this.setState({
-                        message: response.data.message
+                        message: response.message
                     })
+                    toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Successful account registration!</div>, {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "colored",
+                    });
                     this.props.history.push('/login');
                 }
-                if (response.data && response.data.errCode !== 0) {
+                if (response && response.errCode !== 0) {
                     this.setState({
-                        message: response.data.message
+                        message: response.message
                     })
+                    toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Account registration failed!</div>, {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+
                 }
             } catch (error) {
                 console.log(error);
