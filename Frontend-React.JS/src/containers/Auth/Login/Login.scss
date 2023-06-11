@@ -126,7 +126,7 @@
     font-weight: 600;
     text-decoration: none;
     color: var(--gm-colortextbutton-ink-color, rgb(75, 148, 245));
-    font-family: "Google Sans", Roboto, Arial, sans-serif;
+    font-family: "Google Sans", Roboto, Arial, sans-serif !important;
     letter-spacing: .0107142857em;
     text-transform: none;
 }

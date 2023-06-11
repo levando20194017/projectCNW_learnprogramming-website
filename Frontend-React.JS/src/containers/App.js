@@ -12,11 +12,13 @@ import { path } from '../utils'
 
 // import Home from '../routes/Home';
 // import Login from '../routes/Login';
-import Login from '../containers/Auth/Login';
+import Login from './Auth/Login/Login';
+import SignUp from './Auth/SignUp/signup';
+import ForgotPassword from './Auth/ForgotPassword/ForgotPassword';
 import HeaderAdmin from './Header/HeaderAdmin';
 import System from '../routes/System';
 import HomePage from './System/home/HomePage'
-import ForgotPassword from './ForgotPassword';
+// import ForgotPassword from './ForgotPassword';
 import Sidebar from './Sidebar';
 import { CustomToastCloseButton } from '../components/CustomToast';
 import ConfirmModal from '../components/ConfirmModal';
@@ -54,6 +56,7 @@ class App extends Component {
                             <Switch>
                                 <Route path={path.HOME} exact component={HomePage} />
                                 <Route path={"/forgotpassword"} component={ForgotPassword} />
+                                <Route path={"/signup"} component={SignUp} />
                                 <Route path={path.LOGIN} component={adminIsNotAuthenticated(Login)} />
                                 <Route path={path.SYSTEM} component={adminIsAuthenticated(System)} />
                             </Switch>
