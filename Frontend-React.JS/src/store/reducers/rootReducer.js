@@ -4,6 +4,7 @@ import { connectRouter } from 'connected-react-router';
 import appReducer from "./appReducer";
 import adminReducer from "./adminReducer";
 import userReducer from "./userReducer";
+import courseReducer from './courseReducer';
 
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/lib/storage';
@@ -25,10 +26,16 @@ const userPersistConfig = {
     key: 'user',
     whitelist: ['isLoggedIn', 'userInfo']
 };
+// const coursePersistConfig = {
+//     ...persistCommonConfig,
+//     key: 'course',
+//     whitelist: ['arrLessons', 'arrCourses', 'isOpenModal', 'isOpenEditModal', 'isOpenModalLesson', 'isOpenEditModalLesson', 'courseId']
 
+// }
 export default (history) => combineReducers({
     router: connectRouter(history),
     admin: persistReducer(adminPersistConfig, adminReducer),
     user: persistReducer(userPersistConfig, userReducer),
-    app: appReducer
+    app: appReducer,
+    course: courseReducer
 })

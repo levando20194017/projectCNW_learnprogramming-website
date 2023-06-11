@@ -46,7 +46,7 @@ class Sidebar extends Component {
     }
 
     componentWillUnmount() {
-        const tabMenus = document.querySelector('.parent');
+        const tabMenus = document.querySelectorAll('.parent');
         Array.from(tabMenus).forEach(tabMenu => {
             tabMenu.removeEventListener('click', this.handleTabMenuClick);
 
