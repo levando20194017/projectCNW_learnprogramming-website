@@ -326,7 +326,7 @@ class UserManage extends Component {
                                                             <th style={{ width: "20%" }}>Full Name</th>
                                                             <th style={{ width: "20%" }}>Email</th>
                                                             <th style={{ width: "30%" }}>Address</th>
-                                                            <th style={{ width: "10%" }}>Gender</th>
+                                                            <th style={{ width: "5%" }}>Gender</th>
                                                             <th style={{ width: "10%" }}>Phone Number</th>
                                                             <th className="actions" style={{ width: "15%" }}>Actions</th>
                                                         </tr>

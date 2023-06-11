@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { push } from "connected-react-router";
-
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import * as actions from "../../store/actions";
 import './Login.scss';
 import { FormattedMessage } from 'react-intl';
 import { handleLoginApi } from '../../services/userService';
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 class Login extends Component {
+    static propTypes = {
+        history: PropTypes.object.isRequired,
+        // các props khác
+    };
     constructor(props) {
         super(props);
         this.state = {
@@ -32,6 +40,9 @@ class Login extends Component {
         this.setState({
             isShowPassword: !this.state.isShowPassword
         })
+    }
+    handleForgotPassword = () => {
+        this.props.history.push('/forgotpassword');
     }
     handleLogin = async () => {
         // event.preventDefault()
@@ -70,71 +81,55 @@ class Login extends Component {
     render() {
 
         return (
+            <div className="login-page-container">
+                <div className="main-login">
+                    <div className="brand d-flex">
+                        <img src={`${process.env.PUBLIC_URL}/assets/img/logo-symbol.png`} alt="Avatar" style={{ height: "50px" }} />
+                        <h4 style={{ color: "blue", marginLeft: "10px" }}>C</h4><h4 style={{ color: "red" }}>-</h4>
+                        <h4 style={{ color: "green" }}>C</h4><h4 style={{ color: "orange" }}>r</h4><h4 style={{ color: "blue" }}>u</h4><h4 style={{ color: "red" }}>s</h4><h4 style={{ color: "blue" }}>h</h4></div>
+                    <h2 className="mt-4">Đăng nhập</h2>
+                    <div className="main__form mt-4">
+                        <div className="main__form__children d-flex">
+                            <form action="" method="POST" className="form" id="form-1"
+                                onSubmit={this.handleSubmit}>
+                                <div className="inputEmail">
+                                    <input id="email" type="email" name="email" placeholder="Email" className="form-control"
+                                        value={this.state.email}
+                                        onChange={(event) => {
+                                            this.handleOnChangeEmail(event);
+                                        }}
+                                    />
 
-            <div className="container-fluid bg-form">
-                <div className="row justify-content-center">
-                    <div className="col-md-4 col-sm-8 col-xs-10 login-container">
-                        <form onSubmit={this.handleSubmit}>
-                            <h1 className="login-title mb-4">Sign in</h1>
-                            <div className="form-group">
-                                <label htmlFor="email">Email</label>
-                                <input
-                                    type="email"
-                                    className="form-control mb-4"
-                                    id="email"
-                                    placeholder="Enter your email"
-                                    value={this.state.email}
-                                    onChange={(event) => {
-                                        this.handleOnChangeEmail(event);
-                                    }}
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="password">Password</label>
-                                <div className="custom-input-password">
-                                    <input
-                                        type={this.state.isShowPassword ? 'text' : 'password'}
-                                        className="form-control mb-4"
-                                        id="password"
-                                        placeholder="Password"
+                                </div>
+                                <div className="usePresentEmail">
+                                    <a href="#">Sử dụng địa chỉ email hiện tại của tôi</a>
+                                </div>
+                                <div className="inputPassword mt-3">
+                                    <input id="password" type={this.state.isShowPassword ? "text" : "password"} name="password" placeholder="Mật khẩu" className="form-control"
                                         value={this.state.password}
                                         onChange={(event) => {
                                             this.handleOnChangePassword(event);
                                         }}
+
                                     />
-                                    <span onClick={() => { this.handleShowHidePassword(); }}>
-                                        <i
-                                            className={
-                                                this.state.isShowPassword
-                                                    ? 'fas fa-eye'
-                                                    : 'fas fa-eye-slash'
-                                            }
-                                        ></i>
-                                    </span>
                                 </div>
-                            </div>
-                            <div className="col-12" style={{ color: 'red' }}>
-                                {this.state.errMessage}
-                            </div>
-                            <div className="text-center">
-                                <p className="forgot-password">
-                                    <a href="#">Forgot password?</a>
-                                </p>
-                                <div className="clearfix"></div>
-                                <button
-                                    type="submit"
-                                    className="btn btn-success my-3 signin"
-                                    onClick={() => {
-                                        this.handleLogin();
-                                    }}
-                                >
-                                    Sign in
-                                </button>
-                                <p>
-                                    Don't have an account? <a href="signup.html">Sign up</a>
-                                </p>
-                            </div>
-                        </form>
+                                {/* {this.state.errMessage === 'Ok' ? (<div className="text-success">{this.state.errMessage}</div>) : (<div className="text-danger mt-2" style={{ justifyContent: "center", alignItems: "center", display: "flex" }}>{this.state.errMessage}</div>)} */}
+                                <div className="showPassword d-flex mt-3">
+                                    <div>
+                                        <input type="checkbox" id="isShowPassword" name="isShowPassword" checked={this.state.isShowPassword} onChange={this.handleShowHidePassword} />
+                                    </div>
+                                    <div className="textShow"> Hiện mật khẩu</div>
+                                </div>
+                                <div className="button-list mt-4">
+                                    <div>
+                                        <button className="btn-forgot" onClick={this.handleForgotPassword}>Forgot password</button>
+                                    </div>
+                                    <div>
+                                        <button type="submit" className="btn-next" onClick={() => { this.handleLogin() }}>Đăng nhập</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -157,4 +152,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

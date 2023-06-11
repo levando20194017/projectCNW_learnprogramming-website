@@ -11,6 +11,12 @@ export const setAllLessons = (lessons) => {
         payload: lessons,
     };
 };
+export const setAllVideos = (videos) => {
+    return {
+        type: "SET_ALL_VIDEOS",
+        payload: videos,
+    };
+};
 
 export const setOpenModal = (isOpen) => {
     return {

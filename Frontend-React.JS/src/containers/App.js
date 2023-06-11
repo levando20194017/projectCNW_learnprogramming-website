@@ -16,7 +16,7 @@ import Login from '../containers/Auth/Login';
 import HeaderAdmin from './Header/HeaderAdmin';
 import System from '../routes/System';
 import HomePage from './System/home/HomePage'
-import UserDashboard from './UserDashboard';
+import ForgotPassword from './ForgotPassword';
 import Sidebar from './Sidebar';
 import { CustomToastCloseButton } from '../components/CustomToast';
 import ConfirmModal from '../components/ConfirmModal';
@@ -53,6 +53,7 @@ class App extends Component {
                         <span className="content-container">
                             <Switch>
                                 <Route path={path.HOME} exact component={HomePage} />
+                                <Route path={"/forgotpassword"} component={ForgotPassword} />
                                 <Route path={path.LOGIN} component={adminIsNotAuthenticated(Login)} />
                                 <Route path={path.SYSTEM} component={adminIsAuthenticated(System)} />
                             </Switch>

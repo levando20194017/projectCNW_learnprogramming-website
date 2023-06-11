@@ -1,6 +1,7 @@
 const initialState = {
     arrLessons: [],
     arrCourses: [],
+    arrVideos: [],
     isOpenModal: false,
     isOpenEditModal: false,
     isOpenModalLesson: false,
@@ -15,6 +16,8 @@ const courseReducer = (state = initialState, action) => {
             return { ...state, arrCourses: action.payload };
         case "SET_ALL_LESSONS":
             return { ...state, arrLessons: action.payload };
+        case "SET_ALL_VIDEOS":
+            return { ...state, arrVideos: action.payload };
         case "SET_OPEN_MODAL":
             return { ...state, isOpenModal: action.payload };
         case "SET_OPEN_EDIT_MODAL":

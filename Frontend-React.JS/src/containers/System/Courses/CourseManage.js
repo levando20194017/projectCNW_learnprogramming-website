@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import './CourseManage.scss'
 import { getAllCourses, createNewCourseService, editCourseService, deleteCourseService } from '../../../services/courseService';
 import { getAllLessons, createNewLessonService, editLessonService, deleteLessonService } from '../../../services/lessonService';
+import { getAllVideos } from '../../../services/videoService';
 import { emitter } from '../../../utils/emitter';
 import ModalCourse from './ModalCourse';
 import ModalEditCourse from './ModalEditCourse';
@@ -15,6 +16,7 @@ import ModalEditLesson from './ModalEditLesson';
 import {
     setAllCourses,
     setAllLessons,
+    setAllVideos,
     setOpenModal,
     setOpenEditModal,
     setOpenModalLesson,
@@ -51,22 +53,27 @@ class CourseManage extends Component {
         const $ = document.querySelector.bind(document);
         const isOpen = $('.videos-list.hide');
         const isActive = $('.lesson-title.active');
-        const isOpenMenu = Array.from(listVideos).indexOf(isOpen);
-        if (isOpenMenu == index) {
-            isOpen.classList.remove('hide')
-            isActive.classList.remove('active')
-        } else {
-            if (isOpen) {
-                isOpen.classList.remove('hide');
+        if (listVideos) {
+            const isOpenMenu = Array.from(listVideos).indexOf(isOpen);
+            if (isOpenMenu == index) {
+                isOpen.classList.remove('hide')
                 isActive.classList.remove('active')
+            } else {
+                if (isOpen) {
+                    isOpen.classList.remove('hide');
+                    isActive.classList.remove('active')
+                }
+                lesson.classList.add('active')
+                if (listVideos[index]) {
+                    listVideos[index].classList.add('hide')
+                }
             }
-            lesson.classList.add('active')
-            listVideos[index].classList.add('hide')
         }
     }
     async componentDidMount() {
         await this.getAllCourseFromReact()
         await this.getAllLessonFromReact()
+        await this.getAllVideoFromReact()
 
         const $$ = document.querySelectorAll.bind(document);
         const courses = $$('.course-title')
@@ -76,9 +83,11 @@ class CourseManage extends Component {
         Array.from(courses).forEach((course, index) => {
             course.addEventListener('click', this.handleCourseClick.bind(this, courseBodys, index, courses, course));
         });
-        Array.from(lessons).forEach((lesson, index) => {
-            lesson.addEventListener('click', this.handleLessonClick.bind(this, listVideos, index, lessons, lesson));
-        });
+        if (lessons) {
+            Array.from(lessons).forEach((lesson, index) => {
+                lesson.addEventListener('click', this.handleLessonClick.bind(this, listVideos, index, lessons, lesson));
+            });
+        }
     }
     getAllCourseFromReact = async () => {
         let response = await getAllCourses('ALL');
@@ -90,6 +99,12 @@ class CourseManage extends Component {
         let response = await getAllLessons('ALL');
         if (response && response.errCode === 0) {
             this.props.setAllLessons(response.lessons)
+        }
+    }
+    getAllVideoFromReact = async () => {
+        let response = await getAllVideos('ALL');
+        if (response && response.errCode === 0) {
+            this.props.setAllVideos(response.videos)
         }
     }
     toggleCourseModal = () => {
@@ -210,6 +225,7 @@ class CourseManage extends Component {
     render() {
         let allCourses = this.props.arrCourses;
         let allLessons = this.props.arrLessons;
+        let allVideos = this.props.arrVideos;
         console.log(allCourses);
         console.log(allLessons);
         return (
@@ -238,8 +254,8 @@ class CourseManage extends Component {
                         editLesson={this.editLesson}
                         lessonId={this.props.lessonId}
                     />
-                    <div className="title text-center" style={{ paddingBottom: "20px" }}>Manage courses</div>
                     <div className="card mb-3">
+                        <div className="title text-center" style={{ paddingBottom: "20px", paddingTop: "30px" }}>Manage courses</div>
                         <div className='btn btn-primary px-3' onClick={this.handleAddNewCourse}><i className='fas fa-plus'></i>Add new course</div>
 
                         {allCourses && allCourses.map((course, index) => {
@@ -284,10 +300,13 @@ class CourseManage extends Component {
                                                                 </DropdownButton>
                                                             </div>
                                                         </div>
-                                                        <div className="videos-list">
-                                                            <div className="video-title active text-secondary"><a href="#">Video 1</a></div>
-                                                            <div className="video-title text-secondary"><a href="#">Video 2</a></div>
-                                                        </div>
+                                                        {allVideos.map((video, index) => {
+                                                            return video.lessonID === lesson.id && (
+                                                                <div className="videos-list">
+                                                                    <div className="video-title text-secondary"><a href="#">{index + 1}. {video.title}</a></div>
+                                                                </div>
+                                                            )
+                                                        })}
                                                     </div>
                                                 )
                                             })}
@@ -312,6 +331,7 @@ const mapStateToProps = (state) => {
     return {
         arrCourses: state.course.arrCourses,
         arrLessons: state.course.arrLessons,
+        arrVideos: state.course.arrVideos,
         isOpenModal: state.course.isOpenModal,
         isOpenEditModal: state.course.isOpenEditModal,
         isOpenModalLesson: state.course.isOpenModalLesson,
@@ -324,6 +344,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setAllCourses: (courses) => dispatch(setAllCourses(courses)),
         setAllLessons: (lessons) => dispatch(setAllLessons(lessons)),
+        setAllVideos: (videos) => dispatch(setAllVideos(videos)),
         setOpenModal: (isOpen) => dispatch(setOpenModal(isOpen)),
         setOpenEditModal: (isOpen) => dispatch(setOpenEditModal(isOpen)),
         setOpenModalLesson: (isOpen) => dispatch(setOpenModalLesson(isOpen)),
