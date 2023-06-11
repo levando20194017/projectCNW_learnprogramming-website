@@ -3,7 +3,7 @@ const handleLoginApi = (userEmail, userPassword) => {
     return axios.post('/api/login', { email: userEmail, password: userPassword })
 }
 const handleSignUpApi = (userEmail, userPassword, userFullName) => {
-    return axios.post('http://localhost:8080/api/create-new-user', { email: userEmail, password: userPassword, fullName: userFullName });
+    return axios.post('/api/create-new-user', { email: userEmail, password: userPassword, fullName: userFullName });
 }
 const getAllUsers = (inputId) => {
     return axios.get(`/api/get-all-users?id=${inputId}`)

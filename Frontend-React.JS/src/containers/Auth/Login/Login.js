@@ -8,6 +8,10 @@ import { FormattedMessage } from 'react-intl';
 import { handleLoginApi } from '../../../services/userService';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 class Login extends Component {
     static propTypes = {
@@ -28,6 +32,7 @@ class Login extends Component {
         }
         )
     }
+
     handleOnChangePassword = (event) => {
         this.setState({
             password: event.target.value
@@ -53,8 +58,29 @@ class Login extends Component {
                 this.setState({
                     errMessage: data.message
                 })
+                toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Login failed!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
             }
             if (data && data.errCode === 0) {
+                toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Login success!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+
                 if (data.user.role == true) {
                     this.props.adminLoginSuccess(data.user)
                 } else {
@@ -118,13 +144,17 @@ class Login extends Component {
                                     </div>
                                     <div className="textShow"> Hiện mật khẩu</div>
                                 </div>
-                                <div className="button-list mt-4">
-                                    <div>
-                                        <button className="btn-forgot" onClick={this.handleForgotPassword}>Forgot password</button>
+                                <div>
+                                    <div className="button-list mt-4">
+                                        <div>
+                                            <button className="btn-forgot" onClick={this.handleForgotPassword}>Forgot password</button>
+                                        </div>
+                                        <div>
+                                            <button type="submit" className="btn-next" onClick={this.handleLogin}>Đăng nhập</button>
+                                        </div>
+
                                     </div>
-                                    <div>
-                                        <button type="submit" className="btn-next" onClick={() => { this.handleLogin() }}>Đăng nhập</button>
-                                    </div>
+
                                 </div>
                             </form>
                         </div>
