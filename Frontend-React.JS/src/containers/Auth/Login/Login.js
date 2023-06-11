@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { push } from "connected-react-router";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import * as actions from "../../store/actions";
+import * as actions from "../../../store/actions";
 import './Login.scss';
 import { FormattedMessage } from 'react-intl';
-import { handleLoginApi } from '../../services/userService';
+import { handleLoginApi } from '../../../services/userService';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -113,7 +111,7 @@ class Login extends Component {
 
                                     />
                                 </div>
-                                {/* {this.state.errMessage === 'Ok' ? (<div className="text-success">{this.state.errMessage}</div>) : (<div className="text-danger mt-2" style={{ justifyContent: "center", alignItems: "center", display: "flex" }}>{this.state.errMessage}</div>)} */}
+                                {this.state.errMessage === 'Ok' ? (<div className="text-success">{this.state.errMessage}</div>) : (<div className="text-danger mt-2" style={{ justifyContent: "center", alignItems: "center", display: "flex" }}>{this.state.errMessage}</div>)}
                                 <div className="showPassword d-flex mt-3">
                                     <div>
                                         <input type="checkbox" id="isShowPassword" name="isShowPassword" checked={this.state.isShowPassword} onChange={this.handleShowHidePassword} />

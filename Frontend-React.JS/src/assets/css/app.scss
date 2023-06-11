@@ -120,7 +120,7 @@
 }
 
 html {
-    font-family: sans-serif;
+    font-family: roboto, "Noto Sans Myanmar UI", arial, sans-serif;
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent
@@ -141,10 +141,10 @@ section {
 
 body {
     margin: 0;
-    font-family: Roboto, Arial, sans-serif;
+    font-family: roboto, "Noto Sans Myanmar UI", arial, sans-serif;
     font-size: 1rem;
     font-weight: 400;
-    line-height: 1.428571;
+    line-height: 1.5;
     color: #404040;
     text-align: left;
     background-color: #eee
@@ -802,8 +802,6 @@ pre code {
 .col-xxl-auto {
     position: relative;
     width: 100%;
-    padding-right: 15px;
-    padding-left: 15px
 }
 
 .col {
