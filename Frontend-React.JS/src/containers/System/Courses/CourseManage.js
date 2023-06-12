@@ -230,7 +230,7 @@ class CourseManage extends Component {
         console.log(allLessons);
         return (
             <Scrollbars style={{ height: "80vh" }}>
-                <div className="be-content">
+                <div className="be-content" style={{ padding: "0 25px" }}>
                     <ModalCourse
                         isOpen={this.props.isOpenModal}
                         toggleFromParent={this.toggleCourseModal}
@@ -256,7 +256,7 @@ class CourseManage extends Component {
                     />
                     <div className="card mb-3">
                         <div className="title text-center" style={{ paddingBottom: "20px", paddingTop: "30px" }}>Manage courses</div>
-                        <div className='btn btn-primary px-3' onClick={this.handleAddNewCourse}><i className='fas fa-plus'></i>Add new course</div>
+                        <div className='btn btn-primary px-3 mt-3' style={{ width: "300px", marginBottom: "20px" }} onClick={this.handleAddNewCourse}><i className='fas fa-plus'></i>Add new course</div>
 
                         {allCourses && allCourses.map((course, index) => {
                             return (
@@ -266,7 +266,7 @@ class CourseManage extends Component {
                                             <div className="col-11">
                                                 <h4 className="mb-0">{index + 1}. {course.title}</h4>
                                             </div>
-                                            <div className='col-1'>
+                                            <div className='col-1' style={{ marginTop: "-10px" }}>
                                                 <DropdownButton id="my-dropdown" title={<FaEllipsisH />}>
                                                     <Dropdown.Item onClick={() => this.handleEditCourse(course.id)}><FaEdit /> Edit</Dropdown.Item>
                                                     <Dropdown.Item onClick={() => { this.handleDeleteCourse(course.id) }}><FaTrash /> Delete</Dropdown.Item>

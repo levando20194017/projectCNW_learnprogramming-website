@@ -6,7 +6,7 @@ import ModalUser from './ModalUser';
 import { emitter } from '../../../utils/emitter';
 import ModalEditUser from './ModalEditUser';
 import '../../../assets/css/app.scss'
-
+import { Scrollbars } from 'react-custom-scrollbars';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import jsPDF from 'jspdf';
@@ -246,139 +246,137 @@ class UserManage extends Component {
         const visibleUsers = allUser.slice(startIndex, endIndex);
         const totalPages = Math.ceil(allUser.length / pageSize);
         return (
-            <div className="be-content">
-                <div className="main-content container-fluid">
+            <Scrollbars style={{ height: "80vh" }}>
+                <div className="be-content" style={{ marginTop: "-20px" }}>
+                    <div className="main-content container-fluid">
 
-                    <ModalUser
-                        isOpen={this.state.isOpenModal}
-                        toggleFromParent={this.toggleUserModal}
-                        createNewUser={this.createNewUser}
-                    />
-                    <ModalEditUser
-                        isOpen={this.state.isOpenEditModal}
-                        toggleEditFromParent={this.toggleEditUserModal}
-                        editUser={this.editUser}
-                        userId={this.state.userId}
-                    />
-                    <div className="row">
-                        <div className="col-sm-12">
-                            <div className="card card-table">
-                                <div className="card-header">
-                                    <div className="title">Manage users</div>
-                                    <div className='btn btn-primary px-3 mt-7' style={{ marginLeft: "20px" }} onClick={this.handleAddNewUser}><i className='fas fa-plus'></i>Add new user</div>
-                                    <div className="tools dropdown"><span className="icon mdi mdi-download"></span><a className="dropdown-toggle"
-                                        href="#" role="button" data-toggle="dropdown"><span className="icon mdi mdi-more-vert"></span></a>
-                                        <div className="dropdown-menu" role="menu"><a className="dropdown-item" href="#">Action</a><a
-                                            className="dropdown-item" href="#">Another action</a><a className="dropdown-item" href="#">Something else
-                                                here</a>
-                                            <div className="dropdown-divider"></div><a className="dropdown-item" href="#">Separated link</a>
+                        <ModalUser
+                            isOpen={this.state.isOpenModal}
+                            toggleFromParent={this.toggleUserModal}
+                            createNewUser={this.createNewUser}
+                        />
+                        <ModalEditUser
+                            isOpen={this.state.isOpenEditModal}
+                            toggleEditFromParent={this.toggleEditUserModal}
+                            editUser={this.editUser}
+                            userId={this.state.userId}
+                        />
+                        <div className="row">
+                            <div className="col-sm-12">
+                                <div className="card card-table">
+                                    <div className="card-header">
+                                        <div className="title">Manage users</div>
+                                        <div className='btn btn-primary px-3 mt-7' style={{ marginLeft: "20px" }} onClick={this.handleAddNewUser}><i className='fas fa-plus'></i>Add new user</div>
+                                        <div className="tools dropdown"><span className="icon mdi mdi-download"></span><a className="dropdown-toggle"
+                                            href="#" role="button" data-toggle="dropdown"><span className="icon mdi mdi-more-vert"></span></a>
+                                            <div className="dropdown-menu" role="menu"><a className="dropdown-item" href="#">Action</a><a
+                                                className="dropdown-item" href="#">Another action</a><a className="dropdown-item" href="#">Something else
+                                                    here</a>
+                                                <div className="dropdown-divider"></div><a className="dropdown-item" href="#">Separated link</a>
+                                            </div>
                                         </div>
+
                                     </div>
-
-                                </div>
-                                <div className="card-body">
-                                    <div id="table3_wrapper" className='dataTables_wrapper dt-bootstrap4 no-footer'>
-                                        <div class="row be-datatable-header">
-
-
-                                            <div class="col-sm-6">
-                                                <div class="dataTables_length" id="table3_length">
-                                                    <label>
-                                                        Show
-                                                        <select name="table3_length" aria-controls="table3" class="custom-select custom-select-sm form-control form-control-sm"
-                                                            onChange={this.handlePageSizeChange}
-                                                            value={this.state.pageSize}>
-                                                            <option value="6">6</option>
-                                                            <option value="10">10</option>
-                                                            <option value="25">25</option>
-                                                            <option value="50">50</option>
-                                                            <option value="-1">All</option>
-                                                        </select>
-                                                        entries
-                                                    </label>
+                                    <div className="card-body">
+                                        <div id="table3_wrapper" className='dataTables_wrapper dt-bootstrap4 no-footer'>
+                                            <div class="row be-datatable-header">
+                                                <div class="col-sm-6">
+                                                    <div class="dataTables_length" id="table3_length">
+                                                        <label className='d-flex' style={{ padding: "0 45px" }}>
+                                                            <div>Show</div>
+                                                            <select style={{ width: "40px", marginLeft: "3px" }} name="table3_length" aria-controls="table3" class="custom-select custom-select-sm form-control form-control-sm"
+                                                                onChange={this.handlePageSizeChange}
+                                                                value={this.state.pageSize}>
+                                                                <option value="6">6</option>
+                                                                <option value="10">10</option>
+                                                                <option value="25">25</option>
+                                                                <option value="50">50</option>
+                                                                <option value="-1">All</option>
+                                                            </select>
+                                                            <div style={{ marginLeft: "3px" }}>entries</div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div className="col-sm-6 text-right">
+                                                    <div className="dt-buttons btn-group">
+                                                        <button className="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="table3" type="button">
+                                                            <span>Copy</span>
+                                                        </button>
+                                                        <button className="btn btn-secondary buttons-excel buttons-htm15" tabindex="0" aria-controls="table3" type="button">
+                                                            <span>Excel</span>
+                                                        </button>
+                                                        <button className="btn btn-secondary buttons-pdf buttons-htm15" tabindex="0" aria-controls="table3" type="button">
+                                                            <span>PDF</span>
+                                                        </button>
+                                                        <button className="btn btn-secondary buttons-print" tabindex="0" aria-controls="table3" type="button">
+                                                            <span>Print</span>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
 
-
-                                            <div className="col-sm-6 text-right">
-                                                <div className="dt-buttons btn-group">
-                                                    <button className="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="table3" type="button">
-                                                        <span>Copy</span>
-                                                    </button>
-                                                    <button className="btn btn-secondary buttons-excel buttons-htm15" tabindex="0" aria-controls="table3" type="button">
-                                                        <span>Excel</span>
-                                                    </button>
-                                                    <button className="btn btn-secondary buttons-pdf buttons-htm15" tabindex="0" aria-controls="table3" type="button">
-                                                        <span>PDF</span>
-                                                    </button>
-                                                    <button className="btn btn-secondary buttons-print" tabindex="0" aria-controls="table3" type="button">
-                                                        <span>Print</span>
-                                                    </button>
+                                            <div className='row be-datatable-body'>
+                                                <div className='col-sm-12'>
+                                                    <table className="table table-striped table-hover table-fw-widget dataTable no-footer" id="table3" role='grid' aria-aria-describedby='table3_info'>
+                                                        <thead>
+                                                            <tr>
+                                                                <th style={{ width: "20%" }}>Full Name</th>
+                                                                <th style={{ width: "20%" }}>Email</th>
+                                                                <th style={{ width: "30%" }}>Address</th>
+                                                                <th style={{ width: "5%" }}>Gender</th>
+                                                                <th style={{ width: "10%" }}>Phone Number</th>
+                                                                <th className="actions" style={{ width: "15%" }}>Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {
+                                                                visibleUsers && visibleUsers.map((item, index) => {
+                                                                    return (
+                                                                        <tr>
+                                                                            <td className="user-avatar"><img src={item.img_url} alt="Avatar" />{item.fullName}</td>
+                                                                            <td>{item.email}</td>
+                                                                            <td>{item.address}</td>
+                                                                            <td>{`${item.gender ? "Nam" : "Nữ"}`}</td>
+                                                                            <td>{item.phoneNumber}</td>
+                                                                            <td>
+                                                                                <button className="btn-edit"><i className="fas fa-pencil-alt"
+                                                                                    onClick={() => this.handleEditUser(item.id)}></i></button>
+                                                                                <button className="btn-delete"><i className="fas fa-trash"
+                                                                                    onClick={() => { this.handleDeleteUser(item.id) }}></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        <div className='row be-datatable-body'>
-                                            <div className='col-sm-12'>
-                                                <table className="table table-striped table-hover table-fw-widget dataTable no-footer" id="table3" role='grid' aria-aria-describedby='table3_info'>
-                                                    <thead>
-                                                        <tr>
-                                                            <th style={{ width: "20%" }}>Full Name</th>
-                                                            <th style={{ width: "20%" }}>Email</th>
-                                                            <th style={{ width: "30%" }}>Address</th>
-                                                            <th style={{ width: "5%" }}>Gender</th>
-                                                            <th style={{ width: "10%" }}>Phone Number</th>
-                                                            <th className="actions" style={{ width: "15%" }}>Actions</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {
-                                                            visibleUsers && visibleUsers.map((item, index) => {
+                                            <div className="row be-datatable-footer mt-3">
+                                                <div className="col-sm-4 offset-1">
+                                                    <div className="dataTables_info" style={{ fontWeight: "bold" }} id="table3_info" role="status" aria-live="polite">
+                                                        {`Showing ${startIndex + 1} to ${Math.min(endIndex, allUser.length)} of ${allUser.length} entries`}
+                                                    </div>
+                                                </div>
+                                                <div className="col-sm-3 offset-4">
+                                                    <div className="dataTables_paginate paging_simple_numbers" id="table3_paginate">
+                                                        <ul className="pagination">
+                                                            <li className={`paginate_button page-item ${pageNumber === 1 ? 'disabled' : ''}`} >
+                                                                <a href="#" aria-controls="table3" onClick={() => this.handlePageChange(pageNumber - 1)} className="page-link">Previous</a>
+                                                            </li>
+                                                            {Array.from({ length: totalPages }, (v, k) => {
+                                                                const page = k + 1;
                                                                 return (
-                                                                    <tr>
-                                                                        <td className="user-avatar"><img src={item.img_url} alt="Avatar" />{item.fullName}</td>
-                                                                        <td>{item.email}</td>
-                                                                        <td>{item.address}</td>
-                                                                        <td>{`${item.gender ? "Nam" : "Nữ"}`}</td>
-                                                                        <td>{item.phoneNumber}</td>
-                                                                        <td>
-                                                                            <button className="btn-edit"><i className="fas fa-pencil-alt"
-                                                                                onClick={() => this.handleEditUser(item.id)}></i></button>
-                                                                            <button className="btn-delete"><i className="fas fa-trash"
-                                                                                onClick={() => { this.handleDeleteUser(item.id) }}></i></button>
-                                                                        </td>
-                                                                    </tr>
+                                                                    <li key={k} className={`paginate_button page-item ${pageNumber === page ? 'active' : ''}`}>
+                                                                        <a href="#" aria-controls="table3" onClick={() => this.handlePageChange(page)} className="page-link">{page}</a>
+                                                                    </li>
                                                                 )
-                                                            })
-                                                        }
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <div className="row be-datatable-footer">
-                                            <div className="col-sm-5">
-                                                <div className="dataTables_info" id="table3_info" role="status" aria-live="polite">
-                                                    {`Showing ${startIndex + 1} to ${Math.min(endIndex, allUser.length)} of ${allUser.length} entries`}
-                                                </div>
-                                            </div>
-                                            <div className="col-sm-7">
-                                                <div className="dataTables_paginate paging_simple_numbers" id="table3_paginate">
-                                                    <ul className="pagination">
-                                                        <li className={`paginate_button page-item ${pageNumber === 1 ? 'disabled' : ''}`} >
-                                                            <a href="#" aria-controls="table3" onClick={() => this.handlePageChange(pageNumber - 1)} className="page-link">Previous</a>
-                                                        </li>
-                                                        {Array.from({ length: totalPages }, (v, k) => {
-                                                            const page = k + 1;
-                                                            return (
-                                                                <li key={k} className={`paginate_button page-item ${pageNumber === page ? 'active' : ''}`}>
-                                                                    <a href="#" aria-controls="table3" onClick={() => this.handlePageChange(page)} className="page-link">{page}</a>
-                                                                </li>
-                                                            )
-                                                        })}
-                                                        <li className={`paginate_button page-item ${pageNumber === totalPages ? 'disabled' : ''}`}>
-                                                            <a href="#" aria-controls="table3" onClick={() => this.handlePageChange(pageNumber + 1)} className="page-link">Next</a>
-                                                        </li>
-                                                    </ul>
+                                                            })}
+                                                            <li className={`paginate_button page-item ${pageNumber === totalPages ? 'disabled' : ''}`}>
+                                                                <a href="#" aria-controls="table3" onClick={() => this.handlePageChange(pageNumber + 1)} className="page-link">Next</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -388,7 +386,7 @@ class UserManage extends Component {
                         </div>
                     </div>
                 </div>
-            </div>
+            </Scrollbars>
         );
     }
 

@@ -103,7 +103,7 @@ class HeaderAdmin extends Component {
                     <div className="container-fluid">
                         <div className="be-navbar-header">
                             <h2 className="navbar-brand"></h2>
-                            <h3 style={{ marginLeft: "-70px" }}>CodeCrush</h3>
+                            <h3 style={{ marginLeft: "-70px", marginTop: "13px" }}>CodeCrush</h3>
                         </div>
                         <div className="page-title"><span>Dashboard</span></div>
                         <div className="be-right-navbar">
