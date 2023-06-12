@@ -33,7 +33,7 @@ class ForgotPassword extends Component {
                                                 </div>
                                             </div>
                                             <div className="form-group mt-3">
-                                                <input name="recover-submit" className="btn btn-primary btn-block" value="Reset Password" type="submit" />
+                                                <input style={{ width: "100%" }} name="recover-submit" className="btn btn-primary btn-block" value="Reset Password" type="submit" />
                                             </div>
                                             <input type="hidden" className="hide" name="token" id="token" value="" />
                                         </form>

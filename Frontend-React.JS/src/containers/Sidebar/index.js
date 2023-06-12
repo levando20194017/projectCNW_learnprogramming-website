@@ -75,7 +75,7 @@ class Sidebar extends Component {
                                         <li className="parent">
                                             <a href="#">
                                                 <i class="fas fa-user-graduate" style={{ fontSize: "110%" }}></i>
-                                                <span style={{ marginLeft: "13px" }}>Users</span>
+                                                <span style={{ marginLeft: "13px", fontSize: "15px" }}>Users</span>
                                                 <span style={{ marginLeft: "110px", fontSize: "120%" }}>{this.state.showMenu[0] ? <i class="fas fa-caret-up"></i> : <i class="fas fa-caret-down"></i>}</span>
                                             </a>
                                             <ul className="sub-menu">
@@ -87,8 +87,8 @@ class Sidebar extends Component {
                                         <li className="parent">
                                             <a href="#">
                                                 <i class="fab fa-leanpub" style={{ fontSize: "110%" }}></i>
-                                                <span style={{ marginLeft: "9px" }}>Courses</span>
-                                                <span style={{ marginLeft: "94px", fontSize: "120%" }}>{this.state.showMenu[1] ? <i class="fas fa-caret-up"></i> : <i class="fas fa-caret-down"></i>}</span>
+                                                <span style={{ marginLeft: "9px", fontSize: "15px" }}>Courses</span>
+                                                <span style={{ marginLeft: "92px", fontSize: "120%" }}>{this.state.showMenu[1] ? <i class="fas fa-caret-up"></i> : <i class="fas fa-caret-down"></i>}</span>
                                             </a>
                                             <ul className="sub-menu">
                                                 <li><a href="#">Manage courses</a></li>
@@ -99,7 +99,7 @@ class Sidebar extends Component {
                                         <li className="parent">
                                             <a href="#">
                                                 <i class="fas fa-comment-alt" style={{ fontSize: "110%" }}></i>
-                                                <span style={{ marginLeft: "13px" }}>Posts</span>
+                                                <span style={{ marginLeft: "13px", fontSize: "15px" }}>Posts</span>
                                                 <span style={{ marginLeft: "108px", fontSize: "120%" }}>{this.state.showMenu[2] ? <i class="fas fa-caret-up"></i> : <i class="fas fa-caret-down"></i>}</span>
                                             </a>
                                             <ul className="sub-menu">
