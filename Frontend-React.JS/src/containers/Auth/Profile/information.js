@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import './style.scss'
+import * as actions from "../../../store/actions";
+import { editUserProfileService } from '../../../services/userService';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 class Information extends Component {
 
     constructor(props) {
@@ -11,6 +17,9 @@ class Information extends Component {
             message: '',
             updatedUserData: this.props.userInfo
         }
+        this.handleCancelClick = this.handleCancelClick.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSelectChange = this.handleSelectChange.bind(this);
     }
 
     handleEditClick = () => {
@@ -22,40 +31,69 @@ class Information extends Component {
 
     }
     handleSaveClick = async () => {
-        // const result = await editUserService(updatedUserData);
-        // setMessage(result.data.message)
-        // if (result.data && result.data.errCode === 0) {
-        //     dispath({ type: Actions.UPDATE_USER, userInfo: updatedUserData })
-        //     setIsEditing(false);
-        // }
-    };
-    handleCancelClick = () => {
-        // setUpdatedUserData(userData);
+        const result = await editUserProfileService(this.state.updatedUserData);
         this.setState({
+            message: result.message
+        })
+        if (result && result.errCode === 0) {
+            toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> User update successful!</div>, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
+            this.props.updateUser(this.state.updatedUserData)
+            this.setState({
+                isEditing: false
+            })
+        }
+        if (result && result.errCode !== 0) {
+            toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> User update failed!</div>, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+    };
+    handleCancelClick() {
+        this.setState({
+            updatedUserData: this.props.userInfo,
             isEditing: false
-        })
-    };
+        });
+    }
 
-    handleInputChange = (event) => {
+    handleInputChange(event) {
         const { name, value } = event.target;
-        // setUpdatedUserData((prevState) => ({
-        //     ...prevState,
-        //     [name]: value,
-        // }));
-        this.setState({
+        this.setState(prevState => ({
+            updatedUserData: {
+                ...prevState.updatedUserData,
+                [name]: value
+            }
+        }));
+    }
 
-        })
-    };
-    handleSelectChange = (event) => {
+    handleSelectChange(event) {
         const { name, value } = event.target;
-        // setUpdatedUserData((prevState) => ({
-        //     ...prevState,
-        //     [name]: value === "true",
-        // }));
-    };
+        this.setState(prevState => ({
+            updatedUserData: {
+                ...prevState.updatedUserData,
+                [name]: value === "true"
+            }
+        }));
+    }
     render() {
         const userInfo = this.props.userInfo;
         console.log(userInfo);
+        console.log(this.state.updatedUserData);
         return (
             <div className="main-profile">
                 <div className="profile-main-body">
@@ -145,7 +183,7 @@ class Information extends Component {
                                                 <input
                                                     type="text"
                                                     name="fullName"
-                                                    value={this.state.updatedUserData.fullName}
+                                                    value={this.state.updatedUserData?.fullName}
                                                     onChange={this.handleInputChange}
                                                 />
                                             ) : (
@@ -159,16 +197,7 @@ class Information extends Component {
                                             <h6 className="mb-0">Email</h6>
                                         </div>
                                         <div className="col-sm-9 text-secondary">
-                                            {this.isEditing ? (
-                                                <input
-                                                    type="text"
-                                                    name="email"
-                                                    value={this.state.updatedUserData.email}
-                                                    onChange={this.handleInputChange}
-                                                />
-                                            ) : (
-                                                userInfo.email
-                                            )}
+                                            {userInfo.email}
                                         </div>
                                     </div>
                                     <hr />
@@ -181,7 +210,7 @@ class Information extends Component {
                                                 <input
                                                     type="text"
                                                     name="phoneNumber"
-                                                    value={this.state.updatedUserData.phoneNumber}
+                                                    value={this.state.updatedUserData?.phoneNumber}
                                                     onChange={this.handleInputChange}
                                                 />
                                             ) : (
@@ -199,7 +228,7 @@ class Information extends Component {
                                                 <input
                                                     type="text"
                                                     name="address"
-                                                    value={this.state.updatedUserData.address}
+                                                    value={this.state.updatedUserData?.address}
                                                     onChange={this.handleInputChange}
                                                 />
                                             ) : (
@@ -216,7 +245,7 @@ class Information extends Component {
                                             {this.state.isEditing ? (
                                                 <select
                                                     name="gender"
-                                                    value={this.state.updatedUserData.gender}
+                                                    value={this.state.updatedUserData?.gender}
                                                     onChange={this.handleSelectChange}
                                                 >
                                                     <option value={false.toString()}>Nữ</option>
@@ -310,6 +339,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        updateUser: (userInfor) => dispatch(actions.updateUser(userInfor)),
     };
 };
 
