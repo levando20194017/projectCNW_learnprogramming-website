@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import './style.scss'
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import * as actions from "../../../store/actions";
 import { editUserProfileService } from '../../../services/userService';
 import { toast } from 'react-toastify';
@@ -9,6 +11,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 class Information extends Component {
+    static propTypes = {
+        history: PropTypes.object.isRequired,
+        // các props khác
+    };
 
     constructor(props) {
         super(props);
@@ -28,7 +34,7 @@ class Information extends Component {
         })
     };
     handleChangePassword = () => {
-
+        this.props.history.push('./changepassword')
     }
     handleSaveClick = async () => {
         const result = await editUserProfileService(this.state.updatedUserData);
@@ -343,4 +349,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Information);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Information));

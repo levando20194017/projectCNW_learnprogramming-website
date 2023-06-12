@@ -25,4 +25,7 @@ const editUserService = (data) => {
 const editUserProfileService = (data) => {
     return axios.put('/api/edit-profile', data)
 }
-export { handleLoginApi, getAllUsers, createNewUserService, deleteUserService, editUserService, handleSignUpApi, editUserProfileService }
+const userChangePassword = (id, curPassword, newPassword) => {
+    return axios.put('/api/user-changepassword', { id: id, curPassword: curPassword, newPassword: newPassword })
+}
+export { handleLoginApi, getAllUsers, createNewUserService, deleteUserService, editUserService, handleSignUpApi, editUserProfileService, userChangePassword }
