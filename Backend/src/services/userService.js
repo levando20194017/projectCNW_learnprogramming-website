@@ -200,11 +200,58 @@ let updateUserData = (data) => {
         }
     });
 };
+
+let handleEditProfile = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!data.id) {
+                resolve({
+                    errCode: 2,
+                    message: "Missing required parameters!"
+                })
+            }
+            let user = await db.User.findOne({
+                where: { id: data.id },
+                raw: false
+            });
+            if (user) {
+                let checkEmail = await checkUserEmail(data.email);
+                if (user.email === data.email || checkEmail === false) {
+                    user.email = data.email || user.email
+                    user.fullName = data.fullName || user.fullName
+                    user.address = data.address || user.address
+                    user.phoneNumber = data.phoneNumber || user.phoneNumber
+                    user.img_url = data.img_url || user.img_url
+                    user.gender = data.gender || user.gender
+
+                    await user.save();
+                    resolve({
+                        errCode: 0,
+                        message: "Update user success!"
+                    })
+                } else {
+                    resolve({
+                        errCode: 3,
+                        message: "Email is already exist"
+                    })
+                }
+            } else {
+                resolve({
+                    errCode: 1,
+                    message: 'User not found!'
+                })
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 module.exports = {
     handleUserLogin: handleUserLogin,
     checkUserEmail: checkUserEmail,
     getAllUsers: getAllUsers,
     createNewUser: createNewUser,
     deleteUser: deleteUser,
-    updateUserData: updateUserData
+    updateUserData: updateUserData,
+    handleEditProfile: handleEditProfile
 }
