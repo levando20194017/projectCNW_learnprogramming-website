@@ -15,6 +15,7 @@ import { path } from '../utils'
 import Login from './Auth/Login/Login';
 import SignUp from './Auth/SignUp/signup';
 import Profile from './Auth/Profile/index';
+import ChangePassword from './Auth/ChangePassword/changePassword';
 import ForgotPassword from './Auth/ForgotPassword/ForgotPassword';
 import HeaderAdmin from './Header/HeaderAdmin';
 import System from '../routes/System';
@@ -57,6 +58,7 @@ class App extends Component {
                             <Switch>
                                 <Route path={path.HOME} exact component={HomePage} />
                                 <Route path={"/forgotpassword"} component={ForgotPassword} />
+                                <Route path={"/changepassword"} component={ChangePassword} />
                                 <Route path={"/signup"} component={SignUp} />
                                 <Route path={"/profile"} component={Profile} />
                                 <Route path={path.LOGIN} component={adminIsNotAuthenticated(Login)} />

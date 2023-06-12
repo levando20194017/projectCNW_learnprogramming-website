@@ -69,6 +69,22 @@ let checkUserEmail = (userEmail) => {
         }
     })
 }
+let checkUserPassword = (userId, userPassword) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let user = await db.User.findOne({
+                where: { id: userId }
+            })
+            if (user && user.password === userPassword) {
+                resolve(true)
+            } else {
+                resolve(false)
+            }
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
 
 let getAllUsers = (userId) => {
     return new Promise(async (resolve, reject) => {
@@ -246,6 +262,46 @@ let handleEditProfile = (data) => {
         }
     });
 };
+let handleChangePassword = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!data.id) {
+                resolve({
+                    errCode: 2,
+                    message: "Missing required parameters!"
+                })
+            }
+            let hashNewPasswordFormBcrypt = await hashUserPassword(data.newPassword);
+            let user = await db.User.findOne({
+                where: { id: data.id },
+                raw: false
+            });
+            if (user) {
+                const isMatch = await bcrypt.compare(data.curPassword, user.password);
+                if (isMatch) {
+                    user.password = hashNewPasswordFormBcrypt
+                    await user.save();
+                    resolve({
+                        errCode: 0,
+                        message: "You have successfully changed your password!"
+                    })
+                } else {
+                    resolve({
+                        errCode: 1,
+                        message: "You have entered the wrong current password!"
+                    })
+                }
+            } else {
+                resolve({
+                    errCode: 3,
+                    message: "User don't exist!"
+                })
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 module.exports = {
     handleUserLogin: handleUserLogin,
     checkUserEmail: checkUserEmail,
@@ -253,5 +309,6 @@ module.exports = {
     createNewUser: createNewUser,
     deleteUser: deleteUser,
     updateUserData: updateUserData,
-    handleEditProfile: handleEditProfile
+    handleEditProfile: handleEditProfile,
+    handleChangePassword: handleChangePassword
 }
