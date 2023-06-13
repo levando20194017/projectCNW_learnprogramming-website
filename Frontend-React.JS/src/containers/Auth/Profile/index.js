@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import Information from './information';
+import PostSubmission from '../Post/Submission/postSubmission';
 class Profile extends Component {
 
     constructor(props) {
@@ -13,6 +14,7 @@ class Profile extends Component {
             <div className="profile-page-container">
                 <div className="container">
                     <Information />
+                    <PostSubmission />
                 </div>
             </div>
         )
