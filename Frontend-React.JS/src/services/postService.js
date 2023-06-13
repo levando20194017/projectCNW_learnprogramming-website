@@ -5,13 +5,13 @@ const handleAddNewPost = (userID, content, img_url) => {
 }
 
 const getAllPostById = (inputId) => {
-    return axios.get(`/api/get-all-posts?id=${inputId}`)
+    return axios.get(`http://localhost:8080/api/get-all-posts?id=${inputId}`)
 }
 
 const getAllLikesOfPost = (inputId) => {
-    return axios.get(`/api/post/get-all-likes?id=${inputId}`)
+    return axios.get(`http://localhost:8080/api/post/get-all-likes?id=${inputId}`)
 }
 const handleLikePost = (userID, postID) => {
-    return axios.post('/api/post/isliked', { userID: userID, postID: postID });
+    return axios.post('http://localhost:8080/api/post/isliked', { userID: userID, postID: postID });
 }
 export { handleAddNewPost, getAllPostById, getAllLikesOfPost, handleLikePost };

@@ -109,11 +109,11 @@ class ModalPostSubmission extends Component {
                                             <div>
                                                 <div className="d-flex">
                                                     <div>
-                                                        <img src={userData.img_url} alt="Avatar" className="rounded-circle"
+                                                        <img src={userData?.img_url} alt="Avatar" className="rounded-circle"
                                                             width="50" height={50} />
                                                     </div>
                                                     <div style={{ marginLeft: "8px" }}>
-                                                        <div style={{ fontWeight: "bold" }} className="author">{userData.fullName}</div>
+                                                        <div style={{ fontWeight: "bold" }} className="author">{userData?.fullName}</div>
                                                         <div className="public-icon"><i className="fas fa-globe-asia"></i>  Public  <i className="fas fa-caret-down"></i></div>
                                                     </div>
                                                 </div>
