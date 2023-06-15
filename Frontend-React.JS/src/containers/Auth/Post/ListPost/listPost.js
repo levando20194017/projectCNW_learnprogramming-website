@@ -5,10 +5,12 @@ import Spinner from "react-bootstrap/Spinner";
 import { getAllPostById, getAllLikesOfPost, handleLikePost } from '../../../../services/postService';
 import { getAllCommentById } from '../../../../services/commentService';
 import './style.scss'
+import moment from 'moment';
 class ListPost extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            // userData: this.props.userInfo,
             listPosts: [],
             listComments: [],
             likePosts: [],
@@ -61,11 +63,12 @@ class ListPost extends Component {
             showDropdown: newShowDropdown,
         });
     };
-    userData = this.props.userInfo;
+    userData = JSON.parse(localStorage.getItem("persist:user"));
+    userInfo = JSON.parse(this.userData.userInfo);
     componentDidMount() {
         let isMounted = true;
         const fetchData = async () => {
-            const data = await getAllPostById(this.userData.id);
+            const data = await getAllPostById(this.userInfo.id);
             this.setState({
                 listPosts: data.data.posts,
             });
@@ -74,6 +77,7 @@ class ListPost extends Component {
                 let likePostsArray = [];
                 for (let i = 0; i < data.data.posts.length; i++) {
                     const response = await getAllCommentById(data.data.posts[i].id);
+                    console.log(response);
                     const comments = response.data.comments;
                     commentsArray.push(comments);
 
@@ -94,7 +98,7 @@ class ListPost extends Component {
     }
     // Lưu trạng thái like của bài viết vào localStorage
     handleLikeThisPost = async (index, postID) => {
-        const response = await handleLikePost(this.userData.id, postID);
+        const response = await handleLikePost(this.userInfo.id, postID);
         if (response.data.errCode === 1) {
             const newIsLiked = [...this.state.isLiked];
             newIsLiked[index] = false;
@@ -127,8 +131,22 @@ class ListPost extends Component {
             });
         }
     };
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.listPosts !== prevState.listPosts) {
+            const newIsLiked = [...this.state.isLiked];
+            this.state.listPosts.forEach((post, index) => {
+                const isPostLiked = localStorage.getItem(post.id); // Lấy giá trị trạng thái like từ localStorage
+                if (isPostLiked === "true") {
+                    newIsLiked[index] = true;
+                }
+            });
+            this.setState({
+                isLiked: newIsLiked,
+            });
+        }
+    }
     render() {
-        const userInfo = this.props.userInfo
+        const userInfo = this.userInfo
         return (
             <div className="main-profile" style={{ marginTop: "-42px", padding: "10px" }}>
                 <div className="profile-main-body">
@@ -145,7 +163,7 @@ class ListPost extends Component {
                                                 </div>
                                                 <div style={{ marginLeft: "8px" }}>
                                                     <div style={{ fontWeight: "bold" }} className="author">{userInfo?.fullName}</div>
-                                                    <div className="text-secondary">{post.createdAt}. <i className="fas fa-globe-asia"></i></div>
+                                                    <div className="text-secondary">{moment(`${post.createdAt}`).format('HH:mm DD/MM/YYYY')}. <i className="fas fa-globe-asia"></i></div>
                                                 </div>
                                             </div>
                                             <div className=" col-1" style={{ fontSize: "30px", marginLeft: "50px" }}>

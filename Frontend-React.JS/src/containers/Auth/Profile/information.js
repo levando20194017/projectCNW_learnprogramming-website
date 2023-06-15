@@ -16,12 +16,14 @@ class Information extends Component {
         // các props khác
     };
 
+    userData = JSON.parse(localStorage.getItem("persist:user"));
+    userInfo = JSON.parse(this.userData.userInfo);
     constructor(props) {
         super(props);
         this.state = {
             isEditing: false,
             message: '',
-            updatedUserData: this.props.userInfo
+            updatedUserData: this.userInfo
         }
         this.handleCancelClick = this.handleCancelClick.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -38,6 +40,7 @@ class Information extends Component {
     }
     handleSaveClick = async () => {
         const result = await editUserProfileService(this.state.updatedUserData);
+        console.log(result);
         this.setState({
             message: result.message
         })
@@ -98,8 +101,6 @@ class Information extends Component {
     }
     render() {
         const userInfo = this.props.userInfo;
-        console.log(userInfo);
-        console.log(this.state.updatedUserData);
         return (
             <div className="main-profile">
                 <div className="profile-main-body">
