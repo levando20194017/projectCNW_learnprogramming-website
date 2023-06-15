@@ -1,6 +1,6 @@
 import commentService from '../services/commentService'
 let handleGetAllComments = async (req, res) => {
-    let id = req.params.id; // ALL, id
+    let id = req.query.id; // ALL, id
     //id của bài viết
     if (!id) {
         return res.status(200).json({
@@ -9,7 +9,7 @@ let handleGetAllComments = async (req, res) => {
             comment: []
         })
     }
-    let comments = await commentService.getAllPosts(id);
+    let comments = await commentService.getAllComments(id);
     return res.status(200).json({
         errCode: 0,
         message: 'Ok',
