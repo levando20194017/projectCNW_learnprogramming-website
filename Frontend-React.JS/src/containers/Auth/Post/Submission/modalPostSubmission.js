@@ -118,7 +118,7 @@ class ModalPostSubmission extends Component {
                                                     </div>
                                                 </div>
                                                 <div className='postSubmission-content'>
-                                                    <textarea className=" mt-3" name="description" placeholder={`Hey ${userData.fullName}, What are you thinking?`}
+                                                    <textarea className=" mt-3" name="description" placeholder={`Hey ${userData?.fullName}, What are you thinking?`}
                                                         value={content} onChange={e => this.setState({ content: e.target.value })}></textarea>
                                                     <input className='form-control' placeholder='Input your image link...'
                                                         value={img_url} onChange={e => this.setState({ img_url: e.target.value })} />
