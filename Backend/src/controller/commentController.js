@@ -28,12 +28,12 @@ let handleDeleteComment = async (req, res) => {
             message: "Missing required parameters!"
         })
     }
-    let message = await commentService.deleteComment(req.body.id, req.session.user);
+    let message = await commentService.deleteComment(req.body);
     return res.status(200).json(message)
 }
 let handleEditComment = async (req, res) => {
     let data = req.body;
-    let message = await commentService.updateCommentData(data, req.session.user)
+    let message = await commentService.updateCommentData(data)
     return res.status(200).json(message)
 }
 module.exports = {
