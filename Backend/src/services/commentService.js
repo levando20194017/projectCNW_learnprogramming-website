@@ -43,16 +43,16 @@ let createNewComment = (data) => {
         }
     })
 }
-let deleteComment = (commentID, user) => {
+let deleteComment = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             let comment = db.Comments.findOne({
-                where: { id: commentID }
+                where: { id: data.commentID }
             })
             if (comment) {
-                if (user.role === true || user.id === comment.userID) {
+                if (data.user.role === true || data.user.id === comment.userID) {
                     await db.Comments.destroy({
-                        where: { id: commentID }
+                        where: { id: data.commentID }
                     });
                     resolve({
                         errCode: 0,
@@ -75,21 +75,21 @@ let deleteComment = (commentID, user) => {
         }
     })
 }
-let updateCommentData = (data, user) => {
+let updateCommentData = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.id) {
+            if (!data.commentID || !data.user.id) {
                 resolve({
                     errCode: 2,
                     message: "Missing required parameters!"
                 })
             }
             let comment = await db.Comments.findOne({
-                where: { id: data.id },
+                where: { id: data.commentID },
                 raw: false
             });
             if (comment) {
-                if (user.role === true || user.id === comment.userID) {
+                if (data.user.role === true || data.user.id === comment.userID) {
                     comment.content = data.content || comment.content
                     comment.img_url = data.img_url || comment.img_url
                     comment.date = data.date || comment.date
