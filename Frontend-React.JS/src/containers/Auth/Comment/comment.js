@@ -41,8 +41,8 @@ class Comment extends Component {
             }
 
             const responseOfLikeComment = await getAllLikesOfComment(this.props.comment.id);
-            if (responseOfLikeComment && responseOfLikeComment.errCode === 0) {
-                const likeComments = responseOfLikeComment.likes;
+            if (responseOfLikeComment.data && responseOfLikeComment.data.errCode === 0) {
+                const likeComments = responseOfLikeComment.data.likes;
                 this.setState({ likeComments });
             }
         } catch (error) {
@@ -51,18 +51,20 @@ class Comment extends Component {
     };
 
     handleLikeThisComment = async (commentID) => {
-        if (this.state.isLiked) return; // Kiểm tra giá trị isLiked hiện tại trước khi gửi request
-        console.log(commentID, this.props.userID);
-
         try {
             const response = await handleLikeComment(this.props.userID, commentID);
+            console.log(response);
             if (response.data.errCode === 1) {
-                this.setState({ isLiked: !this.state.isLiked }); // Cập nhật giá trị isLiked dựa trên giá trị hiện tại
+                this.setState({ isLiked: false }); // Cập nhật giá trị isLiked dựa trên giá trị hiện tại
                 const responseOfLikeComment = await getAllLikesOfComment(commentID);
                 const likeComments = responseOfLikeComment?.data?.likes;
                 this.setState({ likeComments: likeComments || [] });
-            } else {
-                console.log('Error'); // Xử lý lỗi ở đây
+            }
+            if (response.data.errCode === 0) {
+                this.setState({ isLiked: true }); // Cập nhật giá trị isLiked dựa trên giá trị hiện tại
+                const responseOfLikeComment = await getAllLikesOfComment(commentID);
+                const likeComments = responseOfLikeComment?.data?.likes;
+                this.setState({ likeComments: likeComments || [] });
             }
         } catch (error) {
             console.log(error);
@@ -109,10 +111,11 @@ class Comment extends Component {
                                         }}
                                     ></i>
                                 )}
-                                {likeComments && likeComments.length ? `${likeComments.length}` : ''}
+                                <span style={{ fontWeight: "bold", marginLeft: "-5px" }}>{likeComments && likeComments.length ? `${likeComments.length}` : ''}</span>
+
                             </li>
                         </ul>
-                        <ul className='list-unstyled list-inline media-detail pull-right d-flex'>
+                        <ul className='list-unstyled list-inline media-detail pull-right d-flex' style={{ marginLeft: "20px" }}>
                             {this.props.userID === comment.userID ? (
                                 <li>
                                     <a href=''>Edit</a>
