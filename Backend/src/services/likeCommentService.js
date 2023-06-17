@@ -4,7 +4,7 @@ let getAllLikes = (commentID) => {
         try {
             let likes = '';
             if (commentID && commentID !== 'ALL') {
-                likes = await db.LikePosts.findAll({
+                likes = await db.LikeComments.findAll({
                     where: { commentID: commentID },
                 });
                 resolve(likes);

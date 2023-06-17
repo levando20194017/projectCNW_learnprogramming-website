@@ -17,7 +17,6 @@ let handleGetAllComments = async (req, res) => {
     })
 }
 let handleCreateNewComment = async (req, res) => {
-    req.body.userID = req.session.user.id;
     let message = await commentService.createNewComment(req.body);
     console.log(message);
     return res.status(200).json(message)
