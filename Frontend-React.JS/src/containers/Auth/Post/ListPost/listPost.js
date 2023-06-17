@@ -78,7 +78,6 @@ class ListPost extends Component {
                 let likePostsArray = [];
                 for (let i = 0; i < data.data.posts.length; i++) {
                     const response = await getAllCommentById(data.data.posts[i].id);
-                    console.log(response);
                     const comments = response.data.comments;
                     commentsArray.push(comments);
 
@@ -115,7 +114,8 @@ class ListPost extends Component {
             this.setState({
                 likePosts: likePostsArray,
             });
-        } else {
+        }
+        if (response.data.errCode === 0) {
             const newIsLiked = [...this.state.isLiked];
             newIsLiked[index] = true;
             this.setState({

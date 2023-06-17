@@ -8,6 +8,10 @@ import { getAllUsers } from '../../../../services/userService';
 import moment from 'moment';
 import './style.scss'
 import CommentForm from '../../Comment/comment'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 class ModalPost extends Component {
     constructor(props) {
         super(props);
@@ -46,19 +50,53 @@ class ModalPost extends Component {
             console.log(error);
         }
     }
-
+    handleOnIputComment = (e) => {
+        this.setState({
+            contentComment: e.target.value
+        })
+        if (e.target.value === "") {
+            this.setState({
+                isCommentDisabled: true
+            })
+        } else {
+            this.setState({
+                isCommentDisabled: false
+            })
+        }
+    }
     handleAddComment = async () => {
         try {
             const response = await handleAddNewComment(
-                this.props.userID,
+                this.props.user.id,
                 this.state.contentComment,
-                this.props.postId
+                this.props.post.id
             );
+            console.log(response);
 
             if (response.data && response.data.errCode === 0) {
                 this.setState({ message: response.data.message, contentComment: '' });
+                toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Add new comment success!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
             } else if (response.data && response.data.errCode !== 0) {
                 this.setState({ message: response.data.message });
+                toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Add comment failed!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
             }
         } catch (error) {
             console.log(error);
@@ -188,7 +226,7 @@ class ModalPost extends Component {
                             src={user.img_url} alt="" /></a>
                         <div className="input-comment">
                             <input className='input-comment__form' placeholder='Post a comment...'
-                            // value={contentComment} onChange={e => setContentComment(e.target.value)} 
+                                value={contentComment} onChange={e => this.handleOnIputComment(e)}
 
                             />
                             <div className='d-flex' style={{ justifyContent: "space-between", marginTop: "30px" }}>
