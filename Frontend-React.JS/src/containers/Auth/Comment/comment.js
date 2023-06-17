@@ -1,4 +1,3 @@
-// import './style.css'
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getAllUsers } from '../../../services/userService';
@@ -11,12 +10,15 @@ class Comment extends Component {
         this.state = {
             likeComments: [],
             isLiked: false,
+            isEditComment: false,
+            contentComment: this.props.comment.content,
             userComment: {
                 id: '',
                 fullName: '',
                 img_url: '',
             },
         };
+        this.commentContentRef = React.createRef();
     }
 
     componentDidMount() {
@@ -70,10 +72,24 @@ class Comment extends Component {
             console.log(error);
         }
     };
+    handleEditComment = () => {
+        this.setState({
+            isEditComment: true
+        })
+    }
+    handleSaveComment = () => {
+
+    }
+    handleCancelComment = () => {
+        this.setState({
+            isEditComment: false,
+            contentComment: this.props.comment.content
+        })
+    }
 
     render() {
         const { comment } = this.props;
-        const { likeComments, isLiked, userComment } = this.state;
+        const { likeComments, isLiked, userComment, isEditComment, contentComment } = this.state;
         return (
             <div className='media d-flex'>
                 <a className='pull-left' href='#'>
@@ -87,7 +103,19 @@ class Comment extends Component {
                 </a>
                 <div className='media-body'>
                     <h6 className='media-heading'>{userComment.fullName}</h6>
-                    <p>{comment.content}</p>
+                    {isEditComment ? <textarea
+                        style={{
+                            width: `${this.commentContentRef.current?.offsetWidth}px`,
+                            height: `${this.commentContentRef.current?.offsetHeight}px`,
+                            fontSize: "15px",
+                            outline: "none",
+                            border: "none",
+                            backgroundColor: "#f3f2f2"
+                        }}
+                        value={contentComment}
+                        onChange={e => this.setState({ contentComment: e.target.value })} />
+                        : <p ref={this.commentContentRef}>{comment.content}</p>}
+
                     <div className='d-flex' style={{ justifyContent: 'space-between' }}>
                         <ul className='list-unstyled list-inline media-detail pull-lef d-flex'>
                             <li>
@@ -117,15 +145,21 @@ class Comment extends Component {
                         </ul>
                         <ul className='list-unstyled list-inline media-detail pull-right d-flex' style={{ marginLeft: "20px" }}>
                             {this.props.userID === comment.userID ? (
-                                <li>
-                                    <a href=''>Edit</a>
+                                <li className=''>{
+                                    isEditComment ? (<>
+                                        <span className='text-success'>Save</span>
+                                        <span className='text-danger' onClick={this.handleCancelComment} style={{ marginLeft: "10px" }}>Cancel</span>
+                                    </>
+                                    ) :
+                                        <span className='text-primary' onClick={this.handleEditComment}>Edit</span>
+                                }
                                 </li>
                             ) : (
                                 ''
                             )}
                             {this.props.userID === comment.userID ? (
                                 <li className=''>
-                                    <a href=''>Delete</a>
+                                    <span className='text-primary'>Delete</span>
                                 </li>
                             ) : (
                                 ''
