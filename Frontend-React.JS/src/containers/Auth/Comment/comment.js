@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getAllUsers } from '../../../services/userService';
-import { getAllLikesOfComment, handleLikeComment } from '../../../services/commentService';
+import { getAllLikesOfComment, handleLikeComment, handleEditComment } from '../../../services/commentService';
 import moment from 'moment';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 class Comment extends Component {
 
     constructor(props) {
@@ -54,7 +58,7 @@ class Comment extends Component {
 
     handleLikeThisComment = async (commentID) => {
         try {
-            const response = await handleLikeComment(this.props.userID, commentID);
+            const response = await handleLikeComment(this.props.user.id, commentID);
             console.log(response);
             if (response.data.errCode === 1) {
                 this.setState({ isLiked: false }); // Cập nhật giá trị isLiked dựa trên giá trị hiện tại
@@ -77,8 +81,39 @@ class Comment extends Component {
             isEditComment: true
         })
     }
-    handleSaveComment = () => {
-
+    handleSaveComment = async () => {
+        try {
+            const response = await handleEditComment(this.props.comment.id, this.state.contentComment, this.props.user)
+            console.log(response);
+            if (response.data && response.data.errCode === 0) {
+                toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Edit comment success!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+                this.setState({
+                    isEditComment: false
+                })
+            } else {
+                toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Edit comment failed!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
     handleCancelComment = () => {
         this.setState({
@@ -144,10 +179,10 @@ class Comment extends Component {
                             </li>
                         </ul>
                         <ul className='list-unstyled list-inline media-detail pull-right d-flex' style={{ marginLeft: "20px" }}>
-                            {this.props.userID === comment.userID ? (
+                            {this.props.user.id === comment.userID ? (
                                 <li className=''>{
                                     isEditComment ? (<>
-                                        <span className='text-success'>Save</span>
+                                        <span className='text-success' onClick={this.handleSaveComment}>Save</span>
                                         <span className='text-danger' onClick={this.handleCancelComment} style={{ marginLeft: "10px" }}>Cancel</span>
                                     </>
                                     ) :
@@ -157,7 +192,7 @@ class Comment extends Component {
                             ) : (
                                 ''
                             )}
-                            {this.props.userID === comment.userID ? (
+                            {this.props.user.id === comment.userID ? (
                                 <li className=''>
                                     <span className='text-primary'>Delete</span>
                                 </li>

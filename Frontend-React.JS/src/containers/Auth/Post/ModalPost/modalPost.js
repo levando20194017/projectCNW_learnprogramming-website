@@ -205,7 +205,7 @@ class ModalPost extends Component {
                                                                 return <div>
                                                                     <CommentForm
                                                                         comment={comment}
-                                                                        userID={user.id}
+                                                                        user={user}
                                                                         index={index} />
                                                                 </div>
                                                             })}

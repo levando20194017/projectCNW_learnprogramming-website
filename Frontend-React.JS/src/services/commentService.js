@@ -13,5 +13,11 @@ const getAllLikesOfComment = (inputId) => {
 const handleLikeComment = (userID, commentID) => {
     return axios.post('http://localhost:8080/api/comment/isliked', { userID: userID, commentID: commentID });
 }
+const handleEditComment = (commentID, content, user) => {
+    return axios.put('http://localhost:8080/api/comment/edit', { commentID: commentID, content: content, user: user });
+}
+const handleDeleteComment = () => {
 
-export { handleAddNewComment, getAllCommentById, getAllLikesOfComment, handleLikeComment };
+}
+
+export { handleAddNewComment, getAllCommentById, getAllLikesOfComment, handleLikeComment, handleEditComment, handleDeleteComment };
