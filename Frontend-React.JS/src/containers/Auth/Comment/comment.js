@@ -16,6 +16,7 @@ class Comment extends Component {
             isLiked: false,
             isEditComment: false,
             contentComment: this.props.comment.content,
+            stateComment: this.props.comment.content,
             userComment: {
                 id: '',
                 fullName: '',
@@ -78,13 +79,13 @@ class Comment extends Component {
     };
     handleEditComment = () => {
         this.setState({
-            isEditComment: true
+            isEditComment: true,
+            contentComment: this.state.stateComment
         })
     }
     handleSaveComment = async () => {
         try {
             const response = await handleEditComment(this.props.comment.id, this.state.contentComment, this.props.user)
-            console.log(response);
             if (response.data && response.data.errCode === 0) {
                 toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Edit comment success!</div>, {
                     position: "top-center",
@@ -97,7 +98,8 @@ class Comment extends Component {
                     theme: "colored",
                 });
                 this.setState({
-                    isEditComment: false
+                    isEditComment: false,
+                    stateComment: this.state.contentComment
                 })
             } else {
                 toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Edit comment failed!</div>, {
@@ -110,6 +112,9 @@ class Comment extends Component {
                     progress: undefined,
                     theme: "light",
                 });
+                this.setState({
+                    contentComment: this.state.stateComment,
+                })
             }
         } catch (error) {
             console.log(error);
@@ -118,13 +123,12 @@ class Comment extends Component {
     handleCancelComment = () => {
         this.setState({
             isEditComment: false,
-            contentComment: this.props.comment.content
         })
     }
 
     render() {
         const { comment } = this.props;
-        const { likeComments, isLiked, userComment, isEditComment, contentComment } = this.state;
+        const { likeComments, isLiked, userComment, isEditComment, contentComment, stateComment } = this.state;
         return (
             <div className='media d-flex'>
                 <a className='pull-left' href='#'>
@@ -149,7 +153,7 @@ class Comment extends Component {
                         }}
                         value={contentComment}
                         onChange={e => this.setState({ contentComment: e.target.value })} />
-                        : <p ref={this.commentContentRef}>{comment.content}</p>}
+                        : <p ref={this.commentContentRef}>{stateComment}</p>}
 
                     <div className='d-flex' style={{ justifyContent: 'space-between' }}>
                         <ul className='list-unstyled list-inline media-detail pull-lef d-flex'>
