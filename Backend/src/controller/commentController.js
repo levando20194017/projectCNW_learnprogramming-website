@@ -22,13 +22,8 @@ let handleCreateNewComment = async (req, res) => {
     return res.status(200).json(message)
 }
 let handleDeleteComment = async (req, res) => {
-    if (!req.body.id) {
-        return res.status(200).json({
-            errCode: 1,
-            message: "Missing required parameters!"
-        })
-    }
-    let message = await commentService.deleteComment(req.body);
+    let data = req.body;
+    let message = await commentService.deleteComment(data);
     return res.status(200).json(message)
 }
 let handleEditComment = async (req, res) => {

@@ -43,37 +43,36 @@ let createNewComment = (data) => {
         }
     })
 }
-let deleteComment = (data) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let comment = db.Comments.findOne({
-                where: { id: data.commentID }
-            })
-            if (comment) {
-                if (data.user.role === true || data.user.id === comment.userID) {
-                    await db.Comments.destroy({
-                        where: { id: data.commentID }
-                    });
-                    resolve({
-                        errCode: 0,
-                        message: "Comment is deleted"
-                    })
-                } else {
-                    resolve({
-                        errCode: 2,
-                        message: "You don't have permission"
-                    })
+let deleteComment = async (data) => {
+    console.log(data);
+    try {
+        let comment = await db.Comments.findOne({
+            where: { id: data.commentID }
+        });
+        if (comment) {
+            if (data.user.role === true || data.user.id === comment.userID) {
+                await db.Comments.destroy({
+                    where: { id: data.commentID }
+                });
+                return {
+                    errCode: 0,
+                    message: "Comment is deleted"
                 }
             } else {
-                resolve({
-                    errCode: 3,
-                    message: "Comment not found!"
-                })
+                return {
+                    errCode: 2,
+                    message: "You don't have permission"
+                }
             }
-        } catch (e) {
-            reject(e);
+        } else {
+            return {
+                errCode: 3,
+                message: "Comment not found!"
+            }
         }
-    })
+    } catch (e) {
+        throw e;
+    }
 }
 let updateCommentData = (data) => {
     return new Promise(async (resolve, reject) => {
