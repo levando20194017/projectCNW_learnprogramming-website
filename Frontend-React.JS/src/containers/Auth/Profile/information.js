@@ -107,11 +107,11 @@ class Information extends Component {
                     <div className="row gutters-sm">
                         <div className="col-md-4 mb-3">
                             <div className="card">
-                                <div className="card-body">
-                                    <div className="d-flex flex-column align-items-center text-center">
-                                        <img src="https://bom.so/ZZaIo3" alt="Admin" className="rounded-circle"
-                                            width="150" height={150} />
-                                        {userInfo && (
+                                {userInfo && (
+                                    <div className="card-body">
+                                        <div className="d-flex flex-column align-items-center text-center">
+                                            <img src={userInfo.img_url} alt="Admin" className="rounded-circle"
+                                                width="150" height={150} />
                                             <div className='mt-3'>
                                                 <h4>{userInfo.fullName}</h4>
                                                 <p className="text-secondary mb-1 mt-4">Full Stack Developer</p>
@@ -119,9 +119,9 @@ class Information extends Component {
                                                 <button className="btn btn-primary">Follow</button>
                                                 <button className="btn btn-outline-primary" style={{ marginLeft: "10px" }}>Message</button>
                                             </div>
-                                        )}
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                             </div>
                             <div className="card mt-3">
                                 <ul className="list-group list-group-flush">
