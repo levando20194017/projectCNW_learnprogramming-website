@@ -6,6 +6,7 @@ import { getAllPostById, getAllLikesOfPost, handleLikePost } from '../../../../s
 import { getAllCommentById } from '../../../../services/commentService';
 import './style.scss'
 import moment from 'moment';
+import ModalPost from '../ModalPost/modalPost';
 class ListPost extends Component {
     constructor(props) {
         super(props);
@@ -198,19 +199,19 @@ class ListPost extends Component {
                                                     <div style={{ fontWeight: "600", marginTop: "6px", fontSize: "18px", marginLeft: "10px" }}>
                                                         {this.state.listComments[index] && (this.state.listComments[index].length > 1 ? `${this.state.listComments[index].length} comments` : this.state.listComments[index].length ? `${this.state.listComments[index].length} comment` : "")}
                                                     </div>
-                                                    {/* <ModalPost
-                                                isOpen={post.isOpenModalComment}
-                                                toggleFromParent={() => toggleCommentModal(post)}
-                                                postId={post.id}
-                                                content={post.content}
-                                                img_urlPost={post.img_url}
-                                                userID={userData.id}
-                                                author={userData.fullName}
-                                                img_urlAuthor={userData.img_url}
-                                                createdAt={post.createdAt}
-                                                isLiked={isLiked[index]}
-                                                likePosts={likePosts[index]}
-                                            /> */}
+                                                    <ModalPost
+                                                        isOpen={post.isOpenModalComment}
+                                                        toggleFromParent={() => this.toggleCommentModal(post)}
+                                                        postId={post.id}
+                                                        content={post.content}
+                                                        img_urlPost={post.img_url}
+                                                        userID={userInfo.id}
+                                                        author={userInfo.fullName}
+                                                        img_urlAuthor={userInfo.img_url}
+                                                        createdAt={post.createdAt}
+                                                        isLiked={this.state.isLiked[index]}
+                                                        likePosts={this.state.likePosts[index]}
+                                                    />
                                                 </div>
                                             </div>
                                         </div>
