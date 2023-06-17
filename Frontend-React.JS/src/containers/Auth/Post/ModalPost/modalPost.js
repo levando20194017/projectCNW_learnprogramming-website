@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 class ModalPost extends Component {
     constructor(props) {
         super(props);
@@ -232,7 +233,7 @@ class ModalPost extends Component {
                             <div className='d-flex' style={{ justifyContent: "space-between", marginTop: "30px" }}>
                                 <div className='d-flex input-comment__icons'>
                                     <i className="fas fa-camera" style={{ color: "gray" }}></i>
-                                    <i className="far fa-kiss-wink-heart" style={{ color: "orange" }}></i>
+                                    <i className="bi bi-emoji-heart-eyes-fill" style={{ color: "orange", marginTop: "-5px" }}></i>
                                     <i className="fas fa-gift" style={{ color: "red" }}></i>
                                     <i className="fas fa-sticky-note" style={{ color: "green" }}></i>
                                 </div>
