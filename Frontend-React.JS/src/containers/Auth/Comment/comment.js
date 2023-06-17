@@ -35,13 +35,16 @@ class Comment extends Component {
     fetchData = async () => {
         try {
             const data = await getAllUsers(this.props.comment.userID);
-            const userComment = data.data.users;
-            this.setState({ userComment });
-            console.log(data);
+            if (data && data.errCode === 0) {
+                const userComment = data.users;
+                this.setState({ userComment });
+            }
 
             const responseOfLikeComment = await getAllLikesOfComment(this.props.comment.id);
-            const likeComments = responseOfLikeComment.data.likes;
-            this.setState({ likeComments });
+            if (responseOfLikeComment && responseOfLikeComment.errCode === 0) {
+                const likeComments = responseOfLikeComment.likes;
+                this.setState({ likeComments });
+            }
         } catch (error) {
             console.log(error);
         }

@@ -4,6 +4,7 @@ import { Form } from 'react-bootstrap';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { getAllCommentById, handleAddNewComment } from '../../../../services/commentService';
+import { getAllUsers } from '../../../../services/userService';
 import moment from 'moment';
 import './style.scss'
 import CommentForm from '../../Comment/comment'
@@ -11,10 +12,10 @@ class ModalPost extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            auth: {},
             isCommentDisabled: true,
             message: '',
             contentComment: '',
-            listComments: [],
             comment: {
                 id: '',
                 userID: '',
@@ -23,7 +24,6 @@ class ModalPost extends Component {
             },
         };
     }
-
     componentDidMount() {
         if (this.props.isOpen) {
             this.fetchData();
@@ -38,9 +38,9 @@ class ModalPost extends Component {
 
     fetchData = async () => {
         try {
-            const data = await getAllCommentById(this.props.postId);
-            if (data.data && data.data.errCode === 0) {
-                this.setState({ listComments: data.data.comments });
+            const auth = await getAllUsers(this.props.post.userID);
+            if (auth && auth.errCode === 0) {
+                this.setState({ auth: auth.users });
             }
         } catch (error) {
             console.log(error);
@@ -69,25 +69,19 @@ class ModalPost extends Component {
         const {
             isOpen,
             toggleFromParent,
-            userID,
-            postId,
-            author,
-            img_urlAuthor,
-            createdAt,
-            content,
-            img_urlPost,
+            user,
             likePosts,
             isLiked,
+            post,
+            listComments,
+            numberOfComment
         } = this.props;
 
         const {
             isCommentDisabled,
             message,
             contentComment,
-            listComments,
         } = this.state;
-
-        const numberOfComment = listComments.length;
         return (
             <Modal
                 isOpen={isOpen}
@@ -98,7 +92,7 @@ class ModalPost extends Component {
             >
                 <ModalHeader toggle={() => toggleFromParent()}>
                     <div style={{ fontWeight: "400" }}>Post of</div>
-                    <div style={{ marginLeft: "5px", fontWeight: "bold" }}>{author}</div>
+                    <div style={{ marginLeft: "5px", fontWeight: "bold" }}>{this.state.auth.fullName}</div>
                 </ModalHeader>
                 <Scrollbars style={{ height: "72vh" }}>
                     <ModalBody>
@@ -110,12 +104,12 @@ class ModalPost extends Component {
                                             <div className=" d-flex mt-4">
                                                 <div className="col-11 d-flex">
                                                     <div>
-                                                        <img src={img_urlAuthor} alt="Admin" className="rounded-circle"
+                                                        <img src={this.state.auth.img_url} alt="Admin" className="rounded-circle"
                                                             width="50" height={50} />
                                                     </div>
                                                     <div style={{ marginLeft: "8px" }}>
-                                                        <div style={{ fontWeight: "bold" }} className="author">{author}</div>
-                                                        <div className="text-secondary">{moment(`${createdAt}`).format('HH:mm DD/MM/YYYY')}. <i className="fas fa-globe-asia"></i></div>
+                                                        <div style={{ fontWeight: "bold" }} className="author">{this.state.auth.fullName}</div>
+                                                        <div className="text-secondary">{moment(`${post.createdAt}`).format('HH:mm DD/MM/YYYY')}. <i className="fas fa-globe-asia"></i></div>
                                                     </div>
                                                 </div>
                                                 <div className=" col-1" style={{ fontSize: "30px", marginLeft: "50px" }}>
@@ -124,10 +118,10 @@ class ModalPost extends Component {
                                             </div>
                                             <div className="post-content">
                                                 <div className="content">
-                                                    {content}
+                                                    {post.content}
                                                 </div>
                                                 <div className="image mt-3">
-                                                    <img src={img_urlPost} alt="Avatar" />
+                                                    <img src={post.img_url} alt="Avatar" />
                                                 </div>
                                                 <div className="d-flex mt-3" style={{ justifyContent: "space-between" }}>
                                                     <div className="number-of-likes d-flex">
@@ -172,7 +166,7 @@ class ModalPost extends Component {
                                                                 return <div>
                                                                     <CommentForm
                                                                         comment={comment}
-                                                                        userID={userID}
+                                                                        userID={user.id}
                                                                         index={index} />
                                                                 </div>
                                                             })}
@@ -191,7 +185,7 @@ class ModalPost extends Component {
                     <div className='media d-flex form-input-comment' style={{ width: "100%" }}>
                         <a className="pull-left" href="#"><img className="rounded-circle"
                             width="50" height={50}
-                            src={img_urlAuthor} alt="" /></a>
+                            src={user.img_url} alt="" /></a>
                         <div className="input-comment">
                             <input className='input-comment__form' placeholder='Post a comment...'
                             // value={contentComment} onChange={e => setContentComment(e.target.value)} 

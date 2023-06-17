@@ -202,15 +202,12 @@ class ListPost extends Component {
                                                     <ModalPost
                                                         isOpen={post.isOpenModalComment}
                                                         toggleFromParent={() => this.toggleCommentModal(post)}
-                                                        postId={post.id}
-                                                        content={post.content}
-                                                        img_urlPost={post.img_url}
-                                                        userID={userInfo.id}
-                                                        author={userInfo.fullName}
-                                                        img_urlAuthor={userInfo.img_url}
-                                                        createdAt={post.createdAt}
+                                                        user={userInfo}
                                                         isLiked={this.state.isLiked[index]}
                                                         likePosts={this.state.likePosts[index]}
+                                                        listComments={this.state.listComments[index]}
+                                                        numberOfComment={this.state.listComments[index] ? this.state.listComments[index].length : 0}
+                                                        post={post}
                                                     />
                                                 </div>
                                             </div>
