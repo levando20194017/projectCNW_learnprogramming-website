@@ -41,42 +41,50 @@ class Comment extends Component {
             commentToDeleteId: null
         });
     }
-    deleteComment = async () => {
-        try {
-            console.log(this.state.commentToDeleteId, this.props.user);
-            const response = await handleDeleteComment(this.state.commentToDeleteId, this.props.user)
-            console.log(response);
-            if (response.data && response.data.errCode === 0) {
-                this.setState({
-                    isConfirmModalOpen: false,
-                    commentToDeleteId: null
-                })
-                toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Delete comment success!</div>, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "colored",
-                });
+    // deleteComment = async () => {
+    //     try {
+    //         console.log(this.state.commentToDeleteId, this.props.user);
+    //         const response = await handleDeleteComment(this.state.commentToDeleteId, this.props.user)
+    //         console.log(response);
+    //         if (response.data && response.data.errCode === 0) {
+    //             this.setState({
+    //                 isConfirmModalOpen: false,
+    //                 commentToDeleteId: null
+    //             })
+    //             toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Delete comment success!</div>, {
+    //                 position: "top-center",
+    //                 autoClose: 5000,
+    //                 hideProgressBar: false,
+    //                 closeOnClick: true,
+    //                 pauseOnHover: true,
+    //                 draggable: true,
+    //                 progress: undefined,
+    //                 theme: "colored",
+    //             });
 
-            } else {
-                toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Delete comment failed!</div>, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
-            }
-        } catch (error) {
-            console.log(error);
-        }
+    //         } else {
+    //             toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Delete comment failed!</div>, {
+    //                 position: "top-center",
+    //                 autoClose: 5000,
+    //                 hideProgressBar: false,
+    //                 closeOnClick: true,
+    //                 pauseOnHover: true,
+    //                 draggable: true,
+    //                 progress: undefined,
+    //                 theme: "light",
+    //             });
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
+    handleDeleteComment = () => {
+        const { onDeleteComment, index } = this.props;
+        onDeleteComment(index);
+        this.setState({
+            isConfirmModalOpen: false,
+            commentToDeleteId: null
+        })
     }
     componentDidMount() {
         this.fetchData();
@@ -135,42 +143,13 @@ class Comment extends Component {
             contentComment: this.state.stateComment
         })
     }
-    handleSaveComment = async () => {
-        try {
-            const response = await handleEditComment(this.props.comment.id, this.state.contentComment, this.props.user)
-            if (response.data && response.data.errCode === 0) {
-                toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Edit comment success!</div>, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "colored",
-                });
-                this.setState({
-                    isEditComment: false,
-                    stateComment: this.state.contentComment
-                })
-            } else {
-                toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Edit comment failed!</div>, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
-                this.setState({
-                    contentComment: this.state.stateComment,
-                })
-            }
-        } catch (error) {
-            console.log(error);
-        }
+    handleSaveComment = (commentID, contentComment) => {
+        const { onSaveComment } = this.props
+        onSaveComment(commentID, contentComment)
+        this.setState({
+            isEditComment: false,
+            stateComment: this.state.contentComment
+        })
     }
     handleCancelComment = () => {
         this.setState({
@@ -238,7 +217,7 @@ class Comment extends Component {
                             {this.props.user.id === comment.userID ? (
                                 <li className=''>{
                                     isEditComment ? (<>
-                                        <span className='text-success' onClick={this.handleSaveComment}>Save</span>
+                                        <span className='text-success' onClick={() => this.handleSaveComment(this.props.comment.id, this.state.contentComment)}>Save</span>
                                         <span className='text-danger' onClick={this.handleCancelComment} style={{ marginLeft: "10px" }}>Cancel</span>
                                     </>
                                     ) :
@@ -262,7 +241,7 @@ class Comment extends Component {
                                     Are you sure you want to delete this comment?
                                 </ModalBody>
                                 <ModalFooter>
-                                    <Button color='primary' onClick={this.deleteComment}>Yes</Button>
+                                    <Button color='primary' onClick={this.handleDeleteComment}>Yes</Button>
                                     <Button color='secondary' onClick={this.closeConfirmModal}>No</Button>
                                 </ModalFooter>
                             </Modal>

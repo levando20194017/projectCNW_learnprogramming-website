@@ -32,12 +32,14 @@ class ModalPost extends Component {
     componentDidMount() {
         if (this.props.isOpen) {
             this.fetchData();
+            // this.getAllComment()
         }
     }
 
     componentDidUpdate(prevProps) {
         if (this.props.isOpen && !prevProps.isOpen) {
             this.fetchData();
+            // this.getAllComment();
         }
     }
 
@@ -65,45 +67,12 @@ class ModalPost extends Component {
             })
         }
     }
-    handleAddComment = async () => {
-        try {
-            const response = await handleAddNewComment(
-                this.props.user.id,
-                this.state.contentComment,
-                this.props.post.id
-            );
-            console.log(response);
+    handleAddNewComment = (contentComment) => {
+        const { onAddNewComment } = this.props
+        onAddNewComment(contentComment);
+        this.setState({ contentComment: '' });
 
-            if (response.data && response.data.errCode === 0) {
-                this.setState({ message: response.data.message, contentComment: '' });
-                toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Add new comment success!</div>, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "colored",
-                });
-            } else if (response.data && response.data.errCode !== 0) {
-                this.setState({ message: response.data.message });
-                toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Add comment failed!</div>, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
-            }
-        } catch (error) {
-            console.log(error);
-        }
     }
-
     render() {
         const {
             isOpen,
@@ -112,10 +81,9 @@ class ModalPost extends Component {
             likePosts,
             isLiked,
             post,
-            listComments,
-            numberOfComment
+            numberOfComment,
+            listComments
         } = this.props;
-
         const {
             isCommentDisabled,
             message,
@@ -201,9 +169,11 @@ class ModalPost extends Component {
                                                     <div className="row">
                                                         <div className="">
                                                             <h3>{numberOfComment > 1 ? `${numberOfComment} comments` : numberOfComment ? `${numberOfComment} comment` : ""}</h3>
-                                                            {listComments && listComments.map((comment, index) => {
+                                                            {Array.isArray(listComments) && listComments.map((comment, index) => {
                                                                 return <div>
                                                                     <CommentForm
+                                                                        onSaveComment={this.props.onSaveComment}
+                                                                        onDeleteComment={this.props.onDeleteComment}
                                                                         comment={comment}
                                                                         user={user}
                                                                         index={index} />
@@ -237,7 +207,7 @@ class ModalPost extends Component {
                                     <i className="fas fa-gift" style={{ color: "red" }}></i>
                                     <i className="fas fa-sticky-note" style={{ color: "green" }}></i>
                                 </div>
-                                <button disabled={isCommentDisabled} style={{ outline: "none", border: "none" }} onClick={this.handleAddComment}>
+                                <button disabled={isCommentDisabled} style={{ outline: "none", border: "none" }} onClick={() => this.handleAddNewComment(this.state.contentComment)}>
                                     <i className="fas fa-paper-plane"></i>
                                 </button>
                             </div>

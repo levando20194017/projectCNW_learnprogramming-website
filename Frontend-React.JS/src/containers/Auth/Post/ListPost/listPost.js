@@ -3,10 +3,14 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import Spinner from "react-bootstrap/Spinner";
 import { getAllPostById, getAllLikesOfPost, handleLikePost } from '../../../../services/postService';
-import { getAllCommentById } from '../../../../services/commentService';
+import { getAllCommentById, handleDeleteComment, handleAddNewComment, handleEditComment } from '../../../../services/commentService';
 import './style.scss'
 import moment from 'moment';
 import ModalPost from '../ModalPost/modalPost';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 class ListPost extends Component {
     constructor(props) {
         super(props);
@@ -146,6 +150,125 @@ class ListPost extends Component {
             });
         }
     }
+    onDeleteComment = async (postIndex, commentIndex, postId) => {
+        console.log(this.state.listComments[postIndex][commentIndex]);
+        try {
+            const response = await handleDeleteComment(this.state.listComments[postIndex][commentIndex].id, this.userInfo)
+            if (response.data && response.data.errCode === 0) {
+                toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Delete comment success!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+                const newListComments = await this.getAllComments(postId); // Sử dụng await để đợi hàm getAllComments hoàn thành
+                const updatedListComments = [...this.state.listComments];
+                updatedListComments[postIndex] = newListComments;
+                console.log(updatedListComments[postIndex]);
+                this.setState({
+                    listComments: updatedListComments
+                });
+            } else {
+                toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Delete comment failed!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    getAllComments = async (postId) => {
+        const response = await getAllCommentById(postId)
+        if (response.data && response.data.errCode === 0) {
+            console.log(response.data.comments);
+            return response.data.comments
+        }
+    }
+    onAddNewComment = async (contentComment, postIndex, postId) => {
+        try {
+            const response = await handleAddNewComment(this.userInfo.id, contentComment, postId)
+            if (response.data && response.data.errCode === 0) {
+                toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Add new comment success!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+                const newListComments = await this.getAllComments(postId); // Sử dụng await để đợi hàm getAllComments hoàn thành
+                const updatedListComments = [...this.state.listComments];
+                updatedListComments[postIndex] = newListComments;
+
+                this.setState({
+                    listComments: updatedListComments
+                });
+            } else if (response.data && response.data.errCode !== 0) {
+                toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Add comment failed!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    onSaveComment = async (commentID, contentComment, postId, postIndex) => {
+        try {
+            const response = await handleEditComment(commentID, contentComment, this.userInfo)
+            if (response.data && response.data.errCode === 0) {
+                toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Edit comment success!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+                const newListComments = await this.getAllComments(postId); // Sử dụng await để đợi hàm getAllComments hoàn thành
+                const updatedListComments = [...this.state.listComments];
+                updatedListComments[postIndex] = newListComments;
+
+                this.setState({
+                    listComments: updatedListComments
+                });
+            } else {
+                toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Edit comment failed!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
     render() {
         const userInfo = this.userInfo
         return (
@@ -205,9 +328,12 @@ class ListPost extends Component {
                                                         user={userInfo}
                                                         isLiked={this.state.isLiked[index]}
                                                         likePosts={this.state.likePosts[index]}
-                                                        listComments={this.state.listComments[index]}
                                                         numberOfComment={this.state.listComments[index] ? this.state.listComments[index].length : 0}
                                                         post={post}
+                                                        onDeleteComment={(commentIndex) => this.onDeleteComment(index, commentIndex, post.id)}
+                                                        onAddNewComment={(contentComment) => this.onAddNewComment(contentComment, index, post.id)}
+                                                        onSaveComment={(commentID, contentComment) => this.onSaveComment(commentID, contentComment, post.id, index)}
+                                                        listComments={this.state.listComments[index]}
                                                     />
                                                 </div>
                                             </div>
