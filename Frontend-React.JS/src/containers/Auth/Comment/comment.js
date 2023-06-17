@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getAllUsers } from '../../../services/userService';
-import { getAllLikesOfComment, handleLikeComment, handleEditComment } from '../../../services/commentService';
+import { getAllLikesOfComment, handleLikeComment, handleEditComment, handleDeleteComment } from '../../../services/commentService';
 import moment from 'moment';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 class Comment extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            isConfirmModalOpen: false, // Trạng thái của modal xác nhận xóa comment
+            commentToDeleteId: null, // ID của comment cần xóa
             likeComments: [],
             isLiked: false,
             isEditComment: false,
@@ -25,7 +28,56 @@ class Comment extends Component {
         };
         this.commentContentRef = React.createRef();
     }
+    openConfirmModal = (commentId) => {
+        this.setState({
+            isConfirmModalOpen: true,
+            commentToDeleteId: commentId
+        });
+    }
+    // Hàm đóng modal xác nhận xóa comment
+    closeConfirmModal = () => {
+        this.setState({
+            isConfirmModalOpen: false,
+            commentToDeleteId: null
+        });
+    }
+    deleteComment = async () => {
+        try {
+            console.log(this.state.commentToDeleteId, this.props.user);
+            const response = await handleDeleteComment(this.state.commentToDeleteId, this.props.user)
+            console.log(response);
+            if (response.data && response.data.errCode === 0) {
+                this.setState({
+                    isConfirmModalOpen: false,
+                    commentToDeleteId: null
+                })
+                toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Delete comment success!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
 
+            } else {
+                toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Delete comment failed!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
     componentDidMount() {
         this.fetchData();
     }
@@ -128,7 +180,7 @@ class Comment extends Component {
 
     render() {
         const { comment } = this.props;
-        const { likeComments, isLiked, userComment, isEditComment, contentComment, stateComment } = this.state;
+        const { likeComments, isLiked, userComment, isEditComment, contentComment, stateComment, isConfirmModalOpen } = this.state;
         return (
             <div className='media d-flex'>
                 <a className='pull-left' href='#'>
@@ -198,11 +250,22 @@ class Comment extends Component {
                             )}
                             {this.props.user.id === comment.userID ? (
                                 <li className=''>
-                                    <span className='text-primary'>Delete</span>
+                                    <span className='text-primary' onClick={() => this.openConfirmModal(comment.id)}>Delete</span>
                                 </li>
                             ) : (
                                 ''
                             )}
+                            {/* Modal xác nhận xóa comment */}
+                            <Modal isOpen={isConfirmModalOpen} toggle={this.closeConfirmModal}>
+                                <ModalHeader toggle={this.closeConfirmModal}>Confirm delete</ModalHeader>
+                                <ModalBody>
+                                    Are you sure you want to delete this comment?
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button color='primary' onClick={this.deleteComment}>Yes</Button>
+                                    <Button color='secondary' onClick={this.closeConfirmModal}>No</Button>
+                                </ModalFooter>
+                            </Modal>
                         </ul>
                     </div>
                 </div>

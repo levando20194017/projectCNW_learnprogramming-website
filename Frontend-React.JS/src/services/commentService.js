@@ -16,8 +16,10 @@ const handleLikeComment = (userID, commentID) => {
 const handleEditComment = (commentID, content, user) => {
     return axios.put('http://localhost:8080/api/comment/edit', { commentID: commentID, content: content, user: user });
 }
-const handleDeleteComment = () => {
-
+const handleDeleteComment = (commentID, user) => {
+    return axios.delete('http://localhost:8080/api/comment/delete', {
+        data: { commentID: commentID, user: user }
+    });
 }
 
 export { handleAddNewComment, getAllCommentById, getAllLikesOfComment, handleLikeComment, handleEditComment, handleDeleteComment };
