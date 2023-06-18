@@ -334,23 +334,35 @@ class BlogCenter extends Component {
                                                     <h6 className="nav-item card-title mb-0"> <a href="#!" style={{ color: "black", textDecoration: "none" }}>{users[index]?.fullName}</a></h6>
                                                     {/* <span className="nav-item small">6:30am 14/6/2023</span> */}
                                                 </div>
-                                                <p className="mb-0 small"> {moment(`${post.createdAt}`).format('HH:mm DD/MM/YYYY')}. <i className="fas fa-globe-asia"></i></p>
+                                                <p className="mb-0 small"> {moment(`${post.createdAt}`).format('HH:mm DD/MM/YYYY')}. <i className="bi bi-globe-central-south-asia"></i></p>
                                             </div>
                                         </div>
 
-                                        <div className="dropdown">
-                                            <a href="#" className="text-secondary btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction" data-bs-toggle="dropdown" aria-expanded="false">
+                                        {this.userInfo.id === post.userID ? <div className="dropdown">
+                                            <a className="text-secondary btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i className="bi bi-three-dots"></i>
                                             </a>
                                             <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
-                                                <li><a className="dropdown-item" href="#"> <i className="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
-                                                <li><a className="dropdown-item" href="#"> <i className="bi bi-person-x fa-fw pe-2"></i>Unfollow lori ferguson </a></li>
-                                                <li><a className="dropdown-item" href="#"> <i className="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
-                                                <li><a className="dropdown-item" href="#"> <i className="bi bi-slash-circle fa-fw pe-2"></i>Block</a></li>
-                                                <li><hr className="dropdown-divider" /></li>
-                                                <li><a className="dropdown-item" href="#"> <i className="bi bi-flag fa-fw pe-2"></i>Report post</a></li>
+                                                <li><a className="dropdown-item" > <i className="bi bi-bookmark fa-fw pe-2"></i>Edit post</a></li>
+                                                <li><a className="dropdown-item" > <i className="bi bi-person-x fa-fw pe-2"></i>Delete post </a></li>
+                                                <li><a className="dropdown-item" > <i className="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
                                             </ul>
                                         </div>
+                                            :
+                                            <div className="dropdown">
+                                                <a className="text-secondary btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i className="bi bi-three-dots"></i>
+                                                </a>
+                                                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
+                                                    <li><a className="dropdown-item"> <i className="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
+                                                    <li><a className="dropdown-item"> <i className="bi bi-person-x fa-fw pe-2"></i>Unfollow <b>{users[index]?.fullName}</b></a></li>
+                                                    <li><a className="dropdown-item"> <i className="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
+                                                    <li><a className="dropdown-item"> <i className="bi bi-slash-circle fa-fw pe-2"></i>Block</a></li>
+                                                    <li><hr className="dropdown-divider" /></li>
+                                                    <li><a className="dropdown-item"> <i className="bi bi-flag fa-fw pe-2"></i>Report post</a></li>
+                                                </ul>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                                 <div className="card-body">
