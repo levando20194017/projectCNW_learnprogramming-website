@@ -4,14 +4,10 @@ import { Route, Switch } from 'react-router-dom';
 import { ConnectedRouter as Router } from 'connected-react-router';
 import { history } from '../redux'
 import { ToastContainer } from 'react-toastify';
-
-
 import { userIsAuthenticated, userIsNotAuthenticated, adminIsAuthenticated, adminIsNotAuthenticated } from '../hoc/authentication';
 
 import { path } from '../utils'
 
-// import Home from '../routes/Home';
-// import Login from '../routes/Login';
 import Login from './Auth/Login/Login';
 import SignUp from './Auth/SignUp/signup';
 import Profile from './Auth/Profile/index';
@@ -20,7 +16,7 @@ import ForgotPassword from './Auth/ForgotPassword/ForgotPassword';
 import HeaderAdmin from './Header/HeaderAdmin';
 import System from '../routes/System';
 import HomePage from './System/home/HomePage'
-// import ForgotPassword from './ForgotPassword';
+import Blog from './Auth/Blog';
 import Sidebar from './Sidebar';
 import { CustomToastCloseButton } from '../components/CustomToast';
 import ConfirmModal from '../components/ConfirmModal';
@@ -59,6 +55,7 @@ class App extends Component {
                                 <Route path={path.HOME} exact component={HomePage} />
                                 <Route path={"/forgotpassword"} component={ForgotPassword} />
                                 <Route path={"/changepassword"} component={ChangePassword} />
+                                <Route path={"/blog"} component={Blog} />
                                 <Route path={"/signup"} component={SignUp} />
                                 <Route path={"/profile"} component={Profile} />
                                 <Route path={path.LOGIN} component={adminIsNotAuthenticated(Login)} />

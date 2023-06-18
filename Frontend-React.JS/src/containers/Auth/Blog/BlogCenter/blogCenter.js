@@ -1,0 +1,426 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { getAllCommentById, handleEditComment, handleDeleteComment, handleAddNewComment } from '../../../../services/commentService';
+import { getAllUsers } from '../../../../services/userService';
+import { getAllPostById, getAllLikesOfPost, handleLikePost } from '../../../../services/postService';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import ModalPost from '../../Post/ModalPost/modalPost';
+import ModalPostSubmission from '../../Post/Submission/modalPostSubmission';
+import Scrollbars from "react-custom-scrollbars";
+import { Link } from 'react-router-dom';
+import moment from 'moment';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+class BlogCenter extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            listPosts: [],
+            listComments: [],
+            likePosts: [],
+            isLiked: [],
+            users: [],
+            isOpenModalSubmission: false,
+            post: {
+                id: "",
+                content: "",
+                img_url: "",
+                createdAt: "",
+                isOpenModalComment: false
+            },
+        };
+    }
+    handleAddPostSubmission = () => {
+        this.setState({
+            isOpenModalSubmission: true
+        })
+    }
+    togglePostSubmissionModal = () => {
+        this.setState({
+            isOpenModalSubmission: !this.state.isOpenModalSubmission
+        })
+    }
+    handleAddNewComment = (post) => {
+        const updatedPost = { ...post, isOpenModalComment: true };
+        this.setState({
+            listPosts: this.state.listPosts.map(p => p.id === post.id ? updatedPost : p),
+        });
+    }
+    toggleCommentModal = (post) => {
+        const updatedPost = { ...post, isOpenModalComment: !post.isOpenModalComment };
+        this.setState({
+            listPosts: this.state.listPosts.map(p => p.id === post.id ? updatedPost : p),
+        });
+    };
+    userData = JSON.parse(localStorage.getItem("persist:user"));
+    userInfo = JSON.parse(this.userData.userInfo);
+
+    componentDidMount() {
+        let isMounted = true;
+        const fetchData = async () => {
+            const data = await getAllPostById('ALL');
+            this.setState({
+                listPosts: data.data.posts,
+            });
+            if (isMounted) {
+                let userArray = [];
+                let commentsArray = [];
+                let likePostsArray = [];
+                for (let i = 0; i < data.data.posts.length; i++) {
+                    const response = await getAllUsers(data.data.posts[i].userID);
+                    const user = response.users;
+                    userArray.push(user);
+
+                    const responseOfCommentPost = await getAllCommentById(data.data.posts[i].id);
+                    const comments = responseOfCommentPost.data.comments;
+                    commentsArray.push(comments);
+
+                    const responseOfLikePost = await getAllLikesOfPost(data.data.posts[i].id);
+                    const likeposts = responseOfLikePost.data.likes;
+                    likePostsArray.push(likeposts);
+                }
+                this.setState({
+                    users: userArray,
+                    listComments: commentsArray,
+                    likePosts: likePostsArray,
+                });
+            }
+        };
+        fetchData();
+        return () => {
+            isMounted = false;
+        };
+    }
+    // Lưu trạng thái like của bài viết vào localStorage
+    handleLikeThisPost = async (index, postID) => {
+        const response = await handleLikePost(this.userInfo.id, postID);
+        if (response.data.errCode === 1) {
+            const newIsLiked = [...this.state.isLiked];
+            newIsLiked[index] = false;
+            this.setState({
+                isLiked: newIsLiked,
+            });
+            localStorage.setItem(postID, false.toString()); // Lưu giá trị false vào localStorage
+
+            const likePostsArray = [...this.state.likePosts]
+            const responseOfLikePost = await getAllLikesOfPost(postID);
+            const likeposts = responseOfLikePost.data.likes;
+            likePostsArray[index] = likeposts;
+            this.setState({
+                likePosts: likePostsArray,
+            });
+        }
+        if (response.data.errCode === 0) {
+            const newIsLiked = [...this.state.isLiked];
+            newIsLiked[index] = true;
+            this.setState({
+                isLiked: newIsLiked,
+            });
+            localStorage.setItem(postID, true.toString()); // Lưu giá trị true vào localStorage
+
+            const likePostsArray = [...this.state.likePosts]
+            const responseOfLikePost = await getAllLikesOfPost(postID);
+            const likeposts = responseOfLikePost.data.likes;
+            likePostsArray[index] = likeposts;
+            this.setState({
+                likePosts: likePostsArray,
+            });
+        }
+    };
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.listPosts !== prevState.listPosts) {
+            const newIsLiked = [...this.state.isLiked];
+            this.state.listPosts.forEach((post, index) => {
+                const isPostLiked = localStorage.getItem(post.id); // Lấy giá trị trạng thái like từ localStorage
+                if (isPostLiked === "true") {
+                    newIsLiked[index] = true;
+                }
+            });
+            this.setState({
+                isLiked: newIsLiked,
+            });
+        }
+    }
+    onDeleteComment = async (postIndex, commentIndex, postId) => {
+        console.log(this.state.listComments[postIndex][commentIndex]);
+        try {
+            const response = await handleDeleteComment(this.state.listComments[postIndex][commentIndex].id, this.userInfo)
+            if (response.data && response.data.errCode === 0) {
+                toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Delete comment success!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+                const newListComments = await this.getAllComments(postId); // Sử dụng await để đợi hàm getAllComments hoàn thành
+                const updatedListComments = [...this.state.listComments];
+                updatedListComments[postIndex] = newListComments;
+                console.log(updatedListComments[postIndex]);
+                this.setState({
+                    listComments: updatedListComments
+                });
+            } else {
+                toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Delete comment failed!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    getAllComments = async (postId) => {
+        const response = await getAllCommentById(postId)
+        if (response.data && response.data.errCode === 0) {
+            console.log(response.data.comments);
+            return response.data.comments
+        }
+    }
+    onAddNewComment = async (contentComment, postIndex, postId) => {
+        try {
+            const response = await handleAddNewComment(this.userInfo.id, contentComment, postId)
+            if (response.data && response.data.errCode === 0) {
+                toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Add new comment success!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+                const newListComments = await this.getAllComments(postId); // Sử dụng await để đợi hàm getAllComments hoàn thành
+                const updatedListComments = [...this.state.listComments];
+                updatedListComments[postIndex] = newListComments;
+
+                this.setState({
+                    listComments: updatedListComments
+                });
+            } else if (response.data && response.data.errCode !== 0) {
+                toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Add comment failed!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    onSaveComment = async (commentID, contentComment, postId, postIndex) => {
+        try {
+            const response = await handleEditComment(commentID, contentComment, this.userInfo)
+            if (response.data && response.data.errCode === 0) {
+                toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Edit comment success!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+                const newListComments = await this.getAllComments(postId); // Sử dụng await để đợi hàm getAllComments hoàn thành
+                const updatedListComments = [...this.state.listComments];
+                updatedListComments[postIndex] = newListComments;
+
+                this.setState({
+                    listComments: updatedListComments
+                });
+            } else {
+                toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Edit comment failed!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    render() {
+        const { listPosts, likePosts, listComments, isLiked, isOpenModalSubmission, post, users } = this.state
+        return (
+            <div className="col-md-8 col-lg-6 vstack gap-4" style={{ marginLeft: "-5px" }}>
+                <Scrollbars style={{ height: "92vh" }}>
+                    <div className="d-flex gap-2 mb-n3">
+                        <div className="position-relative">
+                            <div className="cardx border border-2 border-dashed h-150px px-4 px-sm-5 shadow-none d-flex align-items-center justify-content-center text-center">
+                                <div>
+                                    <a className="stretched-link btn btn-light rounded-circle icon-md" href="#!">
+                                        <i className="fa-solid fa-plus"></i>
+                                    </a>
+                                    <h6 className="mt-2 mb-0 small">Post a Story</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="stories" className="storiesWrapper stories-square stories user-icon carousel scroll-enable stories user-icon carousel snapgram ">
+                        </div>
+                    </div>
+                    <div className="cardx card card-body">
+                        <div className="d-flex mb-3">
+                            <div className="avatar avatar-xs me-2">
+                                <Link to="/profile">
+                                    <img className="avatar-img rounded-circle" src={this.userInfo.img_url} alt="Avatar" />
+                                </Link>
+
+                            </div>
+                            <form className="w-100" >
+                                <textarea className="form-control pe-4 border-0"
+                                    style={{ cursor: "pointer" }}
+                                    rows={2} data-autoresize placeholder="Share yours thoughts..."
+                                    onClick={this.handleAddPostSubmission}></textarea>
+                                <ModalPostSubmission
+                                    isOpen={isOpenModalSubmission}
+                                    toggleFromParent={this.togglePostSubmissionModal}
+                                />
+                            </form>
+                        </div>
+                        <div>
+                            <ul className="nav nav-pills nav-stack small fw-normal">
+                                <li className="nav-item">
+                                    <a className="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionPhoto">
+                                        <i className="bi bi-image-fill text-success pe-2"></i>
+                                        Photo
+                                    </a>
+                                </li>
+                                <li className="nav-item">
+                                    <a className="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionVideo">
+                                        <i className="bi bi-camera-reels-fill text-info pe-2"></i>
+                                        Video
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    {listPosts && listPosts.map((post, index) => {
+                        return (
+                            <div className="cardx card mt-5" style={{ height: "auto", marginBottom: "-30px" }}>
+                                <div className="card-header border-0 pb-0">
+                                    <div className="d-flex align-items-center justify-content-between">
+                                        <div className="d-flex align-items-center">
+                                            <div className="avatar avatar-story me-2">
+                                                <a href="#!"> <img className="avatar-img rounded-circle" src={users[index]?.img_url} alt="Admin" /> </a>
+                                            </div>
+                                            <div>
+                                                <div className="nav nav-divider">
+                                                    <h6 className="nav-item card-title mb-0"> <a href="#!" style={{ color: "black", textDecoration: "none" }}>{users[index]?.fullName}</a></h6>
+                                                    {/* <span className="nav-item small">6:30am 14/6/2023</span> */}
+                                                </div>
+                                                <p className="mb-0 small"> {moment(`${post.createdAt}`).format('HH:mm DD/MM/YYYY')}. <i className="fas fa-globe-asia"></i></p>
+                                            </div>
+                                        </div>
+
+                                        <div className="dropdown">
+                                            <a href="#" className="text-secondary btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i className="bi bi-three-dots"></i>
+                                            </a>
+                                            <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
+                                                <li><a className="dropdown-item" href="#"> <i className="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
+                                                <li><a className="dropdown-item" href="#"> <i className="bi bi-person-x fa-fw pe-2"></i>Unfollow lori ferguson </a></li>
+                                                <li><a className="dropdown-item" href="#"> <i className="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
+                                                <li><a className="dropdown-item" href="#"> <i className="bi bi-slash-circle fa-fw pe-2"></i>Block</a></li>
+                                                <li><hr className="dropdown-divider" /></li>
+                                                <li><a className="dropdown-item" href="#"> <i className="bi bi-flag fa-fw pe-2"></i>Report post</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="card-body">
+                                    <p>{post.content}</p>
+                                    <img className="card-img" src={post.img_url} alt=" " />
+                                </div>
+                                <ul className="nav nav-stack py-3 small card-footer">
+                                    <li className="nav-item">
+                                        {isLiked[index] ? (<a style={{ color: "blue" }}
+                                            className="nav-link active" href="#!" data-bs-container="body"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                                            data-bs-custom-class="tooltip-text-start"
+                                            onClick={() => this.handleLikeThisPost(index, post.id)}
+                                        > <i className="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({likePosts[index] && (likePosts[index].length)})</a>)
+                                            : (<a className="nav-link active" href="#!" data-bs-container="body"
+                                                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                                                data-bs-custom-class="tooltip-text-start"
+                                                onClick={() => this.handleLikeThisPost(index, post.id)}
+                                            > <i className="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({likePosts[index] && (likePosts[index].length)})</a>)}
+                                    </li>
+                                    <li className="nav-item" onClick={() => this.handleAddNewComment(post)}>
+                                        <a className="nav-link" href="#!"> <i className="bi bi-chat-fill pe-1"></i>Comments ({listComments[index] && (listComments[index].length)})</a>
+                                    </li>
+                                    <ModalPost
+                                        isOpen={post.isOpenModalComment}
+                                        toggleFromParent={() => this.toggleCommentModal(post)}
+                                        user={this.userInfo}
+                                        isLiked={this.state.isLiked[index]}
+                                        likePosts={this.state.likePosts[index]}
+                                        numberOfComment={this.state.listComments[index] ? this.state.listComments[index].length : 0}
+                                        post={post}
+                                        onDeleteComment={(commentIndex) => this.onDeleteComment(index, commentIndex, post.id)}
+                                        onAddNewComment={(contentComment) => this.onAddNewComment(contentComment, index, post.id)}
+                                        onSaveComment={(commentID, contentComment) => this.onSaveComment(commentID, contentComment, post.id, index)}
+                                        listComments={this.state.listComments[index]}
+                                    />
+                                    <li className="nav-item dropdown ms-sm-auto">
+                                        <a className="nav-link mb-0" href="#" id="cardShareAction" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i className="bi bi-reply-fill flip-horizontal ps-1"></i>
+                                            Share (3)
+                                        </a>
+                                        <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction">
+                                            <li><a className="dropdown-item" href="#"> <i className="bi bi-envelope fa-fw pe-2"></i>Send via Direct Message</a></li>
+                                            <li><a className="dropdown-item" href="#"> <i className="bi bi-bookmark-check fa-fw pe-2"></i>Bookmark </a></li>
+                                            <li><a className="dropdown-item" href="#"> <i className="bi bi-link fa-fw pe-2"></i>Copy link to post</a></li>
+                                            <li><a className="dropdown-item" href="#"> <i className="bi bi-share fa-fw pe-2"></i>Share post via …</a></li>
+                                            <li><hr className="dropdown-divider" /></li>
+                                            <li><a className="dropdown-item" href="#"> <i className="bi bi-pencil-square fa-fw pe-2"></i>Share to News Feed</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        )
+                    })}
+                </Scrollbars>
+            </div>
+        )
+    }
+
+}
+
+const mapStateToProps = state => {
+    return {
+
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BlogCenter);
