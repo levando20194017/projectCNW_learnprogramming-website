@@ -55,15 +55,17 @@ class BlogRight extends Component {
                             <div className="card-body mt-3">
                                 {visibleUsers && visibleUsers.map((user, index) => {
                                     return (
-                                        <div className="hstack gap-2 mb-3" key={index}>
-                                            <div className="avatar">
+                                        <div className="hstack gap-2 mb-3 row d-flex" key={index}>
+                                            <div className="avatar col-2">
                                                 <a href="#!"><img className="avatar-img rounded-circle" src={user.img_url} alt="avatar" width={50} height={50} /></a>
                                             </div>
-                                            <div className="overflow-hidden">
+                                            <div className="overflow-hidden col-7">
                                                 <a className="h6 mb-0" href="#!" style={{ textDecoration: "none" }}>{user.fullName} </a>
                                                 <p className="mb-0 small text-truncate">News anchor</p>
                                             </div>
-                                            <a className="btn btn-primary-soft rounded-circle icon-md ms-auto" href="#"><i className="fa-solid fa-plus"> </i></a>
+                                            <div className='col-2 text-primary' style={{ cursor: "pointer" }}>
+                                                <i className="bi bi-plus-circle"></i>
+                                            </div>
                                         </div>
                                     )
                                 })}
