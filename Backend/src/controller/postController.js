@@ -21,18 +21,13 @@ let handleCreateNewPost = async (req, res) => {
     return res.status(200).json(message)
 }
 let handleDeletePost = async (req, res) => {
-    if (!req.body.id) {
-        return res.status(200).json({
-            errCode: 1,
-            message: "Missing required parameters!"
-        })
-    }
-    let message = await postService.deletePost(req.body.id, req.session.user);
+    let data = req.body;
+    let message = await postService.deletePost(data);
     return res.status(200).json(message)
 }
 let handleEditPost = async (req, res) => {
     let data = req.body;
-    let message = await postService.updatePostData(data, req.session.user)
+    let message = await postService.updatePostData(data)
     return res.status(200).json(message)
 }
 module.exports = {

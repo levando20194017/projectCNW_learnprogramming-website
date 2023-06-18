@@ -27,7 +27,6 @@ class ListPost extends Component {
                 createdAt: "",
                 isOpenModalComment: false
             },
-            showDropdown: [],
         };
     }
     handleAddNewComment = (post) => {
@@ -40,32 +39,6 @@ class ListPost extends Component {
         const updatedPost = { ...post, isOpenModalComment: !post.isOpenModalComment };
         this.setState({
             listPosts: this.state.listPosts.map(p => p.id === post.id ? updatedPost : p),
-        });
-    };
-
-    handleDropdownClick = (post, index) => {
-        const newShowDropdown = [...this.state.showDropdown];
-        newShowDropdown[index] = !newShowDropdown[index];
-        this.setState({
-            showDropdown: newShowDropdown,
-        });
-    };
-
-    handleEditClick = (post, index) => {
-        console.log('Edit selected for post:', post);
-        const newShowDropdown = [...this.state.showDropdown];
-        newShowDropdown[index] = false;
-        this.setState({
-            showDropdown: newShowDropdown,
-        });
-    };
-
-    handleDeleteClick = (post, index) => {
-        console.log('Delete selected for post:', post);
-        const newShowDropdown = [...this.state.showDropdown];
-        newShowDropdown[index] = false;
-        this.setState({
-            showDropdown: newShowDropdown,
         });
     };
     userData = JSON.parse(localStorage.getItem("persist:user"));
@@ -269,6 +242,12 @@ class ListPost extends Component {
             console.log(error);
         }
     }
+    handleEditPost = () => {
+
+    }
+    handleDeletePost = () => {
+
+    }
     render() {
         const userInfo = this.userInfo
         return (
@@ -287,20 +266,34 @@ class ListPost extends Component {
                                                 </div>
                                                 <div style={{ marginLeft: "8px" }}>
                                                     <div style={{ fontWeight: "bold" }} className="author">{userInfo?.fullName}</div>
-                                                    <div className="text-secondary">{moment(`${post.createdAt}`).format('HH:mm DD/MM/YYYY')}. <i className="fas fa-globe-asia"></i></div>
+                                                    <div className="text-secondary">{moment(`${post.createdAt}`).format('HH:mm DD/MM/YYYY')}. <i className="bi bi-globe-central-south-asia"></i></div>
                                                 </div>
                                             </div>
-                                            <div className=" col-1" style={{ fontSize: "30px", marginLeft: "50px" }}>
-                                                <div className="dropdown">
-                                                    <i className="fas fa-ellipsis-h" onClick={() => this.handleDropdownClick(post, index)}></i>
-                                                    {this.state.showDropdown[index] && (
-                                                        <div className="dropdown-content">
-                                                            <div onClick={() => this.handleEditClick(post, index)} style={{ borderBottom: "1px solid gray" }}>Edit</div>
-                                                            <div onClick={() => this.handleDeleteClick(post, index)}>Delete</div>
-                                                        </div>
-                                                    )}
-                                                </div>
+                                            {this.userInfo.id === post.userID ? <div className="dropdown col-1">
+                                                <a style={{ fontSize: "30px" }} className="text-secondary btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i className="bi bi-three-dots"></i>
+                                                </a>
+                                                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
+                                                    <li><a className="dropdown-item"> <i className="bi bi-bookmark fa-fw pe-2"></i>Edit post</a></li>
+                                                    <li><a className="dropdown-item"> <i className="bi bi-person-x fa-fw pe-2"></i>Delete post </a></li>
+                                                    <li><a className="dropdown-item"> <i className="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
+                                                </ul>
                                             </div>
+                                                :
+                                                <div className="dropdown col-1">
+                                                    <a style={{ fontSize: "30px" }} className="text-secondary btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i className="bi bi-three-dots"></i>
+                                                    </a>
+                                                    <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
+                                                        <li><a className="dropdown-item"> <i className="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
+                                                        <li><a className="dropdown-item"> <i className="bi bi-person-x fa-fw pe-2"></i>Unfollow lori ferguson </a></li>
+                                                        <li><a className="dropdown-item"> <i className="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
+                                                        <li><a className="dropdown-item"> <i className="bi bi-slash-circle fa-fw pe-2"></i>Block</a></li>
+                                                        <li><hr className="dropdown-divider" /></li>
+                                                        <li><a className="dropdown-item"> <i className="bi bi-flag fa-fw pe-2"></i>Report post</a></li>
+                                                    </ul>
+                                                </div>
+                                            }
                                         </div>
                                         <div className="post-content">
                                             <div className="content">
