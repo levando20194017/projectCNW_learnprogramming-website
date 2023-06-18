@@ -3,10 +3,6 @@ import { connect } from 'react-redux';
 import { getAllUsers } from '../../../services/userService';
 import { getAllLikesOfComment, handleLikeComment, handleEditComment, handleDeleteComment } from '../../../services/commentService';
 import moment from 'moment';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 class Comment extends Component {
 
