@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import './style-course-list.scss'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+
 
 
 class CourseList extends Component {
@@ -232,9 +234,10 @@ class CourseList extends Component {
                                 <div className="offset-xxl-1 col-xxl-5 col-xl-7 col-lg-6 col-md-12">
                                     <div className="about-caption about-caption1">
                                         <div className="section-tittle mb-25">
-                                            <h2>John Kane</h2>
+                                            <h2>Real story</h2>
                                             <p className="mb-20">
-                                                Khóa học lập trình web của website này là một lựa chọn tuyệt vời cho những người muốn bắt đầu học lập trình web. Khóa học bao gồm các ngôn ngữ và công cụ phổ biến nhất hiện nay, như HTML, CSS, JavaScript, Bootstrap, jQuery, PHP, MySQL và WordPress. Khóa học cũng giúp tôi hiểu được cách thiết kế và phát triển một trang web từ đầu đến cuối. Tôi rất khuyến khích các bạn tham gia khóa học này."
+                                                "Khóa học lập trình web của website này là một lựa chọn tuyệt vời cho những người muốn bắt đầu học lập trình web. Khóa học bao gồm các ngôn ngữ và công cụ phổ biến nhất hiện nay, như HTML, CSS, JavaScript, Bootstrap, jQuery, PHP, MySQL và WordPress. Khóa học cũng giúp tôi hiểu được cách thiết kế và phát triển một trang web từ đầu đến cuối. Tôi rất khuyến khích các bạn tham gia khóa học này."
+                                                <i>- Jone Kane </i>
                                             </p>
                                         </div>
                                         <div className="slider-btns">
@@ -246,6 +249,56 @@ class CourseList extends Component {
                         </div>
                     </section>
 
+                    <section className="about-area2 section-bg">
+                        <div className="container">
+                            <div className="row align-items-center">
+                                <div className="offset-xxl-1 col-xxl-4 col-xl-5 col-lg-6 col-md-12">
+                                    <div className="about-caption about-caption2">
+                                        <div className="section-tittle mb-25">
+                                            <h2>Become an Instructor</h2>
+                                            <p className="mb-20">The automated process all your website tasks. Discover tools and techniques to engage effectively with vulnerable children and young people.</p>
+                                        </div>
+                                        <div className="single-features">
+                                            <div className="features-icon">
+                                                <img src="/assets/img/icon/tick.svg" alt="" />
+                                            </div>
+                                            <div className="features-caption">
+                                                <p>Techniques to engage effectively with vulnerable children and young people.</p>
+                                            </div>
+                                        </div>
+                                        <div className="single-features">
+                                            <div className="features-icon">
+                                                <img src="/assets/img/icon/tick.svg" alt="" />
+                                            </div>
+                                            <div className="features-caption">
+                                                <p>Join millions of people from around the world learning together.</p>
+                                            </div>
+                                        </div>
+                                        <div className="single-features mb-40">
+                                            <div className="features-icon">
+                                                <img src="/assets/img/icon/tick.svg" alt="" />
+                                            </div>
+                                            <div className="features-caption">
+                                                <p>Join millions of people from around the world learning together.</p>
+                                            </div>
+                                        </div>
+                                        <div className="slider-btns">
+                                            <a data-animation="fadeInLeft" data-delay="1.0s" href="about.html" className="btn hero-btn mr-15">Become an Instructor</a>
+                                            <a data-animation="fadeInRight" data-delay="1.0s" className="popup-video video-btn" href="https://www.youtube.com/watch?v=Wxdj970RM7M">
+                                                <img src="/assets/img/icon/play-btn.svg" alt="" />
+                                                Watch Video
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="offset-xl-1 col-xxl-5 col-xl-5 col-lg-6 col-md-12">
+                                    <div className="about-img about-img2">
+                                        <img src="/assets/img/person2.jpg" alt="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
 
                 </main>
             {/*Main end here*/}
