@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7e367b8d-8ddb-4af7-91fc-149e3480f5c5" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Frontend-React.JS/public/assets/img/gallery/example-course.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Frontend-React.JS/src/assets/css/fontawesome.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Frontend-React.JS/src/assets/img/gallery/example-course.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Frontend-React.JS/src/containers/System/CourseList/CourseList.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Frontend-React.JS/src/containers/System/CourseList/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Frontend-React.JS/src/containers/System/CourseList/style-course-list.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend-React.JS/src/containers/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend-React.JS/src/containers/App.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Frontend-React.JS/node_modules/bootstrap/scss/_containers.scss" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2RQIXhjnzVnrwez8JwuGjVeC48n" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "PDDo",
+    "last_opened_file_path": "D:/Github/projectCNW_learnprogramming-website/Frontend-React.JS/src/assets/img/gallery",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Problems",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "settings.nodejs",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Github\projectCNW_learnprogramming-website\Frontend-React.JS\src\assets\img\gallery" />
+      <recent name="D:\Github\projectCNW_learnprogramming-website\Frontend-React.JS\public\assets\img\gallery" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Node.js.CourseList.js">
+    <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/projectCNW_learnprogramming-website/Frontend-React.JS/public/index.html" useBuiltInWebServerPort="true">
+      <method v="2" />
+    </configuration>
+    <configuration name="CourseList.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/Frontend-React.JS/src/containers/System/CourseList/CourseList.js" working-dir="$PROJECT_DIR$/Frontend-React.JS/src/containers/System/CourseList">
+      <method v="2" />
+    </configuration>
+    <configuration name="start (1)" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/Frontend-React.JS/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/Backend/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.CourseList.js" />
+        <item itemvalue="JavaScript Debug.index.html" />
+        <item itemvalue="npm.start (1)" />
+        <item itemvalue="npm.start" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7e367b8d-8ddb-4af7-91fc-149e3480f5c5" name="Changes" comment="" />
+      <created>1687175920935</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1687175920935</updated>
+      <workItem from="1687175923985" duration="696000" />
+      <workItem from="1687176699828" duration="1408000" />
+      <workItem from="1687178148826" duration="17027000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

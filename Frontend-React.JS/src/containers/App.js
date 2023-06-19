@@ -21,6 +21,7 @@ import Sidebar from './Sidebar';
 import { CustomToastCloseButton } from '../components/CustomToast';
 import ConfirmModal from '../components/ConfirmModal';
 import EnrollmentCourse from './Auth/EnrollmentCourse';
+import CourseList from "./System/CourseList/CourseList";
 class App extends Component {
 
     handlePersistorState = () => {
@@ -57,6 +58,7 @@ class App extends Component {
                                 <Route path={"/changepassword"} component={ChangePassword} />
                                 <Route path={"/enrollmentCourse"} component={EnrollmentCourse} />
                                 <Route path={"/blog"} component={Blog} />
+                                <Route path={"/CourseList"} component={CourseList} />
                                 <Route path={"/signup"} component={SignUp} />
                                 <Route path={"/profile"} component={Profile} />
                                 <Route path={path.LOGIN} component={adminIsNotAuthenticated(Login)} />
