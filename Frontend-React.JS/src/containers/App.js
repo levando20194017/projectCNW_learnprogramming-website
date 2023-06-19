@@ -23,6 +23,8 @@ import ConfirmModal from '../components/ConfirmModal';
 import EnrollmentCourse from './Auth/EnrollmentCourse';
 import D_header_user from './Header/D_header_user';
 import Learn from './Auth/Learn';
+
+
 class App extends Component {
 
     handlePersistorState = () => {
@@ -61,9 +63,12 @@ class App extends Component {
                                 <Route path={"/blog"} component={Blog} />
                                 <Route path={"/signup"} component={SignUp} />
                                 <Route path={"/profile"} component={Profile} />
+
                                 <Route path={"/header_user"} component={D_header_user} />
 
+
                                 <Route path={"/learn"} component={Learn} />
+
                                 <Route path={path.LOGIN} component={adminIsNotAuthenticated(Login)} />
                                 <Route path={path.SYSTEM} component={adminIsAuthenticated(System)} />
 
