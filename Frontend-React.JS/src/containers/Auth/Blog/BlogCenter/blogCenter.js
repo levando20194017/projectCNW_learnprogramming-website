@@ -442,7 +442,7 @@ class BlogCenter extends Component {
                                     <div className="d-flex align-items-center justify-content-between">
                                         <div className="d-flex align-items-center">
                                             <div className="avatar avatar-story me-2">
-                                                <a href="#!"> <img className="avatar-img rounded-circle" src={users[index]?.img_url} alt="Admin" /> </a>
+                                                <a href="#!"> <img className="avatar-img rounded-circle" src={users[index]?.img_url} alt="Avatar" /> </a>
                                             </div>
                                             <div>
                                                 <div className="nav nav-divider">

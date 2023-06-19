@@ -5,7 +5,6 @@ import { getAllPostById } from '../../../../services/postService';
 import { Link } from 'react-router-dom';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Tab, Tabs, Button, Offcanvas } from 'react-bootstrap';
 class BlogLeft extends Component {
 
     constructor(props) {
@@ -14,16 +13,22 @@ class BlogLeft extends Component {
             listPosts: [],
             open: false
         };
+        this.offcanvasToggle = React.createRef();
+        this.offcanvasSideNavbar = React.createRef();
     }
     userData = JSON.parse(localStorage.getItem("persist:user"));
     userInfo = JSON.parse(this.userData.userInfo);
     componentDidMount() {
         this.fetchData(this.userInfo.id);
+        this.offcanvasToggle.current.addEventListener('click', () => {
+            this.offcanvasSideNavbar.current.classList.add('active');
+        });
     }
 
     componentWillUnmount() {
         //  Hủy bỏ bất kỳ kết nối hoặc tài nguyên nào đang chạy
         //  để tránh lỗi "memory leaks"
+        // this.offcanvasToggle.current.removeEventListener('click');
     }
 
     async fetchData(userId) {
@@ -52,7 +57,9 @@ class BlogLeft extends Component {
                         </button>
                     </div>
                     <nav className="navbar navbar-expand-lg mx-0">
-                        <div className="offcanvas offcanvas-start show" tabIndex={-1} id="offcanvasSideNavbar" aria-modal="true" role="dialog">
+                        <div className="offcanvas offcanvas-start show" tabIndex={-1}
+                            id="offcanvasSideNavbar" aria-modal="true" role="dialog"
+                            ref={this.offcanvasSideNavbar}>
                             <div className="offcanvas-header">
                                 <button type="button" className="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                             </div>
@@ -69,7 +76,7 @@ class BlogLeft extends Component {
                                             <h5 className="mb-0">
                                                 <Link to="/profile" style={{ textDecoration: "none", color: "black" }}>{this.userInfo.fullName}</Link>
                                             </h5>
-                                            <div className="hstack gap-2 gap-xl-3 justify-content-center mt-3">
+                                            <div className="d-flex hstack gap-2 gap-xl-3 justify-content-center mt-3">
                                                 <div>
                                                     <h6 className="mb-0">{this.state.listPosts.length}</h6>
                                                     <small>Post</small>
@@ -90,13 +97,13 @@ class BlogLeft extends Component {
                                                 <li className="nav-item">
                                                     <a className="nav-link">
                                                         <i className="bi bi-house-heart-fill me-2 h-20px fa-fw"></i>
-                                                        <span>Feeds</span>
+                                                        <span>Home</span>
                                                     </a>
                                                 </li>
                                                 <li className="nav-item">
                                                     <a className="nav-link">
                                                         <i className="bi bi-people me-2 h-20px fa-fw"></i>
-                                                        <span>Friends</span>
+                                                        <span>Blog</span>
                                                     </a>
                                                 </li>
                                                 <li className="nav-item">
@@ -108,7 +115,7 @@ class BlogLeft extends Component {
                                                 <li className="nav-item">
                                                     <a className="nav-link">
                                                         <i className="bi bi-clipboard-pulse me-2 h-20px fa-fw"></i>
-                                                        <span>Pages</span>
+                                                        <span>About us</span>
                                                     </a>
                                                 </li>
                                             </ul>
@@ -140,6 +147,17 @@ class BlogLeft extends Component {
                                 </div>
                             </div>
                         </div>
+                        <button
+                            className="btn btn-outline-secondary"
+                            type="button"
+                            data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasSideNavbar"
+                            aria-controls="offcanvasSideNavbar"
+                            id="offcanvasToggle"
+                            ref={this.offcanvasToggle}
+                        >
+                            <i className="bi bi-list"></i>
+                        </button>
                     </nav>
                 </div>
                 {/* <>
