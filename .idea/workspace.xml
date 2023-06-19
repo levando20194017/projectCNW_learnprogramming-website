@@ -29,7 +29,11 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
+<<<<<<< Updated upstream
     "git-widget-placeholder": "PDDo",
+=======
+    "git-widget-placeholder": "main",
+>>>>>>> Stashed changes
     "last_opened_file_path": "D:/Github/projectCNW_learnprogramming-website/Frontend-React.JS/src/assets/img/gallery",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -95,7 +99,11 @@
       <updated>1687175920935</updated>
       <workItem from="1687175923985" duration="696000" />
       <workItem from="1687176699828" duration="1408000" />
+<<<<<<< Updated upstream
       <workItem from="1687178148826" duration="17394000" />
+=======
+      <workItem from="1687178148826" duration="18141000" />
+>>>>>>> Stashed changes
     </task>
     <servers />
   </component>

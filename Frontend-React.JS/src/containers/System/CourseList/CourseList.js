@@ -1,32 +1,106 @@
 import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
+
 import { connect } from 'react-redux';
-import HeaderAdmin from '../../Header/HeaderAdmin';
+
 import './style-course-list.scss'
-import { Link } from 'react-router-dom';
-import Slider from 'react-slick';
-
-import ReactDOM from 'react-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft  } from '@fortawesome/free-solid-svg-icons'
-
 
 
 class CourseList extends Component {
-
-    state = {
-
-    }
-
-    componentDidMount() {
-    }
-
-
 
     render() {
 
         return (
             <div className="CourseList">
+                <header>
+                    <div className="header-area">
+                        <div className="main-header header-sticky">
+                            <div className="container-fluid">
+                                <div className="menu-wrapper d-flex align-items-center justify-content-between">
+                                    <div className="left-content d-flex align-items-center">
+                                        <div className="logo">
+                                            <a href="index.html"><img src="/assets/img/logo-symbol.png" alt=""/></a>
+                                        </div>
+                                        <form action="#" className="form-box">
+                                            <input type="text" name="Search" placeholder="Search courses.."/>
+                                            <div className="search-icon">
+                                                <i className="ti-search"></i>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div className="main-menu d-none d-lg-block">
+                                        <nav>
+                                            <ul id="navigation">
+                                                <li><a href="index.html">Home</a></li>
+                                                <li><a href="courses.html">Browse Courses</a></li>
+                                                <li><a href="about.html">About</a></li>
+                                                <li><a href="#">Blog</a>
+                                                    <ul className="submenu">
+                                                        <li><a href="blog.html">Blog</a></li>
+                                                        <li><a href="blog_details.html">Blog Details</a></li>
+                                                        <li><a href="elements.html">Element</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li><a href="contact.html">Contact</a></li>
+                                                <li>
+                                                    <a href="login.html" className="btn header-btn2">Sign In</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                                <div className="col-12">
+                                    <div className="mobile_menu d-block d-lg-none">
+                                        <div className="slicknav_menu">
+                                            <a href="#" aria-haspopup="true" role="button" tabIndex="0"
+                                               className="slicknav_btn slicknav_collapsed" style={{outline: 'none'}}>
+                                                <span className="slicknav_menutxt">MENU</span>
+                                                <span className="slicknav_icon">
+                  <span className="slicknav_icon-bar"></span>
+                  <span className="slicknav_icon-bar"></span>
+                  <span className="slicknav_icon-bar"></span>
+                </span>
+                                            </a>
+                                            <ul className="slicknav_nav slicknav_hidden" aria-hidden="true" role="menu"
+                                                style={{display: 'none'}}>
+                                                <li><a href="index.html" role="menuitem" tabIndex="-1">Home</a></li>
+                                                <li><a href="courses.html" role="menuitem" tabIndex="-1">Browse
+                                                    Courses</a></li>
+                                                <li><a href="about.html" role="menuitem" tabIndex="-1">About</a></li>
+                                                <li className="slicknav_collapsed slicknav_parent">
+                                                    <a href="#" role="menuitem" aria-haspopup="true" tabIndex="-1"
+                                                       className="slicknav_item slicknav_row" style={{outline: 'none'}}>
+                                                        <a href="#" tabIndex="-1">Blog</a>
+                                                        <span className="slicknav_arrow">+</span>
+                                                    </a>
+                                                    <ul className="submenu slicknav_hidden" role="menu"
+                                                        aria-hidden="true" style={{display: 'none'}}>
+                                                        <li><a href="blog.html" role="menuitem" tabIndex="-1">Blog</a>
+                                                        </li>
+                                                        <li><a href="blog_details.html" role="menuitem" tabIndex="-1">Blog
+                                                            Details</a></li>
+                                                        <li><a href="elements.html" role="menuitem"
+                                                               tabIndex="-1">Element</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li><a href="contact.html" role="menuitem" tabIndex="-1">Contact</a>
+                                                </li>
+                                                <li className="cart">
+                                                    <a href="#" role="menuitem" tabIndex="-1"><span
+                                                        className="flaticon-shopping-cart"></span></a>
+                                                </li>
+                                                <li>
+                                                    <a href="login.html" className="btn header-btn2" role="menuitem"
+                                                       tabIndex="-1">Sign In</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
 
                 <section className="home-cl section-padding">
                     <section className="popular-location section-padding">
