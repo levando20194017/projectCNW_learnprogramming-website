@@ -1,0 +1,114 @@
+.headerUser {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    height: 56px;
+    background-color: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#headerUser-center {
+    display: inline-block;
+    width: 40%;
+}
+#headerUser-left, #headerUser-right {
+    // padding: 8px 0px;
+    display: inline-block;
+    width: 30%;
+}
+
+
+#headerUser-center, #headerUser-left {
+    display: inline-block;
+    list-style-type: none;
+    float: left;
+    padding: 0px 20px 0px;
+}
+#headerUser-left {
+    transform: translateY(5%);
+}
+#headerUser-left-logo-p {
+    font-size: 20px;
+    font-weight: 520;
+    transform: translate(5%, 10%);
+    display: inline-block;
+    background: linear-gradient(83.84deg, #0088FF -6.87%, #A033FF 26.54%, #FF5C87 58.58%);
+    background-clip: text;
+    color: transparent;
+    padding: 5px;
+}
+
+#headerUser-left #homepage-logo, 
+#headerUser-right #headerUser-right-avt {
+    position: relative;
+}
+
+
+#headerUser-nav  li {
+    display: inline-block;
+    // padding: 5px;
+    
+}
+
+#headerUser-nav li {
+
+    position: relative;
+}
+
+#headerUser-nav  li  a {
+    color: #000;
+    font-weight: 480;
+    font-size: 18px;
+}
+
+#headerUser-nav li a {
+    
+    text-decoration: none;
+    line-height: 46px;
+    padding: 5px 25px;
+    display: block;
+    // padding: 5px;
+
+}
+
+#headerUser-nav li:hover .subnav {
+    display: block;
+}
+
+
+#headerUser-nav .subnav li:hover a, 
+#headerUser-nav  li:hover  a {
+    color: #ffffff;
+    background-color: #0088FF;
+    font-weight: 500;
+}
+
+#headerUser-right-container {
+    float: right;
+    padding: 5px 10px;
+    transform: translateY(5%);
+}
+
+#headerUser-right-avt {
+    padding: 0px 15px;
+}
+
+.btn-logout {
+    color: #000;
+    line-height: 40px;
+    height: 40px;
+    padding: 0 10px;
+
+    &:hover {
+        background-color: darken(#0088FF, 5);
+    }
+
+    i {
+        font-size: 16px + 1px;
+    }
+}
