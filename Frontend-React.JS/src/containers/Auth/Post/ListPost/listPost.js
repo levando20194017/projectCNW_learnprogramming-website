@@ -381,12 +381,6 @@ class ListPost extends Component {
                                                     <div style={{ fontWeight: "bold" }} className="author">{userInfo?.fullName}</div>
                                                     <div className="text-secondary">{moment(`${post.createdAt}`).format('HH:mm DD/MM/YYYY')}. <i className="bi bi-globe-central-south-asia"></i></div>
                                                 </div>
-                                                <div>
-                                                    {post.isEditPost ? (<div>
-                                                        <button className='btn btn-success' onClick={() => this.handleSavePost(post)}>Save</button>
-                                                        <button className='btn btn-danger' onClick={() => this.handleCancelPost(post)}>Cancel</button>
-                                                    </div>) : ""}
-                                                </div>
                                             </div>
                                             {this.userInfo.id === post.userID ? <div className="dropdown col-1">
                                                 <a style={{ fontSize: "30px" }} className="text-secondary btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction" data-bs-toggle="dropdown" aria-expanded="false">
@@ -431,9 +425,14 @@ class ListPost extends Component {
                                                     {post.content}
                                                 </div>
                                             }
-
+                                            <div>
+                                                {post.isEditPost ? (<div style={{ marginBottom: "10px" }}>
+                                                    <button className='btn btn-success' onClick={() => this.handleSavePost(post)}>Save</button>
+                                                    <button style={{ marginLeft: "10px" }} className='btn btn-danger' onClick={() => this.handleCancelPost(post)}>Cancel</button>
+                                                </div>) : ""}
+                                            </div>
                                             <div className="image mt-3">
-                                                <img src={post.img_url} alt="Avatar" />
+                                                {post.img_url && <img className="card-img" src={post.img_url} alt=" " />}
                                             </div>
                                             <div className="d-flex mt-3" style={{ justifyContent: "space-between" }}>
                                                 <div className="number-of-likes d-flex">

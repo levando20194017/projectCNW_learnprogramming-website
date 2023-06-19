@@ -53,7 +53,11 @@ class ModalPostSubmission extends Component {
         try {
             const response = await handleAddNewPost(userID, content, img_url);
             if (response.data && response.data.errCode === 0) {
-                this.setState({ message: response.data.message });
+                this.setState({
+                    message: response.data.message,
+                    content: '',
+                    img_url: ''
+                });
                 this.props.toggleFromParent();
                 toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Add new post success!</div>, {
                     position: "top-center",
@@ -147,7 +151,6 @@ class ModalPostSubmission extends Component {
                     <button className='btn btn-primary' style={{ width: "100%", fontWeight: "bold" }} onClick={this.handlePost} disabled={isPostDisabled}>
                         Post
                     </button>
-                    {message && <div>{message}</div>}
                 </ModalFooter>
             </Modal>
         )
