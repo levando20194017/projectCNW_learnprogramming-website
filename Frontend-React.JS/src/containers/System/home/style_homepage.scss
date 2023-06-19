@@ -1,12 +1,11 @@
-* {
+.homepage {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-}
-html {
     font-family: Arial, Helvetica, sans-serif;
 }
-#header {
+
+#homepage-header {
     height: 46px;
     background-color: #ffffff;
     position: fixed;
@@ -16,7 +15,7 @@ html {
     z-index: 1;
 }
 
-#nav {
+#homepage-nav {
     display: inline-block;
     list-style-type: none;
     float: right;
@@ -24,22 +23,22 @@ html {
 }
 
 
-#nav > li {
+#homepage-nav > li {
     display: inline-block;
 }
 
-#nav li {
+#homepage-nav li {
 
     position: relative;
 }
 
-#nav > li > a {
+#homepage-nav > li > a {
     color: #000;
     font-weight: 480;
     font-size: 17px;
 }
 
-#nav li a {
+#homepage-nav li a {
     
     text-decoration: none;
     line-height: 46px;
@@ -47,19 +46,19 @@ html {
     display: block;
 }
 
-#nav li:hover .subnav {
+#homepage-nav li:hover .subnav {
     display: block;
 }
 
 
-#nav .subnav li:hover a, 
-#nav > li:hover > a {
+#homepage-nav .subnav li:hover a, 
+#homepage-nav > li:hover > a {
     color: #ffffff;
     background-color: #0088FF;
     font-weight: 550;
 }
 
-#content {
+#homepage-content {
     background-color: #ffffff;
     margin-left: auto;
     margin-right: auto;
@@ -68,26 +67,26 @@ html {
     // padding-top: 50%;
 }
 
-#big-image {
+#homepage-big-image {
     display: inline-block;
     // float: right;
     width: 55%;
 }
 
 
-.right-img {
+.homepage-right-img {
     width: 100%;
     height: 100%;
     object-fit: contain;;
 }
 
-#slogan {
+#homepage-slogan {
     display: inline-block;
     // float: left;
     width: 45%;
     transform: translateY(20%);
 }
-h1 {
+#homepage-h1 {
     font-size: 75px;
     font-weight: 460;
     line-height: 1.15;
@@ -100,17 +99,17 @@ h1 {
     text-align: right;
 }
 
-#slogan p {
+#homepage-slogan p {
     color: #595959;
     margin: 0px 50px 38px;
     word-break: break-word;
     text-align: right;
 }
 
-#login_button {
+#homepage-login_button {
     text-align: center;
 }
-button {
+#homepage-login_button button {
     position: absolute;
     transform: translate(55%, -12%);
     margin: auto;
