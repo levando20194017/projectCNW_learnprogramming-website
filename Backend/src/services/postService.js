@@ -77,7 +77,7 @@ let deletePost = async (data) => {
 let updatePostData = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.postID) {
+            if (!data.postID || !data.user.id) {
                 resolve({
                     errCode: 2,
                     message: "Missing required parameters!"
@@ -88,7 +88,7 @@ let updatePostData = (data) => {
                 raw: false
             });
             if (post) {
-                if (user.role === true || data.user.id === post.userID) {
+                if (data.user.role === true || data.user.id === post.userID) {
                     post.title = data.title || post.title
                     post.content = data.content || post.content
                     post.img_url = data.img_url || post.img_url

@@ -343,8 +343,8 @@ class BlogCenter extends Component {
                                                 <i className="bi bi-three-dots"></i>
                                             </a>
                                             <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
-                                                <li><a className="dropdown-item" > <i className="bi bi-bookmark fa-fw pe-2"></i>Edit post</a></li>
-                                                <li><a className="dropdown-item" > <i className="bi bi-person-x fa-fw pe-2"></i>Delete post </a></li>
+                                                <li><a className="dropdown-item" > <i className="bi bi-pencil-square"></i> Edit post</a></li>
+                                                <li><a className="dropdown-item" > <i className="bi bi-trash"></i> Delete post </a></li>
                                                 <li><a className="dropdown-item" > <i className="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
                                             </ul>
                                         </div>

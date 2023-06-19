@@ -28,6 +28,7 @@ let handleDeletePost = async (req, res) => {
 let handleEditPost = async (req, res) => {
     let data = req.body;
     let message = await postService.updatePostData(data)
+    console.log(message);
     return res.status(200).json(message)
 }
 module.exports = {
