@@ -14,12 +14,12 @@ const getAllLikesOfPost = (inputId) => {
 const handleLikePost = (userID, postID) => {
     return axios.post('http://localhost:8080/api/post/isliked', { userID: userID, postID: postID });
 }
-const editPost = (commentID, content, user) => {
-    return axios.put('http://localhost:8080/api/comment/edit', { commentID: commentID, content: content, user: user });
+const editPost = (postID, content, user) => {
+    return axios.put('http://localhost:8080/api/post/edit', { postID: postID, content: content, user: user });
 }
-const deletePost = (commentID, user) => {
-    return axios.delete('http://localhost:8080/api/comment/delete', {
-        data: { commentID: commentID, user: user }
+const deletePost = (postID, user) => {
+    return axios.delete('http://localhost:8080/api/post/delete', {
+        data: { postID: postID, user: user }
     });
 }
 export { handleAddNewPost, getAllPostById, getAllLikesOfPost, handleLikePost, editPost, deletePost };

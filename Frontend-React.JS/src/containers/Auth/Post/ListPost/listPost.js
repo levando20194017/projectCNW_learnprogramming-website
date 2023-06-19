@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import Spinner from "react-bootstrap/Spinner";
-import { getAllPostById, getAllLikesOfPost, handleLikePost } from '../../../../services/postService';
+import { getAllPostById, getAllLikesOfPost, handleLikePost, editPost, deletePost } from '../../../../services/postService';
 import { getAllCommentById, handleDeleteComment, handleAddNewComment, handleEditComment } from '../../../../services/commentService';
 import './style.scss'
 import moment from 'moment';
@@ -11,23 +11,30 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 class ListPost extends Component {
     constructor(props) {
         super(props);
         this.state = {
             // userData: this.props.userInfo,
+            isConfirmModalOpen: false,
+            postToDeleteId: null,
+            postIndex: null,
             listPosts: [],
             listComments: [],
             likePosts: [],
             isLiked: [],
+            contentPost: "",
             post: {
                 id: "",
                 content: "",
                 img_url: "",
                 createdAt: "",
-                isOpenModalComment: false
+                isOpenModalComment: false,
+                isEditPost: false,
             },
         };
+        this.postContentRef = React.createRef();
     }
     handleAddNewComment = (post) => {
         const updatedPost = { ...post, isOpenModalComment: true };
@@ -242,17 +249,123 @@ class ListPost extends Component {
             console.log(error);
         }
     }
-    handleEditPost = () => {
-
+    handleEditPost = (post) => {
+        const updatedPost = { ...post, isEditPost: true };
+        this.setState({
+            listPosts: this.state.listPosts.map(p => p.id === post.id ? updatedPost : p),
+            contentPost: post.content,
+        });
     }
-    handleDeletePost = () => {
+    handleSavePost = async (post) => {
+        try {
+            const response = await editPost(post.id, this.state.contentPost, this.userInfo)
+            console.log(response);
+            if (response.data && response.data.errCode === 0) {
+                const updatedPost = { ...post, isEditPost: !post.isEditPost, content: this.state.contentPost };
+                this.setState({
+                    listPosts: this.state.listPosts.map(p => p.id === post.id ? updatedPost : p),
+                });
+                toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Edit post success!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+            } else {
+                toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Edit post failed!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
 
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    handleCancelPost = (post) => {
+        const updatedPost = { ...post, isEditPost: !post.isEditPost };
+        this.setState({
+            listPosts: this.state.listPosts.map(p => p.id === post.id ? updatedPost : p),
+        });
+    }
+    handleDeletePost = async () => {
+        try {
+            const response = await deletePost(this.state.postToDeleteId, this.userInfo)
+            console.log(response);
+            if (response.data && response.data.errCode === 0) {
+                toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Delete post success!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+                const newListPost = [...this.state.listPosts];
+                newListPost.splice(this.state.postIndex, 1);
+                this.setState({
+                    listPosts: newListPost,
+                    isConfirmModalOpen: false,
+                    postToDeleteId: null,
+                    postIndex: null
+                });
+            } else {
+                toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Delete post failed!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    openConfirmModal = (postId, postIndex) => {
+        this.setState({
+            isConfirmModalOpen: true,
+            postToDeleteId: postId,
+            postIndex: postIndex
+        });
+    }
+    closeConfirmModal = () => {
+        this.setState({
+            isConfirmModalOpen: false,
+            postToDeleteId: null,
+            postIndex: null
+        });
     }
     render() {
         const userInfo = this.userInfo
         return (
             <div className="main-profile" style={{ marginTop: "-42px", padding: "10px" }}>
                 <div className="profile-main-body">
+                    <Modal isOpen={this.state.isConfirmModalOpen} toggle={this.closeConfirmModal}>
+                        <ModalHeader toggle={this.closeConfirmModal}>Confirm delete</ModalHeader>
+                        <ModalBody>
+                            Are you sure you want to delete this post?
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button color='primary' onClick={() => this.handleDeletePost()}>Yes</Button>
+                            <Button color='secondary' onClick={this.closeConfirmModal}>No</Button>
+                        </ModalFooter>
+                    </Modal>
                     <div className="row">
                         {this.state.listPosts.length > 0 ? (
                             this.state.listPosts.map((post, index) => {
@@ -268,16 +381,23 @@ class ListPost extends Component {
                                                     <div style={{ fontWeight: "bold" }} className="author">{userInfo?.fullName}</div>
                                                     <div className="text-secondary">{moment(`${post.createdAt}`).format('HH:mm DD/MM/YYYY')}. <i className="bi bi-globe-central-south-asia"></i></div>
                                                 </div>
+                                                <div>
+                                                    {post.isEditPost ? (<div>
+                                                        <button className='btn btn-success' onClick={() => this.handleSavePost(post)}>Save</button>
+                                                        <button className='btn btn-danger' onClick={() => this.handleCancelPost(post)}>Cancel</button>
+                                                    </div>) : ""}
+                                                </div>
                                             </div>
                                             {this.userInfo.id === post.userID ? <div className="dropdown col-1">
                                                 <a style={{ fontSize: "30px" }} className="text-secondary btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i className="bi bi-three-dots"></i>
                                                 </a>
                                                 <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
-                                                    <li><a className="dropdown-item"> <i className="bi bi-bookmark fa-fw pe-2"></i>Edit post</a></li>
-                                                    <li><a className="dropdown-item"> <i className="bi bi-person-x fa-fw pe-2"></i>Delete post </a></li>
+                                                    <li onClick={() => this.handleEditPost(post)}><a className="dropdown-item"> <i className="bi bi-pencil-square"></i> Edit post</a></li>
+                                                    <li onClick={() => this.openConfirmModal(post.id, index)}><a className="dropdown-item"> <i className="bi bi-trash"></i> Delete post </a></li>
                                                     <li><a className="dropdown-item"> <i className="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
                                                 </ul>
+
                                             </div>
                                                 :
                                                 <div className="dropdown col-1">
@@ -296,9 +416,22 @@ class ListPost extends Component {
                                             }
                                         </div>
                                         <div className="post-content">
-                                            <div className="content">
-                                                {post.content}
-                                            </div>
+                                            {post.isEditPost ? <textarea
+                                                style={{
+                                                    width: "100%",
+                                                    fontSize: "18px",
+                                                    outline: "none",
+                                                    border: "none",
+                                                    backgroundColor: "#f3f2f2"
+                                                }}
+                                                rows={5}
+                                                value={this.state.contentPost}
+                                                onChange={e => this.setState({ contentPost: e.target.value })} />
+                                                : <div className="content">
+                                                    {post.content}
+                                                </div>
+                                            }
+
                                             <div className="image mt-3">
                                                 <img src={post.img_url} alt="Avatar" />
                                             </div>
