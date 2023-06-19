@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 class Information extends Component {
     static propTypes = {
         history: PropTypes.object.isRequired,
@@ -21,6 +22,7 @@ class Information extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isConfirmModalOpen: false,
             isEditing: false,
             message: '',
             updatedUserData: this.userInfo
@@ -29,7 +31,17 @@ class Information extends Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSelectChange = this.handleSelectChange.bind(this);
     }
-
+    openConfirmModal = (commentId) => {
+        this.setState({
+            isConfirmModalOpen: true,
+        });
+    }
+    // Hàm đóng modal xác nhận xóa comment
+    closeConfirmModal = () => {
+        this.setState({
+            isConfirmModalOpen: false,
+        });
+    }
     handleEditClick = () => {
         this.setState({
             isEditing: true
@@ -37,6 +49,38 @@ class Information extends Component {
     };
     handleChangePassword = () => {
         this.props.history.push('./changepassword')
+    }
+    handleChangeAvatar = async () => {
+        const response = await editUserProfileService(this.state.updatedUserData);
+        if (response && response.errCode === 0) {
+            toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Change avatar successful!</div>, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
+            this.props.updateUser(this.state.updatedUserData)
+            this.setState({
+                isConfirmModalOpen: false,
+            })
+        }
+        if (response && response.errCode !== 0) {
+            toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Change avatar failed!</div>, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+
     }
     handleSaveClick = async () => {
         const result = await editUserProfileService(this.state.updatedUserData);
@@ -110,8 +154,22 @@ class Information extends Component {
                                 {userInfo && (
                                     <div className="card-body">
                                         <div className="d-flex flex-column align-items-center text-center">
-                                            <img src={userInfo.img_url} alt="Admin" className="rounded-circle"
-                                                width="150" height={150} />
+                                            <div className='d-flex avatar-profile' style={{ position: "relative" }}>
+                                                <img src={userInfo.img_url} alt="Avatar" className="rounded-circle"
+                                                    width="150" height={150} />
+                                                <i onClick={() => this.openConfirmModal()} className="bi bi-camera-fill"></i>
+                                            </div>
+                                            <Modal isOpen={this.state.isConfirmModalOpen} toggle={this.closeConfirmModal}>
+                                                <ModalHeader toggle={this.closeConfirmModal}>Change image profile</ModalHeader>
+                                                <ModalBody>
+                                                    <input className='form-control' name='img_url' value={this.state.updatedUserData?.img_url}
+                                                        onChange={this.handleInputChange} placeholder='Enter your image link...' />
+                                                </ModalBody>
+                                                <ModalFooter>
+                                                    <Button color='primary' onClick={this.handleChangeAvatar}>Save</Button>
+                                                    <Button color='secondary' onClick={this.closeConfirmModal}>Cancel</Button>
+                                                </ModalFooter>
+                                            </Modal>
                                             <div className='mt-3'>
                                                 <h4>{userInfo.fullName}</h4>
                                                 <p className="text-secondary mb-1 mt-4">Full Stack Developer</p>
