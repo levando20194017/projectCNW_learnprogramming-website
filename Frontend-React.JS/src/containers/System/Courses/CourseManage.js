@@ -12,6 +12,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { FaEllipsisH, FaEdit, FaTrash } from 'react-icons/fa';
 import ModalEditLesson from './ModalEditLesson';
+import moment from 'moment';
 
 import {
     setAllCourses,
@@ -276,7 +277,7 @@ class CourseManage extends Component {
                                     </div>
                                     <div className="course-body">
                                         <div className="course-content">
-                                            <div style={{ fontSize: "16px", fontWeight: "bold", color: "blue" }}>Thời gian tạo: {course.createdAt}</div>
+                                            <div style={{ fontSize: "16px", fontWeight: "bold", color: "blue" }}>Thời gian tạo: {moment(`${course.createdAt}`).format('HH:mm DD/MM/YYYY')}</div>
                                             <div className="course-img mt-3">
                                                 <img src={course.img_url} />
                                             </div>
@@ -286,12 +287,13 @@ class CourseManage extends Component {
                                         </div>
                                         <div className='btn btn-primary px-3' style={{ marginLeft: "70px" }} onClick={() => this.handleAddNewLesson(course.id)}><i className='fas fa-plus'></i>Add new lesson</div>
                                         <div className="lesson col-md-10 offset-1 mt-3">
+
                                             {allLessons.map((lesson, index) => {
                                                 return lesson.courseID === course.id && (
                                                     <div className="card-body lesson-title">
                                                         <div className="row">
                                                             <div className="col-sm-11">
-                                                                <h5 className="mb-0">{index + 1}. {lesson.title}</h5>
+                                                                <h5 className="mb-0">{lesson.orderBy}. {lesson.title}</h5>
                                                             </div>
                                                             <div className="col-sm-1">
                                                                 <DropdownButton id="my-dropdown" title={<FaEllipsisH />}>
