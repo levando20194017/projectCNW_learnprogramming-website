@@ -23,7 +23,7 @@
 }
 
 
-#homepage-nav > li {
+#homepage-nav>li {
     display: inline-block;
 }
 
@@ -32,14 +32,14 @@
     position: relative;
 }
 
-#homepage-nav > li > a {
+#homepage-nav>li>a {
     color: #000;
     font-weight: 480;
     font-size: 17px;
 }
 
 #homepage-nav li a {
-    
+
     text-decoration: none;
     line-height: 46px;
     padding: 0 25px;
@@ -51,8 +51,8 @@
 }
 
 
-#homepage-nav .subnav li:hover a, 
-#homepage-nav > li:hover > a {
+#homepage-nav .subnav li:hover a,
+#homepage-nav>li:hover>a {
     color: #ffffff;
     background-color: #0088FF;
     font-weight: 550;
@@ -77,7 +77,8 @@
 .homepage-right-img {
     width: 100%;
     height: 100%;
-    object-fit: contain;;
+    object-fit: contain;
+    ;
 }
 
 #homepage-slogan {
@@ -86,6 +87,7 @@
     width: 45%;
     transform: translateY(20%);
 }
+
 #homepage-h1 {
     font-size: 75px;
     font-weight: 460;
@@ -109,6 +111,7 @@
 #homepage-login_button {
     text-align: center;
 }
+
 #homepage-login_button button {
     position: absolute;
     transform: translate(55%, -12%);
