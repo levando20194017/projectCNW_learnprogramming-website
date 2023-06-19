@@ -1,7 +1,9 @@
-@import "~bootstrap/scss/bootstrap";
+//@import "~bootstrap/scss/bootstrap";
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/fontawesome.min.css");
 
+.CourseList {
 
+}
 
 .home-cl {
   font-family: Arial, Helvetica, sans-serif;
@@ -1218,7 +1220,7 @@ hr {
 }
 
 .slider-area {
-  //background: url(../img/hero/hero-shape.jpg);
+  background: url('../../../assets/img/hero/hero-shape.jpg');
   margin-top: -1px
 }
 
@@ -1375,6 +1377,17 @@ hr {
     height:550px
   }
 }
+.hero-text {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 30px;
+}
+
+
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .slider-area .single-slider .slider-cap-wrapper .hero-img img {
@@ -4755,4 +4768,51 @@ b,sup,sub,u,del {
 
 .switch-wrap {
   margin-bottom: 10px
+}
+
+@font-face {
+  font-family: 'themify';
+  src: url('../../../assets/fonts/themify.woff');
+  
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="ti-"], [class*=" ti-"] {
+  font-family: 'themify', serif;
+  src: url('../../../assets/fonts/themify.woff');
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.ti-tablet:before {
+  content: "\e609";
+}
+.ti-search:before {
+  content: "\e610";
+}
+.ti-arrow-right:before {
+  content: "\e628";
+}
+.ti-arrow-left:before {
+  content: "\e629";
+}
+.ti-angle-right:before {
+  content: "\e649";
+}
+.ti-angle-left:before {
+  content: "\e64a";
+}
+.ti-home:before {
+  content: "\e69b";
+}
+.ti-email:before {
+  content: "\e75a";
 }

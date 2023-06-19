@@ -11,6 +11,7 @@ class CourseList extends Component {
 
         return (
             <div className="CourseList">
+                {/*header begin here*/}
                 <header>
                     <div className="header-area">
                         <div className="main-header header-sticky">
@@ -55,10 +56,10 @@ class CourseList extends Component {
                                                className="slicknav_btn slicknav_collapsed" style={{outline: 'none'}}>
                                                 <span className="slicknav_menutxt">MENU</span>
                                                 <span className="slicknav_icon">
-                  <span className="slicknav_icon-bar"></span>
-                  <span className="slicknav_icon-bar"></span>
-                  <span className="slicknav_icon-bar"></span>
-                </span>
+                                                    <span className="slicknav_icon-bar"></span>
+                                                    <span className="slicknav_icon-bar"></span>
+                                                    <span className="slicknav_icon-bar"></span>
+                                                </span>
                                             </a>
                                             <ul className="slicknav_nav slicknav_hidden" aria-hidden="true" role="menu"
                                                 style={{display: 'none'}}>
@@ -100,112 +101,154 @@ class CourseList extends Component {
                         </div>
                     </div>
                 </header>
+                {/*header end here*/}
 
+                {/*main begin here*/}
+                <main>
+                    <div className="slider-area slider-height">
+                        <div className="slider-active slick-initialized slick-slider">
+                            <div className="slick-list draggable">
+                            <div className="hero-text">
+                                <h1 className="display-1">Welcome to CodeCrush</h1>
+                                <p></p>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
 
-                <section className="home-cl section-padding">
-                    <section className="popular-location section-padding">
-                        <div className="container">
-                            <div className="row">
-                                <div className="col-lg-12">
-                                    <div className="section-tittle text-center mb-40">
-                                        <h2>Chào mừng bạn đến với CodeCrush</h2>
-                                        <p>Tham gia các khóa học chất lượng</p>
+                    <section className="home-cl section-padding">
+                        <section className="popular-location section-padding">
+                            <div className="container">
+                                <div className="row">
+                                    <div className="col-lg-12">
+                                        <div className="section-tittle text-center mb-40">
+                                            <h2>Danh sách khóa học</h2>
+                                            <p>Tham gia các khóa học chất lượng</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                        <div className="single-location mb-20">
+                                            <div className="location-img">
+                                                <img src="/assets/img/gallery/example-course.png" alt="" />
+                                            </div>
+                                            <div className="location-details">
+                                                <h4><a href="#">Programing</a></h4>
+                                                <a href="#" className="location-btn">View Courses</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                        <div className="single-location mb-20">
+                                            <div className="location-img">
+                                                <img src="/assets/img/gallery/example-course.png" alt="" />
+                                            </div>
+                                            <div className="location-details">
+                                                <h4><a href="#">VFX</a></h4>
+                                                <a href="#" className="location-btn">View Courses</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                        <div className="single-location mb-20">
+                                            <div className="location-img">
+                                                <img src="/assets/img/gallery/example-course.png" alt="" />
+                                            </div>
+                                            <div className="location-details">
+                                                <h4><a href="#">App Development</a></h4>
+                                                <a href="#" className="location-btn">View Courses</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                        <div className="single-location mb-20">
+                                            <div className="location-img">
+                                                <img src="/assets/img/gallery/example-course.png" alt="" />
+                                            </div>
+                                            <div className="location-details">
+                                                <h4><a href="#">Technology</a></h4>
+                                                <a href="#" className="location-btn">View Courses</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                        <div className="single-location mb-20">
+                                            <div className="location-img">
+                                                <img src="/assets/img/gallery/example-course.png" alt="" />
+                                            </div>
+                                            <div className="location-details">
+                                                <h4><a href="#">Graphics Design</a></h4>
+                                                <a href="#" className="location-btn">View Courses</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                        <div className="single-location mb-20">
+                                            <div className="location-img">
+                                                <img src="/assets/img/gallery/example-course.png" alt="" />
+                                            </div>
+                                            <div className="location-details">
+                                                <h4><a href="#">Music</a></h4>
+                                                <a href="#" className="location-btn">View Courses</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                        <div className="single-location mb-20">
+                                            <div className="location-img">
+                                                <img src="/assets/img/gallery/example-course.png" alt="" />
+                                            </div>
+                                            <div className="location-details">
+                                                <h4><a href="#">Product Design</a></h4>
+                                                <a href="#" className="location-btn">View Courses</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                        <div className="single-location mb-20">
+                                            <div className="location-img">
+                                                <img src="/assets/img/gallery/example-course.png" alt="" />
+                                            </div>
+                                            <div className="location-details">
+                                                <h4><a href="#">Video Editing</a></h4>
+                                                <a href="#" className="location-btn">View Courses</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                    <div className="single-location mb-20">
-                                        <div className="location-img">
-                                            <img src="/assets/img/gallery/example-course.png" alt="" />
-                                        </div>
-                                        <div className="location-details">
-                                            <h4><a href="#">Programing</a></h4>
-                                            <a href="#" className="location-btn">View Courses</a>
-                                        </div>
+                        </section>
+                    </section>
+
+                    <section className="about-area1 about-area2 fix">
+                        <div className="container">
+                            <div className="row align-items-center section-overlay">
+                                <div className="col-xxl-5 col-xl-5 col-lg-6 col-md-12">
+                                    <div className="about-img about-img1">
+                                        <img src="/assets/img/person1.jpg" alt="" />
                                     </div>
                                 </div>
-                                <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                    <div className="single-location mb-20">
-                                        <div className="location-img">
-                                            <img src="/assets/img/gallery/example-course.png" alt="" />
+                                <div className="offset-xxl-1 col-xxl-5 col-xl-7 col-lg-6 col-md-12">
+                                    <div className="about-caption about-caption1">
+                                        <div className="section-tittle mb-25">
+                                            <h2>The world’s largest selection of online courses</h2>
+                                            <p className="mb-20">
+                                                Millions of people have used Kingster to decide which online course to take. We aggregate courses from many universities to help you find the best courses on almost any subject, wherever they exist. Our goal is to make online education work for everyone.
+                                            </p>
                                         </div>
-                                        <div className="location-details">
-                                            <h4><a href="#">VFX</a></h4>
-                                            <a href="#" className="location-btn">View Courses</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                    <div className="single-location mb-20">
-                                        <div className="location-img">
-                                            <img src="/assets/img/gallery/example-course.png" alt="" />
-                                        </div>
-                                        <div className="location-details">
-                                            <h4><a href="#">App Development</a></h4>
-                                            <a href="#" className="location-btn">View Courses</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                    <div className="single-location mb-20">
-                                        <div className="location-img">
-                                            <img src="/assets/img/gallery/example-course.png" alt="" />
-                                        </div>
-                                        <div className="location-details">
-                                            <h4><a href="#">Technology</a></h4>
-                                            <a href="#" className="location-btn">View Courses</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                    <div className="single-location mb-20">
-                                        <div className="location-img">
-                                            <img src="/assets/img/gallery/example-course.png" alt="" />
-                                        </div>
-                                        <div className="location-details">
-                                            <h4><a href="#">Graphics Design</a></h4>
-                                            <a href="#" className="location-btn">View Courses</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                    <div className="single-location mb-20">
-                                        <div className="location-img">
-                                            <img src="/assets/img/gallery/example-course.png" alt="" />
-                                        </div>
-                                        <div className="location-details">
-                                            <h4><a href="#">Music</a></h4>
-                                            <a href="#" className="location-btn">View Courses</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                    <div className="single-location mb-20">
-                                        <div className="location-img">
-                                            <img src="/assets/img/gallery/example-course.png" alt="" />
-                                        </div>
-                                        <div className="location-details">
-                                            <h4><a href="#">Product Design</a></h4>
-                                            <a href="#" className="location-btn">View Courses</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                    <div className="single-location mb-20">
-                                        <div className="location-img">
-                                            <img src="/assets/img/gallery/example-course.png" alt="" />
-                                        </div>
-                                        <div className="location-details">
-                                            <h4><a href="#">Video Editing</a></h4>
-                                            <a href="#" className="location-btn">View Courses</a>
+                                        <div className="slider-btns">
+                                            <a data-animation="fadeInLeft" data-delay="1.0s" href="about.html" className="btn hero-btn">Browse Courses</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </section>
-                </section>
+
+
+                </main>
+            {/*Main end here*/}
             </div>
         )
     }
