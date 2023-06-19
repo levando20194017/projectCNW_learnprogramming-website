@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import * as actions from "../../store/actions";
 import { adminMenu } from './menuApp';
+import { Link } from 'react-router-dom';
 
 import './D_header_user.scss';
 
@@ -32,9 +33,11 @@ class userHeader extends Component {
                 <div id='headerUser-right'>
                     <div id='headerUser-right-container'>
                         <img id='headerUser-right-avt' src={userInfo?.img_url} alt='avatar' style={{height: "40px", borderRadius: "50%"}} />
+                        <Link to='/'>
                         <div className="btn btn-logout" onClick={processLogout}>
                             <i className="fas fa-sign-out-alt"></i>
                         </div>
+                        </Link>
                     </div>
                 </div>
             </div>
