@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getAllCommentById, handleEditComment, handleDeleteComment, handleAddNewComment } from '../../../../services/commentService';
 import { getAllUsers } from '../../../../services/userService';
-import { getAllPostById, getAllLikesOfPost, handleLikePost } from '../../../../services/postService';
+import { getAllPostById, getAllLikesOfPost, handleLikePost, editPost, deletePost } from '../../../../services/postService';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 class BlogCenter extends Component {
 
     constructor(props) {
@@ -25,12 +26,14 @@ class BlogCenter extends Component {
             isLiked: [],
             users: [],
             isOpenModalSubmission: false,
+            contentPost: "",
             post: {
                 id: "",
                 content: "",
                 img_url: "",
                 createdAt: "",
-                isOpenModalComment: false
+                isOpenModalComment: false,
+                isEditPost: false,
             },
         };
     }
@@ -264,12 +267,123 @@ class BlogCenter extends Component {
             console.log(error);
         }
     }
+    handleEditPost = (post) => {
+        const updatedPost = { ...post, isEditPost: true };
+        this.setState({
+            listPosts: this.state.listPosts.map(p => p.id === post.id ? updatedPost : p),
+            contentPost: post.content,
+        });
+    }
+    handleSavePost = async (post) => {
+        try {
+            const response = await editPost(post.id, this.state.contentPost, this.userInfo)
+            console.log(response);
+            if (response.data && response.data.errCode === 0) {
+                const updatedPost = { ...post, isEditPost: !post.isEditPost, content: this.state.contentPost };
+                this.setState({
+                    listPosts: this.state.listPosts.map(p => p.id === post.id ? updatedPost : p),
+                });
+                toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Edit post success!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+            } else {
+                toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Edit post failed!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
 
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    handleCancelPost = (post) => {
+        const updatedPost = { ...post, isEditPost: !post.isEditPost };
+        this.setState({
+            listPosts: this.state.listPosts.map(p => p.id === post.id ? updatedPost : p),
+        });
+    }
+    handleDeletePost = async () => {
+        try {
+            const response = await deletePost(this.state.postToDeleteId, this.userInfo)
+            console.log(response);
+            if (response.data && response.data.errCode === 0) {
+                toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Delete post success!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+                const newListPost = [...this.state.listPosts];
+                newListPost.splice(this.state.postIndex, 1);
+                this.setState({
+                    listPosts: newListPost,
+                    isConfirmModalOpen: false,
+                    postToDeleteId: null,
+                    postIndex: null
+                });
+            } else {
+                toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Delete post failed!</div>, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    openConfirmModal = (postId, postIndex) => {
+        this.setState({
+            isConfirmModalOpen: true,
+            postToDeleteId: postId,
+            postIndex: postIndex
+        });
+    }
+    closeConfirmModal = () => {
+        this.setState({
+            isConfirmModalOpen: false,
+            postToDeleteId: null,
+            postIndex: null
+        });
+    }
     render() {
         const { listPosts, likePosts, listComments, isLiked, isOpenModalSubmission, post, users } = this.state
         return (
             <div className="col-md-8 col-lg-6 vstack gap-4" style={{ marginLeft: "-5px" }}>
                 <Scrollbars style={{ height: "92vh" }}>
+                    <Modal isOpen={this.state.isConfirmModalOpen} toggle={this.closeConfirmModal}>
+                        <ModalHeader toggle={this.closeConfirmModal}>Confirm delete</ModalHeader>
+                        <ModalBody>
+                            Are you sure you want to delete this post?
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button color='primary' onClick={() => this.handleDeletePost()}>Yes</Button>
+                            <Button color='secondary' onClick={this.closeConfirmModal}>No</Button>
+                        </ModalFooter>
+                    </Modal>
                     <div className="d-flex gap-2 mb-n3">
                         <div className="position-relative">
                             <div className="cardx border border-2 border-dashed h-150px px-4 px-sm-5 shadow-none d-flex align-items-center justify-content-center text-center">
@@ -323,6 +437,7 @@ class BlogCenter extends Component {
                     {listPosts && listPosts.map((post, index) => {
                         return (
                             <div className="cardx card mt-5" style={{ height: "auto", marginBottom: "-30px" }}>
+
                                 <div className="card-header border-0 pb-0">
                                     <div className="d-flex align-items-center justify-content-between">
                                         <div className="d-flex align-items-center">
@@ -336,6 +451,7 @@ class BlogCenter extends Component {
                                                 </div>
                                                 <p className="mb-0 small"> {moment(`${post.createdAt}`).format('HH:mm DD/MM/YYYY')}. <i className="bi bi-globe-central-south-asia"></i></p>
                                             </div>
+
                                         </div>
 
                                         {this.userInfo.id === post.userID ? <div className="dropdown">
@@ -343,8 +459,8 @@ class BlogCenter extends Component {
                                                 <i className="bi bi-three-dots"></i>
                                             </a>
                                             <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
-                                                <li><a className="dropdown-item" > <i className="bi bi-pencil-square"></i> Edit post</a></li>
-                                                <li><a className="dropdown-item" > <i className="bi bi-trash"></i> Delete post </a></li>
+                                                <li onClick={() => this.handleEditPost(post)}><a className="dropdown-item" > <i className="bi bi-pencil-square"></i> Edit post</a></li>
+                                                <li onClick={() => this.openConfirmModal(post.id, index)}><a className="dropdown-item" > <i className="bi bi-trash"></i> Delete post </a></li>
                                                 <li><a className="dropdown-item" > <i className="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
                                             </ul>
                                         </div>
@@ -366,8 +482,28 @@ class BlogCenter extends Component {
                                     </div>
                                 </div>
                                 <div className="card-body">
-                                    <p>{post.content}</p>
-                                    <img className="card-img" src={post.img_url} alt=" " />
+                                    {post.isEditPost ? <textarea
+                                        style={{
+                                            width: "100%",
+                                            fontSize: "18px",
+                                            outline: "none",
+                                            border: "none",
+                                            backgroundColor: "#f3f2f2"
+                                        }}
+                                        rows={5}
+                                        value={this.state.contentPost}
+                                        onChange={e => this.setState({ contentPost: e.target.value })} />
+                                        : <p className="content">
+                                            {post.content}
+                                        </p>
+                                    }
+                                    <div>
+                                        {post.isEditPost ? (<div style={{ marginBottom: "10px" }}>
+                                            <button className='btn btn-success' onClick={() => this.handleSavePost(post)}>Save</button>
+                                            <button style={{ marginLeft: "10px" }} className='btn btn-danger' onClick={() => this.handleCancelPost(post)}>Cancel</button>
+                                        </div>) : ""}
+                                    </div>
+                                    {post.img_url && <img className="card-img" src={post.img_url} alt=" " />}
                                 </div>
                                 <ul className="nav nav-stack py-3 small card-footer">
                                     <li className="nav-item">
