@@ -127,14 +127,14 @@ class CourseList extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="row">
+                                <div className="row course-list">
                                     <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                                         <div className="single-location mb-20">
                                             <div className="location-img">
-                                                <img src="/assets/img/gallery/example-course.png" alt="" />
+                                                <img src="/assets/img/courses/python.jpg" alt="" />
                                             </div>
                                             <div className="location-details">
-                                                <h4><a href="#">Programing</a></h4>
+                                                <h4><a href="#">Python</a></h4>
                                                 <a href="#" className="location-btn">View Courses</a>
                                             </div>
                                         </div>
@@ -142,7 +142,7 @@ class CourseList extends Component {
                                     <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                                         <div className="single-location mb-20">
                                             <div className="location-img">
-                                                <img src="/assets/img/gallery/example-course.png" alt="" />
+                                                <img src="/assets/img/courses/fe.jpg" alt="" />
                                             </div>
                                             <div className="location-details">
                                                 <h4><a href="#">Frontend</a></h4>
@@ -153,7 +153,7 @@ class CourseList extends Component {
                                     <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                                         <div className="single-location mb-20">
                                             <div className="location-img">
-                                                <img src="/assets/img/gallery/example-course.png" alt="" />
+                                                <img src="/assets/img/courses/be.jpg" alt="" />
                                             </div>
                                             <div className="location-details">
                                                 <h4><a href="#">Backend</a></h4>
@@ -164,7 +164,7 @@ class CourseList extends Component {
                                     <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                                         <div className="single-location mb-20">
                                             <div className="location-img">
-                                                <img src="/assets/img/gallery/example-course.png" alt="" />
+                                                <img src="/assets/img/courses/devops.jpeg" alt="" />
                                             </div>
                                             <div className="location-details">
                                                 <h4><a href="#">DevOps</a></h4>
@@ -175,10 +175,10 @@ class CourseList extends Component {
                                     <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                                         <div className="single-location mb-20">
                                             <div className="location-img">
-                                                <img src="/assets/img/gallery/example-course.png" alt="" />
+                                                <img src="/assets/img/courses/cyber-security.jpg" alt="" />
                                             </div>
                                             <div className="location-details">
-                                                <h4><a href="#">Full Stack</a></h4>
+                                                <h4><a href="#">Cyber Security</a></h4>
                                                 <a href="#" className="location-btn">View Courses</a>
                                             </div>
                                         </div>
@@ -186,10 +186,10 @@ class CourseList extends Component {
                                     <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                                         <div className="single-location mb-20">
                                             <div className="location-img">
-                                                <img src="/assets/img/gallery/example-course.png" alt="" />
+                                                <img src="/assets/img/courses/android.jpg" />
                                             </div>
                                             <div className="location-details">
-                                                <h4><a href="#">Android</a></h4>
+                                                <h4><a href="#"> Android </a> </h4>
                                                 <a href="#" className="location-btn">View Courses</a>
                                             </div>
                                         </div>
@@ -197,7 +197,7 @@ class CourseList extends Component {
                                     <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                                         <div className="single-location mb-20">
                                             <div className="location-img">
-                                                <img src="/assets/img/gallery/example-course.png" alt="" />
+                                                <img src="/assets/img/courses/flutter.png" alt="" />
                                             </div>
                                             <div className="location-details">
                                                 <h4><a href="#">Flutter</a></h4>
@@ -208,7 +208,7 @@ class CourseList extends Component {
                                     <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                                         <div className="single-location mb-20">
                                             <div className="location-img">
-                                                <img src="/assets/img/gallery/example-course.png" alt="" />
+                                                <img src="/assets/img/courses/cpp.jpg" alt="" />
                                             </div>
                                             <div className="location-details">
                                                 <h4><a href="#">C++</a></h4>
@@ -232,9 +232,9 @@ class CourseList extends Component {
                                 <div className="offset-xxl-1 col-xxl-5 col-xl-7 col-lg-6 col-md-12">
                                     <div className="about-caption about-caption1">
                                         <div className="section-tittle mb-25">
-                                            <h2>The world’s largest selection of online courses</h2>
+                                            <h2>John Kane</h2>
                                             <p className="mb-20">
-                                                Millions of people have used Kingster to decide which online course to take. We aggregate courses from many universities to help you find the best courses on almost any subject, wherever they exist. Our goal is to make online education work for everyone.
+                                                Khóa học lập trình web của website này là một lựa chọn tuyệt vời cho những người muốn bắt đầu học lập trình web. Khóa học bao gồm các ngôn ngữ và công cụ phổ biến nhất hiện nay, như HTML, CSS, JavaScript, Bootstrap, jQuery, PHP, MySQL và WordPress. Khóa học cũng giúp tôi hiểu được cách thiết kế và phát triển một trang web từ đầu đến cuối. Tôi rất khuyến khích các bạn tham gia khóa học này."
                                             </p>
                                         </div>
                                         <div className="slider-btns">
