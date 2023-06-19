@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7e367b8d-8ddb-4af7-91fc-149e3480f5c5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Frontend-React.JS/public/assets/img/gallery/example-course.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Frontend-React.JS/src/assets/css/fontawesome.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Frontend-React.JS/src/assets/img/gallery/example-course.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Frontend-React.JS/src/containers/System/CourseList/CourseList.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Frontend-React.JS/src/containers/System/CourseList/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Frontend-React.JS/src/containers/System/CourseList/style-course-list.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend-React.JS/src/containers/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend-React.JS/src/containers/App.js" afterDir="false" />
-    </list>
+    <list default="true" id="7e367b8d-8ddb-4af7-91fc-149e3480f5c5" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -103,7 +95,7 @@
       <updated>1687175920935</updated>
       <workItem from="1687175923985" duration="696000" />
       <workItem from="1687176699828" duration="1408000" />
-      <workItem from="1687178148826" duration="17027000" />
+      <workItem from="1687178148826" duration="17394000" />
     </task>
     <servers />
   </component>
