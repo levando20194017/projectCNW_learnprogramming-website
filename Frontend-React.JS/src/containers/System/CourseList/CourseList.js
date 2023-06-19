@@ -122,7 +122,7 @@ class CourseList extends Component {
                                 <div className="row">
                                     <div className="col-lg-12">
                                         <div className="section-tittle text-center mb-40">
-                                            <h2>Danh sách khóa học</h2>
+                                            <h2 className="display-2">Các chủ đề hot</h2>
                                             <p>Tham gia các khóa học chất lượng</p>
                                         </div>
                                     </div>
@@ -145,7 +145,7 @@ class CourseList extends Component {
                                                 <img src="/assets/img/gallery/example-course.png" alt="" />
                                             </div>
                                             <div className="location-details">
-                                                <h4><a href="#">VFX</a></h4>
+                                                <h4><a href="#">Frontend</a></h4>
                                                 <a href="#" className="location-btn">View Courses</a>
                                             </div>
                                         </div>
@@ -156,7 +156,7 @@ class CourseList extends Component {
                                                 <img src="/assets/img/gallery/example-course.png" alt="" />
                                             </div>
                                             <div className="location-details">
-                                                <h4><a href="#">App Development</a></h4>
+                                                <h4><a href="#">Backend</a></h4>
                                                 <a href="#" className="location-btn">View Courses</a>
                                             </div>
                                         </div>
@@ -167,7 +167,7 @@ class CourseList extends Component {
                                                 <img src="/assets/img/gallery/example-course.png" alt="" />
                                             </div>
                                             <div className="location-details">
-                                                <h4><a href="#">Technology</a></h4>
+                                                <h4><a href="#">DevOps</a></h4>
                                                 <a href="#" className="location-btn">View Courses</a>
                                             </div>
                                         </div>
@@ -178,7 +178,7 @@ class CourseList extends Component {
                                                 <img src="/assets/img/gallery/example-course.png" alt="" />
                                             </div>
                                             <div className="location-details">
-                                                <h4><a href="#">Graphics Design</a></h4>
+                                                <h4><a href="#">Full Stack</a></h4>
                                                 <a href="#" className="location-btn">View Courses</a>
                                             </div>
                                         </div>
@@ -189,7 +189,7 @@ class CourseList extends Component {
                                                 <img src="/assets/img/gallery/example-course.png" alt="" />
                                             </div>
                                             <div className="location-details">
-                                                <h4><a href="#">Music</a></h4>
+                                                <h4><a href="#">Android</a></h4>
                                                 <a href="#" className="location-btn">View Courses</a>
                                             </div>
                                         </div>
@@ -200,7 +200,7 @@ class CourseList extends Component {
                                                 <img src="/assets/img/gallery/example-course.png" alt="" />
                                             </div>
                                             <div className="location-details">
-                                                <h4><a href="#">Product Design</a></h4>
+                                                <h4><a href="#">Flutter</a></h4>
                                                 <a href="#" className="location-btn">View Courses</a>
                                             </div>
                                         </div>
@@ -211,7 +211,7 @@ class CourseList extends Component {
                                                 <img src="/assets/img/gallery/example-course.png" alt="" />
                                             </div>
                                             <div className="location-details">
-                                                <h4><a href="#">Video Editing</a></h4>
+                                                <h4><a href="#">C++</a></h4>
                                                 <a href="#" className="location-btn">View Courses</a>
                                             </div>
                                         </div>

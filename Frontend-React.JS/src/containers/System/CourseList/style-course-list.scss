@@ -2,11 +2,11 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/fontawesome.min.css");
 
 .CourseList {
-
+  font-family: var(--bs-font-sans-serif);
 }
 
 .home-cl {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--bs-font-sans-serif);
   font-weight: normal;
   font-style: normal;
   font-size: 26px
@@ -28,7 +28,8 @@
 }
 
 .home-cl h1,h2,h3,h4,h5,h6 {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--bs-font-sans-serif);
+
   color: #3C3B37;
   margin-top: 0px;
   font-style: normal;
@@ -37,7 +38,8 @@
 }
 
 .home-cl p {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--bs-font-sans-serif);
+
   color: #6A6A6A;
   font-size: 16px;
   line-height: 30px;
@@ -234,7 +236,7 @@ hr {
 }
 
 #back-top {
-  background: #EA5252;
+  background: #584e8d;
   height: 40px;
   width: 40px;
   right: 31px;
@@ -275,7 +277,7 @@ hr {
 }
 
 #back-top {
-  background: #EA5252;
+  background: #584e8d;
   height: 40px;
   width: 40px;
   right: 31px;
@@ -530,7 +532,7 @@ hr {
 }
 
 .section-tittle h2 {
-  font-family: "Jost",sans-serif;
+
   color: #3C3B37;
   font-size: 36px;
   display: block;
@@ -596,7 +598,7 @@ hr {
 
 .btn {
   background: #5A4E8C;
-  font-family: "Jost",sans-serif;
+
   text-transform: inherit !important;
   padding: 30px 35px;
   color: #fff !important;
@@ -665,7 +667,7 @@ hr {
 .submit-btn {
   width: 100%;
   background: #FF6F00;
-  font-family: "Jost",sans-serif;
+
   text-transform: inherit !important;
   padding: 25px 43px;
   color: #fff !important;
@@ -704,7 +706,7 @@ hr {
 }
 
 .submit-btn:hover {
-  color: #EA5252 !important
+  color: #584e8d !important
 }
 
 .submit-btn:hover::before {
@@ -725,7 +727,7 @@ hr {
 
 .btn_1 {
   background-color: #fff;
-  color: #EA5252 !important;
+  color: #584e8d !important;
   padding: 11px 20px;
   font-size: 16px;
   border-radius: 0px;
@@ -753,25 +755,25 @@ hr {
 
 .boxed-btn {
   background: #fff;
-  color: #EA5252 !important;
+  color: #584e8d !important;
   display: inline-block;
   padding: 18px 44px;
-  font-family: "Jost",sans-serif;
+
   font-size: 14px;
   font-weight: 400;
   border: 0;
-  border: 1px solid #EA5252;
+  border: 1px solid #584e8d;
   letter-spacing: 1px;
   text-align: center;
-  color: #EA5252;
+  color: #584e8d;
   text-transform: uppercase;
   cursor: pointer
 }
 
 .boxed-btn:hover {
-  background: #EA5252;
+  background: #584e8d;
   color: #fff !important;
-  border: 1px solid #EA5252
+  border: 1px solid #584e8d
 }
 
 .boxed-btn:focus {
@@ -978,7 +980,7 @@ hr {
 }
 
 .header-area .main-header .main-menu ul li a {
-  font-family: "Jost",sans-serif;
+
   color: #3C3B37;
   font-weight: 500;
   padding: 32px 5px;
@@ -990,7 +992,7 @@ hr {
   -o-transition: all .3s ease-out 0s;
   transition: all .3s ease-out 0s;
   //text-transform: normal;
-  font-family: "Jost",sans-serif;
+
   position: relative
 }
 
@@ -1003,7 +1005,7 @@ hr {
   left: -5px;
   height: 3px;
   z-index: 1;
-  background: #EA5252;
+  background: #584e8d;
   -webkit-transition: all .4s ease-out 0s;
   -moz-transition: all .4s ease-out 0s;
   -ms-transition: all .4s ease-out 0s;
@@ -1012,7 +1014,7 @@ hr {
 }
 
 .header-area .main-header .main-menu ul li:hover>a {
-  color: #EA5252
+  color: #584e8d
 }
 
 .header-area .main-header .main-menu ul li:hover>a::before {
@@ -1098,7 +1100,7 @@ hr {
   transition: all .4s ease-out 0s;
   position: absolute;
   content: "1";
-  background: #EA5252;
+  background: #584e8d;
   color: #fff;
   text-align: center;
   border-radius: 50%;
@@ -1269,7 +1271,7 @@ hr {
 }
 
 .slider-area .single-slider form.search-box .input-form a {
-  background: #EA5252;
+  background: #584e8d;
   position: absolute;
   right: -80px;
   padding: 24px 26px;
@@ -1438,7 +1440,7 @@ hr {
 }
 
 .slider-area .single-slider .slider-cap-wrapper .hero-caption span {
-  color: #EA5252;
+  color: #584e8d;
   font-size: 14px;
   font-weight: 700;
   text-transform: uppercase;
@@ -1572,7 +1574,7 @@ hr {
 }
 
 .hero-area .hero-cap h2 {
-  font-family: "Jost",sans-serif;
+
   color: #fff;
   font-size: 42px;
   font-weight: 600;
@@ -1640,7 +1642,7 @@ hr {
 .slider-active button.slick-arrow i {
   font-size: 25px;
   line-height: 50px;
-  color: #EA5252
+  color: #584e8d
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -1761,7 +1763,7 @@ hr {
   -ms-transition: all .4s ease-out 0s;
   -o-transition: all .4s ease-out 0s;
   transition: all .4s ease-out 0s;
-  background: #EA5252;
+  background: #584e8d;
   padding: 7px 13px;
   color: #fff;
   border-radius: 4px;
@@ -1773,7 +1775,7 @@ hr {
 
 .popular-location .single-location .location-details .location-btn:hover {
   background: #fff;
-  color: #EA5252
+  color: #584e8d
 }
 
 .popular-location .single-location .location-details .location-btn i {
@@ -1838,7 +1840,7 @@ hr {
   font-weight: 400;
   padding: 3px 8px;
   border-radius: 4px;
-  background: #EA5252
+  background: #584e8d
 }
 
 .popular-directorya-area .properties .properties-caption h3 a {
@@ -1856,7 +1858,7 @@ hr {
 }
 
 .popular-directorya-area .properties .properties-caption h3 a:hover,.popular-directorya-area .properties .properties-caption h3 .properties-card {
-  color: #EA5252
+  color: #584e8d
 }
 
 .popular-directorya-area .properties .properties-caption h3 img {
@@ -1869,7 +1871,7 @@ hr {
 }
 
 .popular-directorya-area .properties .properties-caption P span {
-  color: #EA5252;
+  color: #584e8d;
   font-size: 16px
 }
 
@@ -2030,7 +2032,7 @@ hr {
 }
 
 .testimonial-area .testimonial-caption .testimonial-founder .founder-text span {
-  font-family: "Jost",sans-serif;
+
   color: #3C3B37;
   font-size: 18px;
   font-weight: 600;
@@ -2205,7 +2207,7 @@ hr {
 }
 
 .about-area2 .slider-btns a {
-  color: #EA5252;
+  color: #584e8d;
   font-weight: 500;
   font-size: 14px;
   text-transform: uppercase;
@@ -2213,8 +2215,8 @@ hr {
 }
 
 .about-area2 .slider-btns .video-btn {
-  font-family: "Jost",sans-serif;
-  color: #EA5252;
+
+  color: #584e8d;
   font-weight: 400;
   font-size: 18px;
   text-transform: capitalize;
@@ -2347,7 +2349,7 @@ hr {
   border: 0;
   cursor: pointer;
   padding: 17px 22px;
-  background: #EA5252;
+  background: #584e8d;
   line-height: 1;
   width: 100%;
   display: block;
@@ -2356,7 +2358,7 @@ hr {
 }
 
 .footer-area .info.error {
-  color: #EA5252
+  color: #584e8d
 }
 
 .footer-bottom-area .footer-border {
@@ -2373,11 +2375,11 @@ hr {
 }
 
 .footer-bottom-area .footer-copy-right p i {
-  color: #EA5252
+  color: #584e8d
 }
 
 .footer-bottom-area .footer-copy-right p a {
-  color: #EA5252
+  color: #584e8d
 }
 
 .footer-social a {
@@ -2395,7 +2397,7 @@ hr {
 
 .footer-social a:hover {
   color: #ffff;
-  background: #EA5252
+  background: #584e8d
 }
 
 .footer-social a i {
@@ -2403,9 +2405,9 @@ hr {
 }
 
 .number a {
-  font-family: "Jost",sans-serif;
+
   font-size: 16px !important;
-  color: #EA5252 !important;
+  color: #584e8d !important;
   margin-bottom: 10px;
   font-weight: 400 !important;
   display: block
@@ -2567,7 +2569,7 @@ hr {
 }
 
 .login-form-area .login-form .login-footer p a {
-  color: #EA5252
+  color: #584e8d
 }
 
 .login-check {
@@ -2623,20 +2625,20 @@ hr {
 }
 
 .login-check input[type=checkbox]:checked+label:before {
-  background-color: #EA5252;
-  border-color: #EA5252;
+  background-color: #584e8d;
+  border-color: #584e8d;
   color: #fff;
   line-height: 18px
 }
 
 .login-check a {
-  color: #EA5252;
+  color: #584e8d;
   font-size: 14px;
   font-weight: 400
 }
 
 .login-check a:hover {
-  color: #EA5252
+  color: #584e8d
 }
 
 @media (max-width: 575px) {
@@ -2790,7 +2792,7 @@ hr {
 }
 
 .register-form-area .register-form .register-footer p a {
-  color: #EA5252
+  color: #584e8d
 }
 
 .submit-btn3 {
@@ -2812,7 +2814,7 @@ hr {
 }
 
 .blog_area a:hover,.blog_area a :hover {
-  background: -webkit-linear-gradient(131deg, #EA5252 0%, #EA5252 99%);
+  background: -webkit-linear-gradient(131deg, #584e8d 0%, #584e8d 99%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-decoration: none;
@@ -2900,7 +2902,7 @@ hr {
   left: 10px;
   display: block;
   color: #fff;
-  background-color: #EA5252;
+  background-color: #584e8d;
   padding: 8px 15px;
   border-radius: 5px
 }
@@ -2982,7 +2984,7 @@ hr {
 }
 
 .blog_right_sidebar .search_widget .input-group button {
-  background: #EA5252;
+  background: #584e8d;
   border-left: 0;
   border: 1px solid #f0e9ff;
   padding: 12px 15px;
@@ -3099,7 +3101,7 @@ hr {
 }
 
 .blog_right_sidebar .tag_cloud_widget ul li a:hover {
-  background: #EA5252;
+  background: #584e8d;
   color: #fff !important;
   -webkit-text-fill-color: #fff;
   text-decoration: none;
