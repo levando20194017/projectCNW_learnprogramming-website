@@ -22,6 +22,7 @@ import { CustomToastCloseButton } from '../components/CustomToast';
 import ConfirmModal from '../components/ConfirmModal';
 import EnrollmentCourse from './Auth/EnrollmentCourse';
 import CourseList from "./System/CourseList/CourseList";
+import Test from "./System/CourseList/Test";
 class App extends Component {
 
     handlePersistorState = () => {
@@ -59,10 +60,12 @@ class App extends Component {
                                 <Route path={"/enrollmentCourse"} component={EnrollmentCourse} />
                                 <Route path={"/blog"} component={Blog} />
                                 <Route path={"/CourseList"} component={CourseList} />
+                                <Route path={"/test"} component={Test} />
                                 <Route path={"/signup"} component={SignUp} />
                                 <Route path={"/profile"} component={Profile} />
                                 <Route path={path.LOGIN} component={adminIsNotAuthenticated(Login)} />
                                 <Route path={path.SYSTEM} component={adminIsAuthenticated(System)} />
+
                             </Switch>
                         </span>
 
