@@ -79,7 +79,7 @@ class Sidebar extends Component {
                                                 <span style={{ marginLeft: "110px", fontSize: "120%" }}>{this.state.showMenu[0] ? <i class="fas fa-caret-up"></i> : <i class="fas fa-caret-down"></i>}</span>
                                             </a>
                                             <ul className="sub-menu">
-                                                <li><a href="#">Manage users</a></li>
+                                                <li><a href="http://localhost:3000/system/user-manage">Manage users</a></li>
                                                 <li><a href="#">User progress</a></li>
                                                 <li><a href="#">Notifications</a></li>
                                             </ul>
@@ -91,7 +91,7 @@ class Sidebar extends Component {
                                                 <span style={{ marginLeft: "92px", fontSize: "120%" }}>{this.state.showMenu[1] ? <i class="fas fa-caret-up"></i> : <i class="fas fa-caret-down"></i>}</span>
                                             </a>
                                             <ul className="sub-menu">
-                                                <li><a href="#">Manage courses</a></li>
+                                                <li><a href="http://localhost:3000/system/course-manage">Manage courses</a></li>
                                                 <li><a href="#">Manage lessons</a></li>
                                                 <li><a href="#">Manage videos</a></li>
                                             </ul>
