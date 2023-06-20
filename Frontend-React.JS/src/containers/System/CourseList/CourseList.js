@@ -124,8 +124,8 @@ class CourseList extends Component {
                                 <div className="row">
                                     <div className="col-lg-12">
                                         <div className="section-tittle text-center mb-40">
-                                            <h2 className="display-2">Các chủ đề hot</h2>
-                                            <p>Tham gia các khóa học chất lượng</p>
+                                            <h2 className="display-2">Các khóa học PRO</h2>
+                                            <p>Tham gia các khóa học chất lượng nhất</p>
                                         </div>
                                     </div>
                                 </div>
@@ -221,6 +221,68 @@ class CourseList extends Component {
                                 </div>
                             </div>
                         </section>
+
+
+                        <section className="popular-location section-padding">
+                            <div className="container">
+                                <div className="row">
+                                    <div className="col-lg-12">
+                                        <div className="section-tittle text-center mb-40">
+                                            <h2 className="display-2">Các khóa học miễn phí</h2>
+                                            <p>Xây dựng nền tảng chắc chắn</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row course-list">
+                                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                        <div className="single-location mb-20">
+                                            <div className="location-img">
+                                                <img src="/assets/img/courses/html.jpg" alt="" />
+                                            </div>
+                                            <div className="location-details">
+                                                <h4><a href="#">HTML</a></h4>
+                                                <a href="#" className="location-btn">View Courses</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                        <div className="single-location mb-20">
+                                            <div className="location-img">
+                                                <img src="/assets/img/courses/css.jpg" alt="" />
+                                            </div>
+                                            <div className="location-details">
+                                                <h4><a href="#">CSS</a></h4>
+                                                <a href="#" className="location-btn">View Courses</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                        <div className="single-location mb-20">
+                                            <div className="location-img">
+                                                <img src="/assets/img/courses/js.png" alt="" />
+                                            </div>
+                                            <div className="location-details">
+                                                <h4><a href="#">JavaScript</a></h4>
+                                                <a href="#" className="location-btn">View Courses</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                        <div className="single-location mb-20">
+                                            <div className="location-img">
+                                                <img src="/assets/img/courses/c.jpg" alt="" />
+                                            </div>
+                                            <div className="location-details">
+                                                <h4><a href="#">C</a></h4>
+                                                <a href="#" className="location-btn">View Courses</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </section>
+
                     </section>
 
                     <section className="about-area1 about-area2 fix">
