@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 class Login extends Component {
     static propTypes = {
@@ -144,16 +145,24 @@ class Login extends Component {
                                     </div>
                                     <div className="textShow"> Hiện mật khẩu</div>
                                 </div>
+                                <div className="col-4 offset-8">
+                                    <Link to="/forgotpassword">
+                                        <a className="btn-forgot" style={{ cursor: "pointer" }}>Forgot password</a>
+                                    </Link>
+                                </div>
                                 <div>
-                                    <div className="button-list mt-4">
-                                        <div>
+                                    <div className="button-list mt-4" style={{ display: "flex", alignItems: "center", textAlign: "center", justifyContent: "center" }}>
+                                        {/* <div>
                                             <button className="btn-forgot" onClick={this.handleForgotPassword}>Forgot password</button>
-                                        </div>
+                                        </div> */}
                                         <div>
                                             <button type="submit" className="btn-next" onClick={this.handleLogin}>Đăng nhập</button>
                                         </div>
-
                                     </div>
+                                    <div className="mt-3" style={{ display: "flex", textAlign: "center", justifyContent: "center" }}>
+                                        <p>Không có tài khoản? <Link to="/signup"><a style={{ cursor: "pointer" }}>Đăng kí</a></Link></p>
+                                    </div>
+
 
                                 </div>
                             </form>
