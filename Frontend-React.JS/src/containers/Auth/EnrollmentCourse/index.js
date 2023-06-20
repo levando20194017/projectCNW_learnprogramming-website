@@ -2,82 +2,156 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import './style.scss'
+import { getAllCourses } from '../../../services/courseService';
+import { getAllLessons } from '../../../services/lessonService';
+import { getAllVideos } from '../../../services/videoService';
+import { enrrollmentCourse } from '../../../services/enrollmentCourse';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 class EnrollmentCourse extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            isOpen: false
+            isOpen: [false],
+            course: {},
+            lessons: [],
+            videosOfLesson: [],
+            allVideos: []
         }
     }
-    handleClick = () => {
+    userData = JSON.parse(localStorage.getItem("persist:user"));
+    userInfo = JSON.parse(this.userData.userInfo);
+    componentDidMount() {
+        this.fetchData();
+    }
+    handleEnrollmentCourse = async () => {
+        const response = await enrrollmentCourse(this.props.match.params.id, this.userInfo.id);
+        console.log(response);
+        if (response && response.errCode === 0) {
+            toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Register course success!</div>, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
+        } else if (response && response.errCode === 1) {
+            toast.info(<div style={{ width: "300px", fontSize: "14px" }}><i className="bi bi-info-circle"></i> You have already register this course!</div>, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+
+        } else {
+            toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Register course failed!</div>, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+
+    }
+    async fetchData() {
+        try {
+            const response = await getAllCourses(this.props.match.params.id);
+            if (response && response.errCode === 0) {
+                this.setState({ course: response.courses });
+            }
+            const responseOfLesson = await getAllLessons(this.props.match.params.id);
+            console.log(responseOfLesson);
+            if (responseOfLesson && responseOfLesson.errCode === 0) {
+                this.setState({ lessons: responseOfLesson.lessons });
+            }
+            let videoArray = [];
+            for (let i = 0; i < responseOfLesson.lessons.length; i++) {
+                const responseVideosOfLesson = await getAllVideos(responseOfLesson.lessons[i].id);
+                console.log(responseOfLesson.lessons[i].id);
+                console.log(responseVideosOfLesson);
+                const videos = responseVideosOfLesson.videos;
+                videoArray.push(videos);
+            }
+            this.setState({
+                videosOfLesson: videoArray,
+            });
+
+            const allVIDEO = await getAllVideos('ALL')
+            if (allVIDEO && allVIDEO.errCode === 0) {
+                this.setState({ allVideos: allVIDEO.videos });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    handleClick = (index) => {
+        const copyState = [...this.state.isOpen];
+        copyState[index] = !copyState[index]
         this.setState({
-            isOpen: !this.state.isOpen
+            isOpen: copyState
         })
     }
-
     render() {
+        const { isOpen, course, lessons, videosOfLesson, allVideos } = this.state
         return (
             <div className='row course-detail' style={{ width: "100%" }}>
                 <div className='col-7 offset-1 pt-5' >
-                    <h3>HTML CSS từ Zero đến Hero</h3>
-                    <p>Trong khóa này chúng ta sẽ cùng nhau xây dựng giao diện 2 trang web là The Band & Shopee.</p>
+                    <h3>{course.title}</h3>
+                    <p>{course.description}</p>
                     <h5 className='mt-5'>Nội dung khóa học</h5>
                     <div>
-                        <span><b>13</b> chương</span>
-                        <span><b>166</b> bài học</span>
+                        <span><b>{lessons ? lessons.length : '0'}</b> chương</span>
+                        <span><b>{allVideos ? allVideos.length : "0"}</b> bài học</span>
                         <span>thời lượng <b>30 giờ 27 phút</b></span>
                     </div>
-                    <div className='course-title-detail mt-3' onClick={() => this.handleClick()}>
-                        <div className='row d-flex'>
-                            <div className='col-10 d-flex'>
-                                {this.state.isOpen ? <i className="bi bi-dash"></i> : <i className="bi bi-plus"></i>}
-                                <h6 style={{ paddingLeft: "10px", paddingTop: "5px" }}>1. Bắt đầu</h6>
-                            </div>
-                            <div className='col-2' style={{ fontSize: "14px" }}>
-                                5 bài học
-                            </div>
-                        </div>
-                    </div>
-                    {this.state.isOpen && <div className='list-lession-of-course'>
-                        <div className='lesson'>
-                            <div className='col-11 d-flex' style={{ paddingLeft: "40px" }}>
-                                <i className="bi bi-youtube"></i>
-                                <p style={{ paddingLeft: "10px", paddingTop: "14px" }} className='text-secondary'>Bạn sẽ làm được gì sau khóa học?</p>
-                            </div>
-                            <div className='col-1'>
-                                03:15
-                            </div>
-                        </div>
-                        <div className='lesson'>
-                            <div className='col-11 d-flex' style={{ paddingLeft: "40px" }}>
-                                <i className="bi bi-youtube"></i>
-                                <p style={{ paddingLeft: "10px", paddingTop: "14px" }} className='text-secondary'>Bạn sẽ làm được gì sau khóa học?</p>
-                            </div>
-                            <div className='col-1'>
-                                03:15
-                            </div>
-                        </div>
-                        <div className='lesson'>
-                            <div className='col-11 d-flex' style={{ paddingLeft: "40px" }}>
-                                <i className="bi bi-youtube"></i>
-                                <p style={{ paddingLeft: "10px", paddingTop: "14px" }} className='text-secondary'>Bạn sẽ làm được gì sau khóa học?</p>
-                            </div>
-                            <div className='col-1'>
-                                03:15
-                            </div>
-                        </div>
-                        <div className='lesson'>
-                            <div className='col-11 d-flex' style={{ paddingLeft: "40px" }}>
-                                <i className="bi bi-youtube"></i>
-                                <p style={{ paddingLeft: "10px", paddingTop: "14px" }} className='text-secondary'>Bạn sẽ làm được gì sau khóa học?</p>
-                            </div>
-                            <div className='col-1'>
-                                03:15
-                            </div>
-                        </div>
-                    </div>}
+                    {lessons && lessons.map((lesson, index) => {
+                        return (
+                            <div>
+                                <div className='course-title-detail mt-3' onClick={() => this.handleClick(index)}>
+                                    <div className='row d-flex'>
+                                        <div className='col-10 d-flex'>
+                                            {isOpen[index] ? <i className="bi bi-dash"></i> : <i className="bi bi-plus"></i>}
+                                            <h6 style={{ paddingLeft: "10px", paddingTop: "5px" }}>{lesson.orderBy}. {lesson.title}</h6>
+                                        </div>
+                                        <div className='col-2' style={{ fontSize: "14px" }}>
+                                            {videosOfLesson[index] ? (`${videosOfLesson[index].length} bài học`) : "0 bài học"}
+                                        </div>
+                                    </div>
+                                </div>
+                                {isOpen[index] && <div className='list-lession-of-course'>
+                                    {videosOfLesson[index] && videosOfLesson[index].map((video) => {
+                                        return (
+                                            <div className='lesson'>
+                                                <div className='col-11 d-flex' style={{ paddingLeft: "40px" }}>
+                                                    <i className="bi bi-youtube"></i>
+                                                    <p style={{ paddingLeft: "10px", paddingTop: "14px" }} className='text-secondary'>{video.title}</p>
+                                                </div>
+                                                <div className='col-1'>
+                                                    03:15
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
 
+                                </div>}
+
+                            </div>
+                        )
+                    })}
 
                     <h5 style={{ marginTop: "40px" }}>Yêu cầu</h5>
                     <div>
@@ -112,11 +186,11 @@ class EnrollmentCourse extends Component {
                     <div style={{ width: "450px" }} className='course-detail-right-body mt-3'>
                         <h2 style={{ color: "#f05123", display: "flex", justifyContent: "center", alignItems: "center", fontWeight: "400" }}>Miễn phí</h2>
                         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                            <button className='enrollment'>ĐĂNG KÝ HỌC</button>
+                            <button className='enrollment' onClick={this.handleEnrollmentCourse}>ĐĂNG KÝ HỌC</button>
                         </div>
                         <div className='col-6 offset-4 mt-3'>
                             <div><i className="bi bi-water"></i><span>Trình độ cơ bản</span></div>
-                            <div><i className="bi bi-film"></i><span>Tổng <b>209</b> bài học</span></div>
+                            <div><i className="bi bi-film"></i><span>Tổng <b>{allVideos ? allVideos.length : '0'}</b> bài học</span></div>
                             <div><i className="bi bi-clock-fill"></i><span>Thời lượng <b>29 giờ</b></span></div>
                             <div><i className="bi bi-film"></i><span> Học mọi lúc mọi nơi</span></div>
                         </div>
