@@ -60,11 +60,11 @@ class App extends Component {
                                 <Route path={"/changepassword"} component={ChangePassword} />
                                 <Route path={"/course/:id"} component={EnrollmentCourse} />
                                 <Route path={"/blog"} component={Blog} />
-                                <Route path={"/CourseList"} component={CourseList} />
+                                <Route path={"/home"} component={CourseList} />
                                 <Route path={"/signup"} component={SignUp} />
                                 <Route path={"/profile"} component={Profile} />
                                 <Route path={"/header_user"} component={D_header_user} />
-                                <Route path={"/learn"} component={Learn} />
+                                <Route path={"/learn/:id"} component={Learn} />
                                 <Route path={path.LOGIN} component={adminIsNotAuthenticated(Login)} />
                                 <Route path={path.SYSTEM} component={adminIsAuthenticated(System)} />
 

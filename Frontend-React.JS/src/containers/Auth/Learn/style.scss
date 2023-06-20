@@ -114,6 +114,12 @@
     opacity: 0.5;
     padding-top: 6px;
     font-size: 13px;
+    cursor: pointer;
+}
+
+.list-video_title.active {
+    opacity: 1;
+    background-color: rgb(240, 206, 212);
 }
 
 .list-video_title h6 {

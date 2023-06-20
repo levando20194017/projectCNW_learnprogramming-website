@@ -82,6 +82,7 @@ let initWebRoutes = (app) => {
     router.post('/api/comment/isliked', likeCommentController.handleCreateIsLiked)
 
     router.post('/api/course/register', enrollmentController.handleRegisterCourse)
+    router.get('/api/get-all-usersRegisterCourse', enrollmentController.handleGetAllUsersRegisterCourse)
     return app.use("/", router)
 }
 

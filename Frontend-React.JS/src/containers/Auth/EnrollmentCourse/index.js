@@ -5,7 +5,7 @@ import './style.scss'
 import { getAllCourses } from '../../../services/courseService';
 import { getAllLessons } from '../../../services/lessonService';
 import { getAllVideos } from '../../../services/videoService';
-import { enrrollmentCourse } from '../../../services/enrollmentCourse';
+import { enrrollmentCourse, getAllUsersEnrollment } from '../../../services/enrollmentCourse';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -41,6 +41,7 @@ class EnrollmentCourse extends Component {
                 progress: undefined,
                 theme: "colored",
             });
+            this.props.history.push(`/learn/${this.props.match.params.id}`);
         } else if (response && response.errCode === 1) {
             toast.info(<div style={{ width: "300px", fontSize: "14px" }}><i className="bi bi-info-circle"></i> You have already register this course!</div>, {
                 position: "top-center",
@@ -69,30 +70,33 @@ class EnrollmentCourse extends Component {
     }
     async fetchData() {
         try {
-            const response = await getAllCourses(this.props.match.params.id);
-            if (response && response.errCode === 0) {
-                this.setState({ course: response.courses });
-            }
-            const responseOfLesson = await getAllLessons(this.props.match.params.id);
-            console.log(responseOfLesson);
-            if (responseOfLesson && responseOfLesson.errCode === 0) {
-                this.setState({ lessons: responseOfLesson.lessons });
-            }
-            let videoArray = [];
-            for (let i = 0; i < responseOfLesson.lessons.length; i++) {
-                const responseVideosOfLesson = await getAllVideos(responseOfLesson.lessons[i].id);
-                console.log(responseOfLesson.lessons[i].id);
-                console.log(responseVideosOfLesson);
-                const videos = responseVideosOfLesson.videos;
-                videoArray.push(videos);
-            }
-            this.setState({
-                videosOfLesson: videoArray,
-            });
+            const responseOfUserRegister = await getAllUsersEnrollment(this.props.match.params.id)
+            console.log(responseOfUserRegister);
+            if (responseOfUserRegister.usersOfRegister?.userID === this.userInfo.id) {
+                this.props.history.push(`/learn/${this.props.match.params.id}`);
+            } else {
+                const response = await getAllCourses(this.props.match.params.id);
+                if (response && response.errCode === 0) {
+                    this.setState({ course: response.courses });
+                }
+                const responseOfLesson = await getAllLessons(this.props.match.params.id);
+                if (responseOfLesson && responseOfLesson.errCode === 0) {
+                    this.setState({ lessons: responseOfLesson.lessons });
+                }
+                let videoArray = [];
+                for (let i = 0; i < responseOfLesson.lessons.length; i++) {
+                    const responseVideosOfLesson = await getAllVideos(responseOfLesson.lessons[i].id);
+                    const videos = responseVideosOfLesson.videos;
+                    videoArray.push(videos);
+                }
+                this.setState({
+                    videosOfLesson: videoArray,
+                });
 
-            const allVIDEO = await getAllVideos('ALL')
-            if (allVIDEO && allVIDEO.errCode === 0) {
-                this.setState({ allVideos: allVIDEO.videos });
+                const allVIDEO = await getAllVideos('ALL')
+                if (allVIDEO && allVIDEO.errCode === 0) {
+                    this.setState({ allVideos: allVIDEO.videos });
+                }
             }
         } catch (error) {
             console.log(error);
