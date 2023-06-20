@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import './style-course-list.scss'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getAllCourses } from '../../../services/courseService';
+import { getAllUsersEnrollment } from '../../../services/enrollmentCourse';
 import { Link } from 'react-router-dom';
 
 class CourseList extends Component {
@@ -40,6 +41,7 @@ class CourseList extends Component {
                             aria-label="Slide 1"></button>
                         <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
                         <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        <img src="" />
                     </div>
                     <div className="carousel-inner">
                         <div className="carousel-item active">
@@ -106,10 +108,10 @@ class CourseList extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="row course-list">
+                                <div className="row course-list mt-3">
                                     {listCourses && listCourses.map((course, index) => {
                                         return (
-                                            <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                            <div className="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                                                 <div className="single-location mb-20">
                                                     <div className="location-img">
                                                         <img src={course.img_url} alt="" />
