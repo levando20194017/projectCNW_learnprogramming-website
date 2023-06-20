@@ -7,7 +7,7 @@ const initialState = {
     isOpenModalLesson: false,
     isOpenEditModalLesson: false,
     courseId: 0,
-    lessonId: 0
+    lessonId: 0,
 };
 
 const courseReducer = (state = initialState, action) => {
