@@ -29,6 +29,7 @@ class CourseList extends Component {
             listComments: [],
             likePosts: [],
             users: [],
+            isRegister: [],
             post: {
                 id: "",
                 content: "",
@@ -65,16 +66,19 @@ class CourseList extends Component {
             }
 
             let userOfEnrollArray = [];
+            let isRegisterArray = [];
             for (let i = 0; i < response.courses.length; i++) {
                 const responseOfEnroll = await getAllUsersEnrollment(response.courses[i].id);
                 const userEnroll = responseOfEnroll.usersOfRegister;
                 userOfEnrollArray.push(userEnroll);
 
+                const userIsRegister = userEnroll.some(item => item?.userID === this.userInfo.id)
+                isRegisterArray.push(userIsRegister)
             }
             this.setState({
                 usersOfEnrollment: userOfEnrollArray,
+                isRegister: isRegisterArray
             });
-            console.log(this.state.usersOfEnrollment);
         } catch (error) {
             console.log(error);
         }
@@ -302,7 +306,7 @@ class CourseList extends Component {
                                 </div>
                             </div>
 
-                            <img src="https://resources.mindx.edu.vn/uploads/images/2212%20THUMBNAIL%20WEB-04.jpg" />
+                            <img style={{ borderRadius: "10px" }} src="https://resources.mindx.edu.vn/uploads/images/2212%20THUMBNAIL%20WEB-04.jpg" />
                         </div>
                         <div className="carousel-item item-2">
                             <svg className="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
@@ -363,7 +367,7 @@ class CourseList extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="row course-list mt-3">
+                                <div className="row course-list mt-5">
                                     {listCourses && listCourses.map((course, index) => {
                                         return (
                                             <div className="col-xl-4 col-lg-4 col-md-6 col-sm-6">
@@ -372,13 +376,15 @@ class CourseList extends Component {
                                                         <img src={course.img_url} alt="" />
                                                     </div>
                                                     <Link to={`/course/${course.id}`}>
+
                                                         <div className="location-details">
-                                                            <a className="location-btn">Xem khóa học</a>
+                                                            {this.state.isRegister[index] ? <a className="location-btn">Tiếp tục học</a> : <a className="location-btn">Xem khóa học</a>}
+
                                                         </div>
                                                     </Link>
                                                 </div>
                                                 <h6 style={{ marginTop: "-10px", fontWeight: "700" }}>{course.title}</h6>
-                                                <div style={{ marginBottom: "40px", fontSize: "14px" }}>
+                                                <div style={{ marginBottom: "40px", fontSize: "16px" }}>
                                                     <i className="bi bi-people-fill"></i> <span>{usersOfEnrollment[index] ? (`${usersOfEnrollment[index].length}`) : "0"}</span>
                                                 </div>
                                             </div>
@@ -393,7 +399,7 @@ class CourseList extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="row course-list mt-3">
+                                <div className="row course-list mt-5">
                                     {listPosts && listPosts.map((post, index) => {
                                         return (
                                             <div className="col-xl-4 col-lg-4 col-md-6 col-sm-6">
