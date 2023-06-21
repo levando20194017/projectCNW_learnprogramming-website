@@ -86,6 +86,7 @@ class Login extends Component {
                     this.props.adminLoginSuccess(data.user)
                 } else {
                     this.props.userLoginSuccess(data.user)
+                    this.props.history.push('/home');
                 }
                 console.log('login success')
             }

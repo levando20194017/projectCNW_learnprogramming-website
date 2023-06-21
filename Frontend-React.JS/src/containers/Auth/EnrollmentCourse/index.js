@@ -72,7 +72,9 @@ class EnrollmentCourse extends Component {
         try {
             const responseOfUserRegister = await getAllUsersEnrollment(this.props.match.params.id)
             console.log(responseOfUserRegister);
-            if (responseOfUserRegister.usersOfRegister?.userID === this.userInfo.id) {
+            const isRegister = responseOfUserRegister.usersOfRegister.some(item => item?.userID === this.userInfo.id);
+            console.log(isRegister);
+            if (isRegister) {
                 this.props.history.push(`/learn/${this.props.match.params.id}`);
             } else {
                 const response = await getAllCourses(this.props.match.params.id);
