@@ -265,20 +265,6 @@ class CourseList extends Component {
             });
         }
     };
-    componentDidUpdate(prevProps, prevState) {
-        if (this.state.listPosts !== prevState.listPosts) {
-            const newIsLiked = [...this.state.isLiked];
-            this.state.listPosts.forEach((post, index) => {
-                const isPostLiked = localStorage.getItem(post.id); // Lấy giá trị trạng thái like từ localStorage
-                if (isPostLiked === "true") {
-                    newIsLiked[index] = true;
-                }
-            });
-            this.setState({
-                isLiked: newIsLiked,
-            });
-        }
-    }
     render() {
         const { listCourses, usersOfEnrollment, listPosts, likePosts, listComments, users, isLiked } = this.state
         return (

@@ -18,6 +18,7 @@ class Learn extends Component {
             videosOfLesson: [],
             allVideos: [],
             videoShow: '',
+            durationsOfVideo: [],
             videoTitleShow: '',
             videoCreatedAt: ''
         }
@@ -26,6 +27,33 @@ class Learn extends Component {
     userInfo = JSON.parse(this.userData.userInfo);
     componentDidMount() {
         this.fetchData();
+        const videoId = "YudHcBIxlYw";
+        const apiKey = "AIzaSyAAe8lpm4BLqzfpDXnY4dnQGbr5-yjYnBs";
+        const url = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoId}&key=${apiKey}`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                // Xử lý phản hồi từ YouTube API để lấy thời lượng của video
+                const duration = data.items[0].contentDetails.duration;
+                const timeRegex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
+                const match = duration.match(timeRegex);
+
+                if (match) {
+                    const hours = parseInt(match[1]) || 0;
+                    const minutes = parseInt(match[2]) || 0;
+                    const seconds = parseInt(match[3]) || 0;
+
+                    let timeString = '';
+                    if (hours > 0) {
+                        timeString += hours.toString().padStart(2, '0') + ':';
+                    }
+                    timeString += minutes.toString().padStart(2, '0') + ':';
+                    timeString += seconds.toString().padStart(2, '0');
+
+                    console.log(timeString); // '03:52'
+                }
+            });
     }
     async fetchData() {
         try {
@@ -36,14 +64,14 @@ class Learn extends Component {
             }
             const responseOfLesson = await getAllLessons(this.props.match.params.id);
             if (responseOfLesson && responseOfLesson.errCode === 0) {
-                this.setState({ lessons: responseOfLesson.lessons });
+                const arrLessons = responseOfLesson.lessons.sort((a, b) => a.orderBy - b.orderBy)
+                this.setState({ lessons: arrLessons });
             }
             let videoArray = [];
             for (let i = 0; i < responseOfLesson.lessons.length; i++) {
                 const responseVideosOfLesson = await getAllVideos(responseOfLesson.lessons[i].id);
-                const videos = responseVideosOfLesson.videos;
-
-                videoArray.push(videos);
+                const sortVideos = responseVideosOfLesson.videos.sort((a, b) => a.orderBy - b.orderBy)
+                videoArray.push(sortVideos);
             }
             this.setState({
                 videosOfLesson: videoArray,
@@ -116,7 +144,7 @@ class Learn extends Component {
                 </div>
                 <div className='learn_body d-flex'>
                     <div className='col-9 learn_body-left'>
-                        <iframe width="100%" height="600px" src={videoShow}
+                        <iframe width="100%" height="600px" src={`https://www.youtube.com/embed/${videoShow}`}
                             title="YouTube video player"
                             frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             allowfullscreen></iframe>

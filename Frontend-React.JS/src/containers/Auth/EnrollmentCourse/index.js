@@ -83,13 +83,14 @@ class EnrollmentCourse extends Component {
                 }
                 const responseOfLesson = await getAllLessons(this.props.match.params.id);
                 if (responseOfLesson && responseOfLesson.errCode === 0) {
-                    this.setState({ lessons: responseOfLesson.lessons });
+                    const arrLessons = responseOfLesson.lessons.sort((a, b) => a.orderBy - b.orderBy)
+                    this.setState({ lessons: arrLessons });
                 }
                 let videoArray = [];
                 for (let i = 0; i < responseOfLesson.lessons.length; i++) {
                     const responseVideosOfLesson = await getAllVideos(responseOfLesson.lessons[i].id);
-                    const videos = responseVideosOfLesson.videos;
-                    videoArray.push(videos);
+                    const sortVideos = responseVideosOfLesson.videos.sort((a, b) => a.orderBy - b.orderBy)
+                    videoArray.push(sortVideos);
                 }
                 this.setState({
                     videosOfLesson: videoArray,
