@@ -63,16 +63,17 @@ class BlogCenter extends Component {
     userInfo = JSON.parse(this.userData.userInfo);
 
     componentDidMount() {
-        let isMounted = true;
+        // let isMounted = true;
         const fetchData = async () => {
             const data = await getAllPostById('ALL');
             this.setState({
                 listPosts: data.data.posts,
             });
-            if (isMounted) {
+            if (true) {
                 let userArray = [];
                 let commentsArray = [];
                 let likePostsArray = [];
+                let isLikedArray = [];
                 for (let i = 0; i < data.data.posts.length; i++) {
                     const response = await getAllUsers(data.data.posts[i].userID);
                     const user = response.users;
@@ -85,68 +86,70 @@ class BlogCenter extends Component {
                     const responseOfLikePost = await getAllLikesOfPost(data.data.posts[i].id);
                     const likeposts = responseOfLikePost.data.likes;
                     likePostsArray.push(likeposts);
+
+                    const userIsLiked = likeposts.some(item => item?.userID === this.userInfo.id);
+                    isLikedArray.push(userIsLiked)
                 }
                 this.setState({
                     users: userArray,
                     listComments: commentsArray,
                     likePosts: likePostsArray,
+                    isLiked: isLikedArray
                 });
             }
         };
         fetchData();
-        return () => {
-            isMounted = false;
-        };
+        // return () => {
+        //     isMounted = false;
+        // };
     }
     // Lưu trạng thái like của bài viết vào localStorage
     handleLikeThisPost = async (index, postID) => {
         const response = await handleLikePost(this.userInfo.id, postID);
         if (response.data.errCode === 1) {
-            const newIsLiked = [...this.state.isLiked];
-            newIsLiked[index] = false;
-            this.setState({
-                isLiked: newIsLiked,
-            });
-            localStorage.setItem(postID, false.toString()); // Lưu giá trị false vào localStorage
 
             const likePostsArray = [...this.state.likePosts]
             const responseOfLikePost = await getAllLikesOfPost(postID);
             const likeposts = responseOfLikePost.data.likes;
             likePostsArray[index] = likeposts;
+
+            const isLikeArray = [...this.state.isLiked];
+            const userIsLiked = likeposts.some(item => item?.userID === this.userInfo.id);
+            isLikeArray[index] = userIsLiked
             this.setState({
                 likePosts: likePostsArray,
+                isLiked: isLikeArray
             });
         }
         if (response.data.errCode === 0) {
-            const newIsLiked = [...this.state.isLiked];
-            newIsLiked[index] = true;
-            this.setState({
-                isLiked: newIsLiked,
-            });
-            localStorage.setItem(postID, true.toString()); // Lưu giá trị true vào localStorage
 
             const likePostsArray = [...this.state.likePosts]
             const responseOfLikePost = await getAllLikesOfPost(postID);
             const likeposts = responseOfLikePost.data.likes;
             likePostsArray[index] = likeposts;
+
+            const isLikeArray = [...this.state.isLiked];
+            const userIsLiked = likeposts.some(item => item?.userID === this.userInfo.id);
+            isLikeArray[index] = userIsLiked
             this.setState({
                 likePosts: likePostsArray,
+                isLiked: isLikeArray
             });
         }
     };
     componentDidUpdate(prevProps, prevState) {
-        if (this.state.listPosts !== prevState.listPosts) {
-            const newIsLiked = [...this.state.isLiked];
-            this.state.listPosts.forEach((post, index) => {
-                const isPostLiked = localStorage.getItem(post.id); // Lấy giá trị trạng thái like từ localStorage
-                if (isPostLiked === "true") {
-                    newIsLiked[index] = true;
-                }
-            });
-            this.setState({
-                isLiked: newIsLiked,
-            });
-        }
+        // if (this.state.listPosts !== prevState.listPosts) {
+        //     const newIsLiked = [...this.state.isLiked];
+        //     this.state.listPosts.forEach((post, index) => {
+        //         const isPostLiked = localStorage.getItem(post.id); // Lấy giá trị trạng thái like từ localStorage
+        //         if (isPostLiked === "true") {
+        //             newIsLiked[index] = true;
+        //         }
+        //     });
+        //     this.setState({
+        //         isLiked: newIsLiked,
+        //     });
+        // }
     }
     onDeleteComment = async (postIndex, commentIndex, postId) => {
         console.log(this.state.listComments[postIndex][commentIndex]);
