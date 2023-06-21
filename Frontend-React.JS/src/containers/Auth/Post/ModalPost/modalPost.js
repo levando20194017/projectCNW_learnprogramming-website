@@ -194,7 +194,7 @@ class ModalPost extends Component {
                     <div className='media d-flex form-input-comment' style={{ width: "100%" }}>
                         <a className="pull-left" href="#"><img className="rounded-circle"
                             width="50" height={50}
-                            src={user.img_url} alt="" /></a>
+                            src={user?.img_url} alt="" /></a>
                         <div className="input-comment">
                             <input className='input-comment__form' placeholder='Post a comment...'
                                 value={contentComment} onChange={e => this.handleOnIputComment(e)}

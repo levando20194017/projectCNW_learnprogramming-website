@@ -373,7 +373,7 @@ class BlogCenter extends Component {
         const { listPosts, likePosts, listComments, isLiked, isOpenModalSubmission, post, users } = this.state
         return (
             <div className="col-md-8 col-lg-6 vstack gap-4" style={{ marginLeft: "-5px" }}>
-                <Scrollbars style={{ height: "92vh" }}>
+                <Scrollbars style={{ height: "100vh" }}>
                     <Modal isOpen={this.state.isConfirmModalOpen} toggle={this.closeConfirmModal}>
                         <ModalHeader toggle={this.closeConfirmModal}>Confirm delete</ModalHeader>
                         <ModalBody>

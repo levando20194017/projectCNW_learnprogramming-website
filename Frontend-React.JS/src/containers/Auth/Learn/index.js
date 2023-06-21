@@ -89,7 +89,9 @@ class Learn extends Component {
             <div className='learn'>
                 <div className='learn_header d-flex'>
                     <div className='d-flex learn_header-left'>
-                        <i className="bi bi-chevron-left"></i>
+                        <Link to='/home'>
+                            <i className="bi bi-chevron-left"></i>
+                        </Link>
                         <Link to='/home'>
                             <div style={{ marginLeft: "20px" }}>
                                 <img src={`${process.env.PUBLIC_URL}/assets/img/logo-symbol.png`} height={30} width={30} />

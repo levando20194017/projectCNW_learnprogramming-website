@@ -15,7 +15,7 @@ class userHeader extends Component {
             <div className="headerUser">
                 <div id="headerUser-left">
                     <div id="headerUser-left-logo">
-                        <img src={`${process.env.PUBLIC_URL}/assets/img/logo-symbol.png`} alt='avatar' style={{height: "40px", borderRadius: "50%"}} />                        
+                        <img src={`${process.env.PUBLIC_URL}/assets/img/logo-symbol.png`} alt='avatar' style={{ height: "40px", borderRadius: "50%" }} />
                         <div id='headerUser-left-logo-p'>
                             CODECRUSH
                         </div>
@@ -23,20 +23,24 @@ class userHeader extends Component {
                 </div>
 
                 <div id="headerUser-center">
-                <ul id="headerUser-nav">
-                        <li ><a href="">HOME</a></li>
-                        <li ><a href="">BLOG</a></li>
-                        <li><a href="">ABOUT US</a></li>
+                    <ul id="headerUser-nav">
+                        <Link to='/home'>
+                            <li ><a >HOME</a></li>
+                        </Link>
+                        <Link to="/blog">
+                            <li ><a>BLOG</a></li>
+                        </Link>
+                        <li><a>ABOUT US</a></li>
                     </ul>
                 </div>
 
                 <div id='headerUser-right'>
                     <div id='headerUser-right-container'>
-                        <img id='headerUser-right-avt' src={userInfo?.img_url} alt='avatar' style={{height: "40px", borderRadius: "50%"}} />
+                        <img className="rounded-circle" src={userInfo?.img_url} alt='avatar' width={40} height={40} />
                         <Link to='/'>
-                        <div className="btn btn-logout" onClick={processLogout}>
-                            <i className="fas fa-sign-out-alt"></i>
-                        </div>
+                            <div className="btn btn-logout" onClick={processLogout}>
+                                <i className="fas fa-sign-out-alt"></i>
+                            </div>
                         </Link>
                     </div>
                 </div>

@@ -96,10 +96,11 @@
   background: #584e8d;
   padding: 7px 13px;
   color: #fff;
-  border-radius: 4px;
+  border-radius: 20px;
   display: inline-block;
   font-size: 14px;
   visibility: hidden;
+  font-weight: 600;
   opacity: 0
 }
 
@@ -154,4 +155,41 @@
   left: 0;
   min-width: 100%;
   height: 32rem;
+}
+
+.item-1 {
+  background: linear-gradient(to left, rgb(247, 177, 84) 0%, #d83503 100%);
+  z-index: 1;
+}
+
+.cau-img {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.item-2 {
+  background: linear-gradient(to left, rgb(152, 155, 222) 0%, #4a049ffd 100%) !important;
+  z-index: 1;
+}
+
+.button-registerCourse {
+  border-radius: 20px;
+  border: 2px solid white;
+  width: 170px;
+  height: 40px;
+  background-color: blue;
+  color: white;
+  font-weight: 600;
+}
+
+.image-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.image-container img {
+  height: 520px;
+  width: 600px;
 }
