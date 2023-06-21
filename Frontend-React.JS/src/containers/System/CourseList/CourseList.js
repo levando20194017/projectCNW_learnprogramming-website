@@ -232,35 +232,31 @@ class CourseList extends Component {
     handleLikeThisPost = async (index, postID) => {
         const response = await handleLikePost(this.userInfo.id, postID);
         if (response.data.errCode === 1) {
-            const newIsLiked = [...this.state.isLiked];
-            newIsLiked[index] = false;
-            this.setState({
-                isLiked: newIsLiked,
-            });
-            localStorage.setItem(postID, false.toString()); // Lưu giá trị false vào localStorage
-
             const likePostsArray = [...this.state.likePosts]
             const responseOfLikePost = await getAllLikesOfPost(postID);
             const likeposts = responseOfLikePost.data.likes;
             likePostsArray[index] = likeposts;
+
+            const isLikeArray = [...this.state.isLiked];
+            const userIsLiked = likeposts.some(item => item?.userID === this.userInfo.id);
+            isLikeArray[index] = userIsLiked
             this.setState({
                 likePosts: likePostsArray,
+                isLiked: isLikeArray
             });
         }
         if (response.data.errCode === 0) {
-            const newIsLiked = [...this.state.isLiked];
-            newIsLiked[index] = true;
-            this.setState({
-                isLiked: newIsLiked,
-            });
-            localStorage.setItem(postID, true.toString()); // Lưu giá trị true vào localStorage
-
             const likePostsArray = [...this.state.likePosts]
             const responseOfLikePost = await getAllLikesOfPost(postID);
             const likeposts = responseOfLikePost.data.likes;
             likePostsArray[index] = likeposts;
+
+            const isLikeArray = [...this.state.isLiked];
+            const userIsLiked = likeposts.some(item => item?.userID === this.userInfo.id);
+            isLikeArray[index] = userIsLiked
             this.setState({
                 likePosts: likePostsArray,
+                isLiked: isLikeArray
             });
         }
     };
@@ -423,15 +419,20 @@ class CourseList extends Component {
                                                         onAddNewComment={(contentComment) => this.onAddNewComment(contentComment, index, post.id)}
                                                         onSaveComment={(commentID, contentComment) => this.onSaveComment(commentID, contentComment, post.id, index)}
                                                         listComments={this.state.listComments[index]}
+                                                        handleLikeThisPost={() => this.handleLikeThisPost(index, post.id)}
                                                     />
                                                 </div>
                                                 {/* <h6 style={{ marginTop: "-10px", fontWeight: "700" }}>{this.state.users[index].fullName}</h6> */}
                                                 <div style={{ marginBottom: "40px", fontSize: "14px" }}>
-                                                    <div className='d-flex' style={{ fontSize: "20px", color: "black" }}>
-                                                        <div>
-                                                            <i className="bi bi-hand-thumbs-up-fill pe-1"></i>
+                                                    <div className='d-flex action-post'>
+                                                        {isLiked[index] ? <div style={{ color: "blue" }}>
+                                                            <i className="bi bi-hand-thumbs-up-fill pe-1" onClick={() => this.handleLikeThisPost(index, post.id)}></i>
                                                             <span>{likePosts[index] ? (`${likePosts[index].length}`) : "0"}</span>
-                                                        </div>
+                                                        </div> :
+                                                            <div>
+                                                                <i className="bi bi-hand-thumbs-up-fill pe-1" onClick={() => this.handleLikeThisPost(index, post.id)}></i>
+                                                                <span>{likePosts[index] ? (`${likePosts[index].length}`) : "0"}</span>
+                                                            </div>}
                                                         <div style={{ marginLeft: "20px" }}>
                                                             <i className="bi bi-chat-fill pe-1"></i>
                                                             <span>{listComments[index] ? (`${listComments[index].length}`) : "0"}</span>

@@ -511,19 +511,19 @@ class BlogCenter extends Component {
                                 <ul className="nav nav-stack py-3 small card-footer">
                                     <li className="nav-item">
                                         {isLiked[index] ? (<a style={{ color: "blue" }}
-                                            className="nav-link active" href="#!" data-bs-container="body"
+                                            className="nav-link active" data-bs-container="body"
                                             data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
                                             data-bs-custom-class="tooltip-text-start"
                                             onClick={() => this.handleLikeThisPost(index, post.id)}
                                         > <i className="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({likePosts[index] && (likePosts[index].length)})</a>)
-                                            : (<a className="nav-link active" href="#!" data-bs-container="body"
+                                            : (<a className="nav-link active" data-bs-container="body"
                                                 data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
                                                 data-bs-custom-class="tooltip-text-start"
                                                 onClick={() => this.handleLikeThisPost(index, post.id)}
                                             > <i className="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({likePosts[index] && (likePosts[index].length)})</a>)}
                                     </li>
                                     <li className="nav-item" onClick={() => this.handleAddNewComment(post)}>
-                                        <a className="nav-link" href="#!"> <i className="bi bi-chat-fill pe-1"></i>Comments ({listComments[index] && (listComments[index].length)})</a>
+                                        <a className="nav-link" > <i className="bi bi-chat-fill pe-1"></i>Comments ({listComments[index] && (listComments[index].length)})</a>
                                     </li>
                                     <ModalPost
                                         isOpen={post.isOpenModalComment}
@@ -537,9 +537,10 @@ class BlogCenter extends Component {
                                         onAddNewComment={(contentComment) => this.onAddNewComment(contentComment, index, post.id)}
                                         onSaveComment={(commentID, contentComment) => this.onSaveComment(commentID, contentComment, post.id, index)}
                                         listComments={this.state.listComments[index]}
+                                        handleLikeThisPost={() => this.handleLikeThisPost(index, post.id)}
                                     />
                                     <li className="nav-item dropdown ms-sm-auto">
-                                        <a className="nav-link mb-0" href="#" id="cardShareAction" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <a className="nav-link mb-0" id="cardShareAction" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i className="bi bi-reply-fill flip-horizontal ps-1"></i>
                                             Share (3)
                                         </a>

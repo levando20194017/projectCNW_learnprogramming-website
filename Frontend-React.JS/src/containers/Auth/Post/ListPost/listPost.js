@@ -466,6 +466,7 @@ class ListPost extends Component {
                                                         onAddNewComment={(contentComment) => this.onAddNewComment(contentComment, index, post.id)}
                                                         onSaveComment={(commentID, contentComment) => this.onSaveComment(commentID, contentComment, post.id, index)}
                                                         listComments={this.state.listComments[index]}
+                                                        handleLikeThisPost={() => this.handleLikeThisPost(index, post.id)}
                                                     />
                                                 </div>
                                             </div>
