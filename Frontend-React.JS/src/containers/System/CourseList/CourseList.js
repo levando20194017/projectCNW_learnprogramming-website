@@ -91,6 +91,7 @@ class CourseList extends Component {
         let userArray = [];
         let commentsArray = [];
         let likePostsArray = [];
+        let isLikedArray = [];
         for (let i = 0; i < data.data.posts.length; i++) {
             const response = await getAllUsers(data.data.posts[i].userID);
             const user = response.users;
@@ -103,11 +104,15 @@ class CourseList extends Component {
             const responseOfLikePost = await getAllLikesOfPost(data.data.posts[i].id);
             const likeposts = responseOfLikePost.data.likes;
             likePostsArray.push(likeposts);
+
+            const userIsLiked = likeposts.some(item => item?.userID === this.userInfo.id);
+            isLikedArray.push(userIsLiked)
         }
         this.setState({
             users: userArray,
             listComments: commentsArray,
             likePosts: likePostsArray,
+            isLiked: isLikedArray
         });
     }
     onDeleteComment = async (postIndex, commentIndex, postId) => {
