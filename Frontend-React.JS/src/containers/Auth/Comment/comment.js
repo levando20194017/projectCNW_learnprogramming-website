@@ -100,13 +100,17 @@ class Comment extends Component {
             const data = await getAllUsers(this.props.comment.userID);
             if (data && data.errCode === 0) {
                 const userComment = data.users;
-                this.setState({ userComment });
+                this.setState({ userComment: userComment });
             }
 
             const responseOfLikeComment = await getAllLikesOfComment(this.props.comment.id);
             if (responseOfLikeComment.data && responseOfLikeComment.data.errCode === 0) {
                 const likeComments = responseOfLikeComment.data.likes;
-                this.setState({ likeComments });
+                const isLikedComment = likeComments.some(item => item?.userID === this.props.user.id)
+                this.setState({
+                    likeComments: likeComments,
+                    isLiked: isLikedComment
+                });
             }
         } catch (error) {
             console.log(error);
