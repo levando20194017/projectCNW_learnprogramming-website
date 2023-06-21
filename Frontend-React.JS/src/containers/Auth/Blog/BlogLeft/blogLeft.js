@@ -13,16 +13,13 @@ class BlogLeft extends Component {
             listPosts: [],
             open: false
         };
-        this.offcanvasToggle = React.createRef();
-        this.offcanvasSideNavbar = React.createRef();
+
     }
     userData = JSON.parse(localStorage.getItem("persist:user"));
     userInfo = JSON.parse(this.userData.userInfo);
     componentDidMount() {
         this.fetchData(this.userInfo.id);
-        this.offcanvasToggle.current.addEventListener('click', () => {
-            this.offcanvasSideNavbar.current.classList.add('active');
-        });
+
     }
 
     componentWillUnmount() {
@@ -48,22 +45,13 @@ class BlogLeft extends Component {
         return (
             <>
                 <div className="col-lg-3">
-                    <div className="d-flex align-items-center d-lg-none">
-                        <button className="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
-                            <span className="btn btn-primary">
-                                <i className="fa-solid fa-sliders-h"></i>
-                            </span>
-                            <span className="h6 mb-0 fw-bold d-lg-none ms-2">My profile</span>
-                        </button>
-                    </div>
-                    <nav className="navbar navbar-expand-lg mx-0">
-                        <div className="offcanvas offcanvas-start show" tabIndex={-1}
-                            id="offcanvasSideNavbar" aria-modal="true" role="dialog"
+
+                    <nav className="navbar navbar-expand-lg mx-0 mt-5">
+                        <div className=" " tabIndex={-1}
+                            id="" aria-modal="true" role="dialog"
                             ref={this.offcanvasSideNavbar}>
-                            <div className="offcanvas-header">
-                                <button type="button" className="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                            </div>
-                            <div className="offcanvas-body d-block px-2 px-lg-0">
+
+                            <div className=" d-block px-2 px-lg-0">
                                 <div className="cardx">
                                     <div className="card-body pt-0">
                                         <div className="h-50px"></div>
@@ -95,27 +83,33 @@ class BlogLeft extends Component {
                                             <hr />
                                             <ul className="nav nav-link-secondary flex-column fw-bold gap-2">
                                                 <li className="nav-item">
-                                                    <a className="nav-link">
-                                                        <i className="bi bi-house-heart-fill me-2 h-20px fa-fw"></i>
-                                                        <span>Home</span>
-                                                    </a>
+                                                    <Link to="/home" style={{ color: "black" }}>
+                                                        <a className="nav-link">
+                                                            <i className="bi bi-house-heart-fill me-2 h-20px fa-fw"></i>
+                                                            <span>Home</span>
+                                                        </a>
+                                                    </Link>
+                                                </li>
+                                                <li className="nav-item">
+                                                    <Link to="/blog" style={{ color: "black" }}>
+                                                        <a className="nav-link">
+                                                            <i className="bi bi-people me-2 h-20px fa-fw"></i>
+                                                            <span>Blog</span>
+                                                        </a>
+                                                    </Link>
+                                                </li>
+                                                <li className="nav-item">
+                                                    <Link to="/aboutus" style={{ color: "black" }}>
+                                                        <a className="nav-link">
+                                                            <i className="bi bi-diagram-3 me-2 h-20px fa-fw"></i>
+                                                            <span>About us</span>
+                                                        </a>
+                                                    </Link>
                                                 </li>
                                                 <li className="nav-item">
                                                     <a className="nav-link">
-                                                        <i className="bi bi-people me-2 h-20px fa-fw"></i>
-                                                        <span>Blog</span>
-                                                    </a>
-                                                </li>
-                                                <li className="nav-item">
-                                                    <a className="nav-link">
-                                                        <i className="bi bi-diagram-3 me-2 h-20px fa-fw"></i>
-                                                        <span>Groups</span>
-                                                    </a>
-                                                </li>
-                                                <li className="nav-item">
-                                                    <a className="nav-link">
-                                                        <i className="bi bi-clipboard-pulse me-2 h-20px fa-fw"></i>
-                                                        <span>About us</span>
+                                                        <i className="bi bi-box-arrow-right"></i>
+                                                        <span> Log out</span>
                                                     </a>
                                                 </li>
                                             </ul>
@@ -147,47 +141,10 @@ class BlogLeft extends Component {
                                 </div>
                             </div>
                         </div>
-                        <button
-                            className="btn btn-outline-secondary"
-                            type="button"
-                            data-bs-toggle="offcanvas"
-                            data-bs-target="#offcanvasSideNavbar"
-                            aria-controls="offcanvasSideNavbar"
-                            id="offcanvasToggle"
-                            ref={this.offcanvasToggle}
-                        >
-                            <i className="bi bi-list"></i>
-                        </button>
+
                     </nav>
                 </div>
-                {/* <>
-                    <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
-                        <Tab eventKey="home" title="Home">
-                            <p>Content for home tab goes here.</p>
-                        </Tab>
-                        <Tab eventKey="profile" title="Profile">
-                            <p>Content for profile tab goes here.</p>
-                        </Tab>
-                        <Tab eventKey="contact" title="Contact">
-                            <p>Content for contact tab goes here.</p>
-                        </Tab>
-                    </Tabs>
-                    <Button variant="primary" onClick={() => this.setState({
-                        open: true
-                    })}>
-                        Open Profile
-                    </Button>
-                    <Offcanvas show={this.state.open} onHide={() => this.setState({
-                        open: false
-                    })} placement="start">
-                        <Offcanvas.Header closeButton>
-                            <Offcanvas.Title>My Profile</Offcanvas.Title>
-                        </Offcanvas.Header>
-                        <Offcanvas.Body>
-                            <p>Content for profile goes here.</p>
-                        </Offcanvas.Body>
-                    </Offcanvas>
-                </> */}
+
             </>
         )
     }

@@ -25,6 +25,7 @@ import D_header_user from './Header/D_header_user';
 import CourseList from "./System/CourseList/CourseList";
 import Test from './Auth/Test';
 import Footer from './Footer';
+import './style.scss'
 class App extends Component {
     handlePersistorState = () => {
         const { persistor } = this.props;
@@ -49,45 +50,51 @@ class App extends Component {
         console.log(history, location);
         return (
             <Fragment>
-                <Router history={history}>
-                    <div className="main-container">
-                        <ConfirmModal />
-                        {/* {this.props.userIsLoggedIn && location.pathname !== "/login" && location.pathname !== "/signup"
+                <TransitionGroup>
+                    <CSSTransition key={location.key} classNames="fade" timeout={300}>
+                        <Router history={history}>
+                            <div className="main-container">
+                                <ConfirmModal />
+                                {/* {this.props.userIsLoggedIn && location.pathname !== "/login" && location.pathname !== "/signup"
                             && location.pathname !== "/changepassword"
                             && location.pathname !== "/forgotpassword"
                             && <D_header_user />} */}
-                        {this.props.adminIsLoggedIn && <HeaderAdmin />}
-                        {this.props.adminIsLoggedIn && <Sidebar />}
-                        <span className="content-container">
-                            <Switch>
-                                <Route path={path.HOME} exact component={HomePage} />
-                                <Route path={"/test"} component={Test} />
-                                <Route path={"/forgotpassword"} component={ForgotPassword} />
-                                <Route path={"/changepassword"} component={ChangePassword} />
-                                <Route path={"/course/:id"} component={EnrollmentCourse} />
-                                <Route path={"/blog"} component={Blog} />
-                                <Route path={"/home"} component={CourseList} />
-                                <Route path={"/signup"} component={SignUp} />
-                                <Route path={"/profile"} component={Profile} />
-                                {/* <Route path={"/header_user"} component={D_header_user} /> */}
-                                <Route path={"/learn/:id"} component={Learn} />
-                                <Route path={path.LOGIN} component={adminIsNotAuthenticated(Login)} />
-                                <Route path={path.SYSTEM} component={adminIsAuthenticated(System)} />
-                            </Switch>
-                        </span>
-                        {this.props.userIsLoggedIn && location.pathname !== "/blog" && location.pathname !== "/login"
+                                {this.props.adminIsLoggedIn && <HeaderAdmin />}
+                                {this.props.adminIsLoggedIn && <Sidebar />}
+                                <span className="content-container">
+
+                                    <Switch>
+                                        <Route path={path.HOME} exact component={HomePage} />
+                                        <Route path={"/test"} component={Test} />
+                                        <Route path={"/forgotpassword"} component={ForgotPassword} />
+                                        <Route path={"/changepassword"} component={ChangePassword} />
+                                        <Route path={"/course/:id"} component={EnrollmentCourse} />
+                                        <Route path={"/blog"} component={Blog} />
+                                        <Route path={"/home"} component={CourseList} />
+                                        <Route path={"/signup"} component={SignUp} />
+                                        <Route path={"/profile"} component={Profile} />
+                                        <Route path={"/learn/:id"} component={Learn} />
+                                        <Route path={path.LOGIN} component={adminIsNotAuthenticated(Login)} />
+                                        <Route path={path.SYSTEM} component={adminIsAuthenticated(System)} />
+                                    </Switch>
+
+                                </span>
+                                {/* {this.props.userIsLoggedIn && location.pathname !== "/blog" && location.pathname !== "/login"
                             && location.pathname !== "/signup"
                             && location.pathname !== "/changepassword"
                             && location.pathname !== "/forgotpassword"
-                            && <Footer />}
-                        <ToastContainer
-                            className="toast-container" toastClassName="toast-item" bodyClassName="toast-item-body"
-                            autoClose={false} hideProgressBar={true} pauseOnHover={false}
-                            pauseOnFocusLoss={true} closeOnClick={false} draggable={false}
-                            closeButton={<CustomToastCloseButton />}
-                        />
-                    </div>
-                </Router>
+                            && location.pathname !== "/learn/:id"
+                            && <Footer />} */}
+                                <ToastContainer
+                                    className="toast-container" toastClassName="toast-item" bodyClassName="toast-item-body"
+                                    autoClose={false} hideProgressBar={true} pauseOnHover={false}
+                                    pauseOnFocusLoss={true} closeOnClick={false} draggable={false}
+                                    closeButton={<CustomToastCloseButton />}
+                                />
+                            </div>
+                        </Router>
+                    </CSSTransition>
+                </TransitionGroup>
             </Fragment>
         )
     }
