@@ -373,7 +373,7 @@ class BlogCenter extends Component {
         });
     }
     render() {
-        const { listPosts, likePosts, listComments, isLiked, isOpenModalSubmission, post, users } = this.state
+        const { listPosts, likePosts, listComments, isLiked, isOpenModalSubmission, users } = this.state
         return (
             <div className="col-md-8 col-lg-6 vstack gap-4" style={{ marginLeft: "-5px" }}>
                 <Scrollbars style={{ height: "100vh" }}>

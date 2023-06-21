@@ -47,7 +47,6 @@ class App extends Component {
 
     render() {
         const { location } = history;
-        console.log(history, location);
         return (
             <Fragment>
                 <TransitionGroup>

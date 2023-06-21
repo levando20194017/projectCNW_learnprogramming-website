@@ -40,7 +40,7 @@ let getUsersRegisterCourse = (courseId) => {
                 courses = await db.Enrollments.findAll();
             }
             if (courseId && courseId !== 'ALL') {
-                usersRegisterCourse = await db.Enrollments.findOne({
+                usersRegisterCourse = await db.Enrollments.findAll({
                     where: { courseID: courseId },
                 })
             }
