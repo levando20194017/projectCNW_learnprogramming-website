@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import './style.scss'
 import { getAllCourses } from '../../../services/courseService';
@@ -81,12 +80,15 @@ class Learn extends Component {
                             });
                     });
                     const videos = await Promise.all(promises);
-                    videos.totalTime = this.sumTimes(videos);
-
+                    lesson.duration = this.sumTimes(videos);
                     lesson.listVideos = videos;
                     return lesson;
                 });
                 const lessons = await Promise.all(promises);
+                // lessons.totalTime = this.sumTimesOfCourse(lessons);
+                // console.log(lessons.totalTime);
+                // console.log(lessons.length);
+
                 const allvideo = lessons.reduce((total, lesson) => {
                     return total + lesson.listVideos.length
                 }, 0)
@@ -181,7 +183,7 @@ class Learn extends Component {
                                         <div className='learn_body-right-lesson-title d-flex' onClick={() => this.handleClick(index)}>
                                             <div className='col-11' style={{ lineHeight: "0.8" }}>
                                                 <h6>{index + 1} {lesson.title}</h6>
-                                                <div style={{ fontSize: "13px" }}>0/{lesson.listVideos && lesson.listVideos.length} | {lesson.listVideos.totalTime}</div>
+                                                <div style={{ fontSize: "13px" }}>0/{lesson.listVideos && lesson.listVideos.length} | {lesson.duration}</div>
                                             </div>
                                             <div className='col-1'>
                                                 {isOpen[index] ? <i className="bi bi-chevron-up"></i> : <i className="bi bi-chevron-down"></i>}
