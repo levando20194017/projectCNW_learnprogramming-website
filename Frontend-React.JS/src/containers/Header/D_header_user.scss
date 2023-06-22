@@ -61,6 +61,7 @@
 }
 
 #headerUser-nav  li  a {
+    display: inline-block;
     color: #000;
     font-weight: 480;
     font-size: 18px;
@@ -72,8 +73,6 @@
     line-height: 46px;
     padding: 5px 25px;
     display: block;
-    // padding: 5px;
-
 }
 
 #headerUser-nav li:hover .subnav {
@@ -88,15 +87,41 @@
     font-weight: 500;
 }
 
-#headerUser-right-container {
+#headerUser-right-nav {
     float: right;
-    padding: 5px 10px;
-    transform: translateY(5%);
+    // padding: 5px 15px;
+    display: inline-block;
 }
 
-#headerUser-right-avt {
-    padding: 0px 15px;
+#headerUser-right-nav li {
+    display: inline-block;
+    text-decoration: none;
+    list-style-type: none;
+    position: relative;
+
 }
+#headerUser-right-nav > li {
+    display: inline-block;
+}
+
+#headerUser-right-nav > li > a {
+    // color: #333;
+    background: linear-gradient(83.84deg, #0088FF -6.87%, #A033FF 26.54%, #FF5C87 58.58%);
+    background-clip: text;
+    color: transparent;
+    font-weight: 520;
+
+    color: #333;
+    font-weight: 480;
+    font-size: 18px;
+    text-decoration: none;
+    line-height: 46px;
+    // padding: 0 8px;
+    padding: 5px 5px;
+    transform: translateX(-20%);
+    display: block;
+}
+
 
 .btn-logout {
     color: #000;
@@ -112,3 +137,52 @@
         font-size: 16px + 1px;
     }
 }
+#subnav-courses, #subnav-avatar {
+    list-style-type: none;
+    //display: block; 
+    display: none;
+    min-width: 200px;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    right: 15px;
+    top: 101%;
+
+}
+
+#headerUser-right-nav li:hover #subnav-courses, #headerUser-right-nav li:hover #subnav-avatar {
+    display: block;
+    border-radius: 10px;
+}
+
+#headerUser-right-nav > li:hover > a {
+    color: #0088FF;
+}
+
+#subnav-courses li:hover a, #subnav-avatar li:hover a {
+    color: #000;
+    background-color: #ccc;
+    box-sizing: border-box;
+
+}
+
+#subnav-courses a, #subnav-avatar a {
+    color: #333;
+    // padding: 0 12px;
+    line-height: 30px;
+}
+
+#subnav-courses li a, #subnav-avatar li a {
+    font-size: 16px;
+    // display: inline-block;
+    color: #333;
+    font-weight: 480;
+    font-size: 18px;
+    text-decoration: none;
+    line-height: 46px;
+    // padding: 0 8px;
+    padding: 0px 0px 0px 15px;
+    transform: translateX(-20%);
+    display: block;
+}
+
