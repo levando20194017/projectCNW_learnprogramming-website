@@ -24,6 +24,38 @@ class EnrollmentCourse extends Component {
     }
     userData = JSON.parse(localStorage.getItem("persist:user"));
     userInfo = JSON.parse(this.userData.userInfo);
+    sumTimes(arr) {
+        const totalSeconds = arr.reduce((total, time) => {
+            const [minutes, seconds] = time.duration.split(':').map(Number);
+            return total + minutes * 60 + seconds;
+        }, 0);
+
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+
+        if (hours === 0) {
+            return `${minutes}:${String(seconds).padStart(2, '0')}`;
+        } else {
+            return `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+    }
+    sumTimesOfCourse(arr) {
+        const totalSeconds = arr.reduce((total, time) => {
+            const [minutes, seconds] = time.duration.split(':').map(Number);
+            return total + minutes * 60 + seconds;
+        }, 0);
+
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+
+        if (hours === 0) {
+            return `${minutes} phút`;
+        } else {
+            return `${hours} giờ ${String(minutes).padStart(2, '0')} phút`;
+        }
+    }
     componentDidMount() {
         this.fetchData();
     }
@@ -70,36 +102,59 @@ class EnrollmentCourse extends Component {
     }
     async fetchData() {
         try {
-            const responseOfUserRegister = await getAllUsersEnrollment(this.props.match.params.id)
-            console.log(responseOfUserRegister);
-            const isRegister = responseOfUserRegister.usersOfRegister.some(item => item?.userID === this.userInfo.id);
-            console.log(isRegister);
-            if (isRegister) {
-                this.props.history.push(`/learn/${this.props.match.params.id}`);
-            } else {
-                const response = await getAllCourses(this.props.match.params.id);
-                if (response && response.errCode === 0) {
-                    this.setState({ course: response.courses });
-                }
-                const responseOfLesson = await getAllLessons(this.props.match.params.id);
-                if (responseOfLesson && responseOfLesson.errCode === 0) {
-                    const arrLessons = responseOfLesson.lessons.sort((a, b) => a.orderBy - b.orderBy)
-                    this.setState({ lessons: arrLessons });
-                }
-                let videoArray = [];
-                for (let i = 0; i < responseOfLesson.lessons.length; i++) {
-                    const responseVideosOfLesson = await getAllVideos(responseOfLesson.lessons[i].id);
-                    const sortVideos = responseVideosOfLesson.videos.sort((a, b) => a.orderBy - b.orderBy)
-                    videoArray.push(sortVideos);
-                }
-                this.setState({
-                    videosOfLesson: videoArray,
-                });
 
-                const allVIDEO = await getAllVideos('ALL')
-                if (allVIDEO && allVIDEO.errCode === 0) {
-                    this.setState({ allVideos: allVIDEO.videos });
-                }
+            const response = await getAllCourses(this.props.match.params.id);
+            if (response && response.errCode === 0) {
+                this.setState({ course: response.courses });
+            }
+            const responseOfLesson = await getAllLessons(this.props.match.params.id);
+            if (responseOfLesson && responseOfLesson.errCode === 0) {
+                const arrLessons = responseOfLesson.lessons.sort((a, b) => a.orderBy - b.orderBy);
+                const promises = arrLessons.map(async (lesson) => {
+                    const responseVideosOfLesson = await getAllVideos(lesson.id);
+                    const sortVideos = responseVideosOfLesson.videos.sort((a, b) => a.orderBy - b.orderBy);
+                    const promises = sortVideos.map((video) => {
+                        const videoId = video.video_url;
+                        const apiKey = process.env.REACT_APP_API_Key_Youtube;
+                        const url = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoId}&key=${apiKey}`;
+                        return fetch(url)
+                            .then(response => response.json())
+                            .then(data => {
+                                const duration = data.items[0].contentDetails.duration;
+                                const timeRegex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
+                                const match = duration.match(timeRegex);
+                                let timeString = '';
+                                if (match) {
+                                    const hours = parseInt(match[1]) || 0;
+                                    const minutes = parseInt(match[2]) || 0;
+                                    const seconds = parseInt(match[3]) || 0;
+                                    if (hours > 0) {
+                                        timeString += hours.toString().padStart(2, '0') + ':';
+                                    }
+                                    timeString += minutes.toString().padStart(2, '0') + ':';
+                                    timeString += seconds.toString().padStart(2, '0');
+                                }
+                                video.duration = timeString;
+                                return video;
+                            });
+                    });
+                    const videos = await Promise.all(promises);
+                    lesson.duration = this.sumTimes(videos);
+
+                    lesson.listVideos = videos;
+                    return lesson;
+                });
+                const lessons = await Promise.all(promises);
+
+                lessons.totalTime = this.sumTimesOfCourse(lessons);
+                console.log(lessons);
+                const allvideo = lessons.reduce((total, lesson) => {
+                    return total + lesson.listVideos.length
+                }, 0)
+                this.setState({
+                    lessons: lessons,
+                    allVideos: allvideo
+                });
             }
         } catch (error) {
             console.log(error);
@@ -113,7 +168,7 @@ class EnrollmentCourse extends Component {
         })
     }
     render() {
-        const { isOpen, course, lessons, videosOfLesson, allVideos } = this.state
+        const { isOpen, course, lessons, allVideos } = this.state
         return (
             <div className='row course-detail' style={{ width: "100%" }}>
                 <div className='col-7 offset-1 pt-5' >
@@ -122,8 +177,8 @@ class EnrollmentCourse extends Component {
                     <h5 className='mt-5'>Nội dung khóa học</h5>
                     <div>
                         <span><b>{lessons ? lessons.length : '0'}</b> chương</span>
-                        <span><b>{allVideos ? allVideos.length : "0"}</b> bài học</span>
-                        <span>thời lượng <b>30 giờ 27 phút</b></span>
+                        <span><b>{allVideos}</b> bài học</span>
+                        <span>thời lượng <b>{lessons.totalTime}</b></span>
                     </div>
                     {lessons && lessons.map((lesson, index) => {
                         return (
@@ -132,15 +187,15 @@ class EnrollmentCourse extends Component {
                                     <div className='row d-flex'>
                                         <div className='col-10 d-flex'>
                                             {isOpen[index] ? <i className="bi bi-dash"></i> : <i className="bi bi-plus"></i>}
-                                            <h6 style={{ paddingLeft: "10px", paddingTop: "5px" }}>{lesson.orderBy}. {lesson.title}</h6>
+                                            <h6 style={{ paddingLeft: "10px", paddingTop: "5px" }}>{index + 1}. {lesson.title}</h6>
                                         </div>
                                         <div className='col-2' style={{ fontSize: "14px" }}>
-                                            {videosOfLesson[index] ? (`${videosOfLesson[index].length} bài học`) : "0 bài học"}
+                                            {lesson.listVideos ? (`${lesson.listVideos.length} bài học`) : "0 bài học"}
                                         </div>
                                     </div>
                                 </div>
                                 {isOpen[index] && <div className='list-lession-of-course'>
-                                    {videosOfLesson[index] && videosOfLesson[index].map((video) => {
+                                    {lesson.listVideos && lesson.listVideos.map((video) => {
                                         return (
                                             <div className='lesson'>
                                                 <div className='col-11 d-flex' style={{ paddingLeft: "40px" }}>
@@ -148,7 +203,7 @@ class EnrollmentCourse extends Component {
                                                     <p style={{ paddingLeft: "10px", paddingTop: "14px" }} className='text-secondary'>{video.title}</p>
                                                 </div>
                                                 <div className='col-1'>
-                                                    03:15
+                                                    {video.duration}
                                                 </div>
                                             </div>
                                         )
@@ -197,8 +252,8 @@ class EnrollmentCourse extends Component {
                         </div>
                         <div className='col-6 offset-4 mt-3'>
                             <div><i className="bi bi-water"></i><span>Trình độ cơ bản</span></div>
-                            <div><i className="bi bi-film"></i><span>Tổng <b>{allVideos ? allVideos.length : '0'}</b> bài học</span></div>
-                            <div><i className="bi bi-clock-fill"></i><span>Thời lượng <b>29 giờ</b></span></div>
+                            <div><i className="bi bi-film"></i><span>Tổng <b>{allVideos}</b> bài học</span></div>
+                            <div><i className="bi bi-clock-fill"></i><span>Thời lượng <b>{lessons.totalTime}</b></span></div>
                             <div><i className="bi bi-film"></i><span> Học mọi lúc mọi nơi</span></div>
                         </div>
                     </div>
