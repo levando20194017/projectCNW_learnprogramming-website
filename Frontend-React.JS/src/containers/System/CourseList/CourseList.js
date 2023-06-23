@@ -362,13 +362,17 @@ class CourseList extends Component {
                                                     <div className="location-img">
                                                         <img src={course.img_url} alt="" />
                                                     </div>
-                                                    <Link to={`/course/${course.id}`}>
 
-                                                        <div className="location-details">
-                                                            {this.state.isRegister[index] ? <a className="location-btn">Tiếp tục học</a> : <a className="location-btn">Xem khóa học</a>}
-
-                                                        </div>
-                                                    </Link>
+                                                    <div className="location-details">
+                                                        {this.state.isRegister[index] ?
+                                                            <Link to={`/learn/${course.id}`}>
+                                                                <a className="location-btn">Tiếp tục học</a>
+                                                            </Link>
+                                                            :
+                                                            <Link to={`/course/${course.id}`}>
+                                                                <a className="location-btn">Xem khóa học</a>
+                                                            </Link>}
+                                                    </div>
                                                 </div>
                                                 <h6 style={{ marginTop: "-10px", fontWeight: "700" }}>{course.title}</h6>
                                                 <div style={{ marginBottom: "40px", fontSize: "16px" }}>
