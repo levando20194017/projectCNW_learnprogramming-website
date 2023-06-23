@@ -33,7 +33,7 @@ let createProgressOfCourse = (data) => {
                         videoID: data.videoID,
                         completionPercentage: data.completionPercent,
                         total_time: data.totalTime,
-                        completed_time: data.duration
+                        completed_time: data.completed_time
                     })
                     resolve({
                         errCode: 0,

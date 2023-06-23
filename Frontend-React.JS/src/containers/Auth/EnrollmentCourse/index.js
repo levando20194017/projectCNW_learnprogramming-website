@@ -102,64 +102,63 @@ class EnrollmentCourse extends Component {
     }
     async fetchData() {
         try {
-            const responseOfUserRegister = await getAllUsersEnrollment(this.props.match.params.id)
-            const isRegister = responseOfUserRegister.usersOfRegister.some(item => item?.userID === this.userInfo.id);
-            if (isRegister) {
-                this.props.history.push(`/learn/${this.props.match.params.id}`);
-            } else {
-                const response = await getAllCourses(this.props.match.params.id);
-                if (response && response.errCode === 0) {
-                    this.setState({ course: response.courses });
-                }
-                const responseOfLesson = await getAllLessons(this.props.match.params.id);
-                if (responseOfLesson && responseOfLesson.errCode === 0) {
-                    const arrLessons = responseOfLesson.lessons.sort((a, b) => a.orderBy - b.orderBy);
-                    const promises = arrLessons.map(async (lesson) => {
-                        const responseVideosOfLesson = await getAllVideos(lesson.id);
-                        const sortVideos = responseVideosOfLesson.videos.sort((a, b) => a.orderBy - b.orderBy);
-                        const promises = sortVideos.map((video) => {
-                            const videoId = video.video_url;
-                            const apiKey = process.env.REACT_APP_API_Key_Youtube;
-                            const url = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoId}&key=${apiKey}`;
-                            return fetch(url)
-                                .then(response => response.json())
-                                .then(data => {
-                                    const duration = data.items[0].contentDetails.duration;
-                                    const timeRegex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
-                                    const match = duration.match(timeRegex);
-                                    let timeString = '';
-                                    if (match) {
-                                        const hours = parseInt(match[1]) || 0;
-                                        const minutes = parseInt(match[2]) || 0;
-                                        const seconds = parseInt(match[3]) || 0;
-                                        if (hours > 0) {
-                                            timeString += hours.toString().padStart(2, '0') + ':';
-                                        }
-                                        timeString += minutes.toString().padStart(2, '0') + ':';
-                                        timeString += seconds.toString().padStart(2, '0');
+            // const responseOfUserRegister = await getAllUsersEnrollment(this.props.match.params.id)
+            // const isRegister = responseOfUserRegister.usersOfRegister.some(item => item?.userID === this.userInfo.id);
+            // if (isRegister) {
+            //     this.props.history.push(`/learn/${this.props.match.params.id}`);
+            // } else {
+            const response = await getAllCourses(this.props.match.params.id);
+            if (response && response.errCode === 0) {
+                this.setState({ course: response.courses });
+            }
+            const responseOfLesson = await getAllLessons(this.props.match.params.id);
+            if (responseOfLesson && responseOfLesson.errCode === 0) {
+                const arrLessons = responseOfLesson.lessons.sort((a, b) => a.orderBy - b.orderBy);
+                const promises = arrLessons.map(async (lesson) => {
+                    const responseVideosOfLesson = await getAllVideos(lesson.id);
+                    const sortVideos = responseVideosOfLesson.videos.sort((a, b) => a.orderBy - b.orderBy);
+                    const promises = sortVideos.map((video) => {
+                        const videoId = video.video_url;
+                        const apiKey = process.env.REACT_APP_API_Key_Youtube;
+                        const url = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoId}&key=${apiKey}`;
+                        return fetch(url)
+                            .then(response => response.json())
+                            .then(data => {
+                                const duration = data.items[0].contentDetails.duration;
+                                const timeRegex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
+                                const match = duration.match(timeRegex);
+                                let timeString = '';
+                                if (match) {
+                                    const hours = parseInt(match[1]) || 0;
+                                    const minutes = parseInt(match[2]) || 0;
+                                    const seconds = parseInt(match[3]) || 0;
+                                    if (hours > 0) {
+                                        timeString += hours.toString().padStart(2, '0') + ':';
                                     }
-                                    video.duration = timeString;
-                                    return video;
-                                });
-                        });
-                        const videos = await Promise.all(promises);
-                        lesson.duration = this.sumTimes(videos);
-
-                        lesson.listVideos = videos;
-                        return lesson;
+                                    timeString += minutes.toString().padStart(2, '0') + ':';
+                                    timeString += seconds.toString().padStart(2, '0');
+                                }
+                                video.duration = timeString;
+                                return video;
+                            });
                     });
-                    const lessons = await Promise.all(promises);
+                    const videos = await Promise.all(promises);
+                    lesson.duration = this.sumTimes(videos);
 
-                    lessons.totalTime = this.sumTimesOfCourse(lessons);
-                    console.log(lessons);
-                    const allvideo = lessons.reduce((total, lesson) => {
-                        return total + lesson.listVideos.length
-                    }, 0)
-                    this.setState({
-                        lessons: lessons,
-                        allVideos: allvideo
-                    });
-                }
+                    lesson.listVideos = videos;
+                    return lesson;
+                });
+                const lessons = await Promise.all(promises);
+
+                lessons.totalTime = this.sumTimesOfCourse(lessons);
+                console.log(lessons);
+                const allvideo = lessons.reduce((total, lesson) => {
+                    return total + lesson.listVideos.length
+                }, 0)
+                this.setState({
+                    lessons: lessons,
+                    allVideos: allvideo
+                });
             }
         } catch (error) {
             console.log(error);

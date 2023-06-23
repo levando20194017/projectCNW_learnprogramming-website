@@ -6,6 +6,7 @@ import { getAllLessons } from '../../../services/lessonService';
 import { getAllVideos } from '../../../services/videoService';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import YouTube from 'react-youtube';
 class Learn extends Component {
 
     constructor(props) {
@@ -17,8 +18,15 @@ class Learn extends Component {
             allVideos: [],
             videoShow: '',
             videoTitleShow: '',
-            videoCreatedAt: ''
+            videoCreatedAt: '',
+            time: 0,
+            timerId: null,
+            listVideos: [],
+            lesssonIndex: 0,
+            videoIndexOfLesson: 0
         }
+        this.onPlay = this.onPlay.bind(this);
+        this.onPause = this.onPause.bind(this);
     }
     userData = JSON.parse(localStorage.getItem("persist:user"));
     userInfo = JSON.parse(this.userData.userInfo);
@@ -37,6 +45,14 @@ class Learn extends Component {
         } else {
             return `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
         }
+    }
+    convertTimeToSeconds(timeString) {
+        const timeArray = timeString?.split(':').reverse();
+        let seconds = 0;
+        for (let i = 0; i < timeArray?.length; i++) {
+            seconds += parseInt(timeArray[i], 10) * Math.pow(60, i);
+        }
+        return seconds;
     }
     componentDidMount() {
         this.fetchData();
@@ -75,7 +91,8 @@ class Learn extends Component {
                                     timeString += minutes.toString().padStart(2, '0') + ':';
                                     timeString += seconds.toString().padStart(2, '0');
                                 }
-                                video.duration = timeString;
+                                video.duration = timeString; // thời lượng của 1 video
+                                this.state.listVideos.push(video)
                                 return video;
                             });
                     });
@@ -85,9 +102,7 @@ class Learn extends Component {
                     return lesson;
                 });
                 const lessons = await Promise.all(promises);
-                // lessons.totalTime = this.sumTimesOfCourse(lessons);
-                // console.log(lessons.totalTime);
-                // console.log(lessons.length);
+                lessons.totalTime = this.sumTimes(lessons);
 
                 const allvideo = lessons.reduce((total, lesson) => {
                     return total + lesson.listVideos.length
@@ -111,24 +126,54 @@ class Learn extends Component {
             isOpen: copyState
         })
     }
-    handleShowVideo = (video_url, videoTitle, videoCreatedAt, index) => {
+    handleShowVideo = (video_url, videoTitle, videoCreatedAt, videoIndex, lessonIndex) => {
+        clearInterval(this.state.timerId);
+        this.setState({ timerId: null });
         this.setState({
             videoShow: video_url,
             videoTitleShow: videoTitle,
-            videoCreatedAt: videoCreatedAt
+            videoCreatedAt: videoCreatedAt,
+            time: 0,
+            lessonIndex: lessonIndex,
+            videoIndexOfLesson: videoIndex
         })
         const isActive = document.querySelector('.list-video_title.active')
         if (isActive) {
             isActive.classList.remove('active');
         }
         const videoTile = document.querySelectorAll('.list-video_title')
-        if (videoTile && videoTile[index]) {
-            videoTile[index].classList.add('active');
+        if (videoTile && videoTile[videoIndex]) {
+            videoTile[videoIndex].classList.add('active');
         }
     }
+    onPlay(lessonIndex, videoIndex) {
+        console.log('play');
+        const timerId = setInterval(() => {
+            this.setState({ time: this.state.time + 1 });
+        }, 1000);
+        this.setState({ timerId });
+        const durationOfVideo = this.convertTimeToSeconds(this.state.lessons[lessonIndex]?.listVideos[videoIndex]?.duration)
 
+        const completedPercent = this.state.time / durationOfVideo * 100
+        console.log(completedPercent);
+
+    }
+
+    onPause(lessonIndex, videoIndex) {
+        console.log('pause');
+        clearInterval(this.state.timerId);
+        this.setState({ timerId: null });
+    }
     render() {
-        const { isOpen, course, lessons, allVideos, videoShow, videoTitleShow, videoCreatedAt } = this.state
+        const { isOpen, course, lessons, allVideos, videoShow, videoTitleShow, videoCreatedAt, lessonIndex, videoIndexOfLesson } = this.state
+        const opts = {
+            height: '600',
+            width: '100%',
+            playerVars: {
+                autoplay: 1,
+                controls: 1,
+            },
+        };
         return (
             <div className='learn'>
                 <div className='learn_header d-flex'>
@@ -160,10 +205,12 @@ class Learn extends Component {
                 </div>
                 <div className='learn_body d-flex'>
                     <div className='col-9 learn_body-left'>
-                        <iframe width="100%" height="600px" src={`https://www.youtube.com/embed/${videoShow}`}
-                            title="YouTube video player"
-                            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen></iframe>
+                        <YouTube videoId={videoShow} opts={opts}
+                            onPlay={() => this.onPlay(lessonIndex, videoIndexOfLesson)}
+                            onPause={() => this.onPause(lessonIndex, videoIndexOfLesson)} />
+                        <div>
+                            {this.state.time} seconds
+                        </div>
                         <div className='learn_body-footer d-flex'>
                             <div className='learn_body-footer-title'>
                                 <h4>{videoTitleShow}</h4>
@@ -195,7 +242,7 @@ class Learn extends Component {
                                         {lesson.listVideos && lesson.listVideos.map((video, videoIndex) => {
                                             return (
                                                 <div className='list-video_title' style={{ lineHeight: "0.8" }}
-                                                    onClick={() => this.handleShowVideo(video.video_url, video.title, video.createdAt, videoIndex)}>
+                                                    onClick={() => this.handleShowVideo(video.video_url, video.title, video.createdAt, videoIndex, index)}>
                                                     <h6>{videoIndex + 1} {video.title}</h6>
                                                     <div>
                                                         <i class="bi bi-youtube"></i> <span>{video.duration}</span>
