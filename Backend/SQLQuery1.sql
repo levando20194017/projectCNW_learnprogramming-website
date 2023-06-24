@@ -378,3 +378,6 @@ ON DELETE CASCADE;
 -- FOREIGN KEY ("videoID")
 -- REFERENCES "Videos" ("id")
 -- ON DELETE CASCADE;
+
+ALTER TABLE "Progresses"
+ADD CONSTRAINT unique_progress UNIQUE ("courseID", "videoID", "userID");
