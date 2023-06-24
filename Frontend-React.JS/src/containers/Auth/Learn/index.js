@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { ProgressBar } from 'react-bootstrap';
 class Learn extends Component {
 
     constructor(props) {
@@ -214,7 +215,7 @@ class Learn extends Component {
         }
     }
     render() {
-        const { isOpen, course, lessons, allVideos, videoShow, videoTitleShow, videoCreatedAt, numberOfVideoCompleted } = this.state
+        const { isOpen, course, lessons, allVideos, videoShow, videoTitleShow, videoCreatedAt, numberOfVideoCompleted, listVideos } = this.state
         const opts = {
             height: '600',
             width: '100%',
@@ -222,6 +223,16 @@ class Learn extends Component {
                 autoplay: 1,
                 controls: 1,
             },
+        };
+        console.log(listVideos);
+        var totalTimeCompleted = 0;
+        for (var i = 0; i < numberOfVideoCompleted; i++) {
+            totalTimeCompleted += this.convertTimeToSeconds(listVideos[i]?.duration)
+        }
+        var totalPercentCompleted = Math.round(totalTimeCompleted / this.convertTimeToSeconds(lessons.totalTime) * 100)
+        console.log("total", totalPercentCompleted, totalTimeCompleted, this.convertTimeToSeconds(lessons.totalTime));
+        const progressBarStyle = {
+            transform: `rotate(${(totalPercentCompleted / 100) * 180}deg)`,
         };
         return (
             <div className='learn'>
@@ -238,17 +249,30 @@ class Learn extends Component {
                         <h6 style={{ marginLeft: "10px", paddingTop: "4px" }}>{course.title}</h6>
                     </div>
                     <div className='d-flex learn_header-right'>
-                        <div>
-                            <i className="bi bi-book-half"></i>
-                            <span>0/{allVideos} bài học</span>
+                        <div className="circle-wrap">
+                            <div className="circle">
+                                <div className="mask full-1" style={progressBarStyle}>
+                                    <div className="fill-1" style={progressBarStyle}></div>
+                                </div>
+                                <div className="mask half">
+                                    <div className="fill-1" style={progressBarStyle}></div>
+                                </div>
+                                <div className="inside-circle">{totalPercentCompleted}%</div>
+                            </div>
                         </div>
-                        <div>
-                            <i className="bi bi-journal-bookmark"></i>
-                            <span>Ghi chú</span>
-                        </div>
-                        <div>
-                            <i className="bi bi-question-circle-fill"></i>
-                            <span>Hướng dẫn</span>
+                        <div className='abc'>
+                            <div>
+                                <i className="bi bi-book-half"></i>
+                                <span>{numberOfVideoCompleted}/{allVideos} bài học</span>
+                            </div>
+                            <div>
+                                <i className="bi bi-journal-bookmark"></i>
+                                <span>Ghi chú</span>
+                            </div>
+                            <div>
+                                <i className="bi bi-question-circle-fill"></i>
+                                <span>Hướng dẫn</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -273,13 +297,41 @@ class Learn extends Component {
                     <div className='col-3 learn_body-right'>
                         <h6 className='content-lesson'>Nội dung khóa học</h6>
                         {lessons && lessons.map((lesson, index) => {
+                            var b = 0;
+                            var c = 0;
+                            if (index == 0) {
+                                if (lesson.listVideos.length < numberOfVideoCompleted) {
+                                    b = lesson.listVideos.length
+                                } else {
+                                    b = numberOfVideoCompleted
+                                }
+                                console.log(b)
+                            } else {
+                                for (var i = 0; i <= index; i++) {
+                                    c += lessons[i].listVideos.length;
+                                }
+                                if (c <= numberOfVideoCompleted) {
+                                    b = lesson.listVideos.length
+                                } else {
+                                    var d = 0;
+                                    for (var i = 0; i < index; i++) {
+                                        d += lessons[i].listVideos.length
+                                    }
+                                    if (numberOfVideoCompleted - d > 0) {
+                                        b = numberOfVideoCompleted - d
+                                    } else {
+                                        b = 0
+                                    }
+                                }
+                            }
+
                             return (
                                 <div>
                                     <div className='learn_body-right-lesson mt-3'>
                                         <div className='learn_body-right-lesson-title d-flex' onClick={() => this.handleClick(index)}>
                                             <div className='col-11' style={{ lineHeight: "0.8" }}>
                                                 <h6>{index + 1} {lesson.title}</h6>
-                                                <div style={{ fontSize: "13px" }}>0/{lesson.listVideos && lesson.listVideos.length} | {lesson.duration}</div>
+                                                <div style={{ fontSize: "13px" }}>{b}/{lesson.listVideos && lesson.listVideos.length} | {lesson.duration}</div>
                                             </div>
                                             <div className='col-1' style={{ marginLeft: "13px" }}>
                                                 {isOpen[index] ? <i className="bi bi-chevron-up"></i> : <i className="bi bi-chevron-down"></i>}
@@ -348,8 +400,8 @@ class Learn extends Component {
                         <span>BÀI TRƯỚC</span>
                     </div>
                     <div className='lesson_next'>
+                        <span style={{ marginLeft: "5px" }}>BÀI TIẾP THEO</span>
                         <i className="bi bi-chevron-right"></i>
-                        <span>BÀI TIẾP THEO</span>
                     </div>
                 </div>
             </div>
