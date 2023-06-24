@@ -80,10 +80,18 @@ class Learn extends Component {
             console.log(this.state.numberOfVideoCompleted);
             const responseOfLesson = await getAllLessons(this.props.match.params.id);
             if (responseOfLesson && responseOfLesson.errCode === 0) {
+                let arrOfListVideos = [];
+
                 const arrLessons = responseOfLesson.lessons.sort((a, b) => a.orderBy - b.orderBy);
                 const promises = arrLessons.map(async (lesson) => {
+
                     const responseVideosOfLesson = await getAllVideos(lesson.id);
                     const sortVideos = responseVideosOfLesson.videos.sort((a, b) => a.orderBy - b.orderBy);
+
+                    if (sortVideos.length != 0) {
+                        arrOfListVideos = arrOfListVideos.concat(sortVideos)
+                    }
+
                     const promises = sortVideos.map((video) => {
                         const videoId = video.video_url;
                         const apiKey = process.env.REACT_APP_API_Key_Youtube;
@@ -95,6 +103,7 @@ class Learn extends Component {
                                 const timeRegex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
                                 const match = duration.match(timeRegex);
                                 let timeString = '';
+
                                 if (match) {
                                     const hours = parseInt(match[1]) || 0;
                                     const minutes = parseInt(match[2]) || 0;
@@ -106,12 +115,13 @@ class Learn extends Component {
                                     timeString += seconds.toString().padStart(2, '0');
                                 }
                                 video.duration = timeString; // thời lượng của 1 video
-                                this.state.listVideos.push(video)
                                 return video;
                             });
                     });
+
                     const videos = await Promise.all(promises);
                     lesson.duration = this.sumTimes(videos);
+
                     lesson.listVideos = videos;
                     return lesson;
                 });
@@ -126,7 +136,8 @@ class Learn extends Component {
                     videoShow: lessons[0].listVideos[0].video_url,
                     videoTitleShow: lessons[0].listVideos[0].title,
                     videoCreatedAt: lessons[0].listVideos[0].createdAt,
-                    allVideos: allvideo
+                    allVideos: allvideo,
+                    listVideos: arrOfListVideos
                 });
             }
         } catch (error) {
@@ -225,13 +236,12 @@ class Learn extends Component {
                 controls: 1,
             },
         };
-        console.log(listVideos);
         var totalTimeCompleted = 0;
         for (var i = 0; i < numberOfVideoCompleted; i++) {
             totalTimeCompleted += this.convertTimeToSeconds(listVideos[i]?.duration)
         }
         var totalPercentCompleted = Math.round(totalTimeCompleted / this.convertTimeToSeconds(lessons.totalTime) * 100)
-        console.log("total", totalPercentCompleted, totalTimeCompleted, this.convertTimeToSeconds(lessons.totalTime));
+        console.log(listVideos, totalTimeCompleted, totalPercentCompleted, this.convertTimeToSeconds(lessons.totalTime));
         const progressBarStyle = {
             transform: `rotate(${(totalPercentCompleted / 100) * 180}deg)`,
         };
@@ -307,7 +317,6 @@ class Learn extends Component {
                                     } else {
                                         b = numberOfVideoCompleted
                                     }
-                                    console.log(b)
                                 } else {
                                     for (var i = 0; i <= index; i++) {
                                         c += lessons[i].listVideos.length;
