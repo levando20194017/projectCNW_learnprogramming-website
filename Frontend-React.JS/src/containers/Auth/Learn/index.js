@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { ProgressBar } from 'react-bootstrap';
+import Scrollbars from "react-custom-scrollbars";
 class Learn extends Component {
 
     constructor(props) {
@@ -295,103 +296,105 @@ class Learn extends Component {
                         </div>
                     </div>
                     <div className='col-3 learn_body-right'>
-                        <h6 className='content-lesson'>Nội dung khóa học</h6>
-                        {lessons && lessons.map((lesson, index) => {
-                            var b = 0;
-                            var c = 0;
-                            if (index == 0) {
-                                if (lesson.listVideos.length < numberOfVideoCompleted) {
-                                    b = lesson.listVideos.length
-                                } else {
-                                    b = numberOfVideoCompleted
-                                }
-                                console.log(b)
-                            } else {
-                                for (var i = 0; i <= index; i++) {
-                                    c += lessons[i].listVideos.length;
-                                }
-                                if (c <= numberOfVideoCompleted) {
-                                    b = lesson.listVideos.length
-                                } else {
-                                    var d = 0;
-                                    for (var i = 0; i < index; i++) {
-                                        d += lessons[i].listVideos.length
-                                    }
-                                    if (numberOfVideoCompleted - d > 0) {
-                                        b = numberOfVideoCompleted - d
+                        <Scrollbars style={{ height: "780px" }}>
+                            <h6 className='content-lesson'>Nội dung khóa học</h6>
+                            {lessons && lessons.map((lesson, index) => {
+                                var b = 0;
+                                var c = 0;
+                                if (index == 0) {
+                                    if (lesson.listVideos.length < numberOfVideoCompleted) {
+                                        b = lesson.listVideos.length
                                     } else {
-                                        b = 0
+                                        b = numberOfVideoCompleted
+                                    }
+                                    console.log(b)
+                                } else {
+                                    for (var i = 0; i <= index; i++) {
+                                        c += lessons[i].listVideos.length;
+                                    }
+                                    if (c <= numberOfVideoCompleted) {
+                                        b = lesson.listVideos.length
+                                    } else {
+                                        var d = 0;
+                                        for (var i = 0; i < index; i++) {
+                                            d += lessons[i].listVideos.length
+                                        }
+                                        if (numberOfVideoCompleted - d > 0) {
+                                            b = numberOfVideoCompleted - d
+                                        } else {
+                                            b = 0
+                                        }
                                     }
                                 }
-                            }
 
-                            return (
-                                <div>
-                                    <div className='learn_body-right-lesson mt-3'>
-                                        <div className='learn_body-right-lesson-title d-flex' onClick={() => this.handleClick(index)}>
-                                            <div className='col-11' style={{ lineHeight: "0.8" }}>
-                                                <h6>{index + 1} {lesson.title}</h6>
-                                                <div style={{ fontSize: "13px" }}>{b}/{lesson.listVideos && lesson.listVideos.length} | {lesson.duration}</div>
-                                            </div>
-                                            <div className='col-1' style={{ marginLeft: "13px" }}>
-                                                {isOpen[index] ? <i className="bi bi-chevron-up"></i> : <i className="bi bi-chevron-down"></i>}
+                                return (
+                                    <div>
+                                        <div className='learn_body-right-lesson mt-3'>
+                                            <div className='learn_body-right-lesson-title d-flex' onClick={() => this.handleClick(index)}>
+                                                <div className='col-11' style={{ lineHeight: "0.8" }}>
+                                                    <h6>{index + 1} {lesson.title}</h6>
+                                                    <div style={{ fontSize: "13px" }}>{b}/{lesson.listVideos && lesson.listVideos.length} | {lesson.duration}</div>
+                                                </div>
+                                                <div className='col-1' style={{ marginLeft: "13px" }}>
+                                                    {isOpen[index] ? <i className="bi bi-chevron-up"></i> : <i className="bi bi-chevron-down"></i>}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    {isOpen[index] && <div className='list-video'>
-                                        {lesson.listVideos && lesson.listVideos.map((video, videoIndex) => {
-                                            var a = 0;
-                                            if (index != 0) {
-                                                for (var i = 0; i < index; i++) {
-                                                    a += lessons[i].listVideos.length;
+                                        {isOpen[index] && <div className='list-video'>
+                                            {lesson.listVideos && lesson.listVideos.map((video, videoIndex) => {
+                                                var a = 0;
+                                                if (index != 0) {
+                                                    for (var i = 0; i < index; i++) {
+                                                        a += lessons[i].listVideos.length;
+                                                    }
                                                 }
-                                            }
 
-                                            if (a + videoIndex + 1 < numberOfVideoCompleted + 1) {
-                                                return (
-                                                    <div className='list-video_title d-flex' style={{ lineHeight: "0.8" }}
-                                                        onClick={() => this.handleShowVideo(video.video_url, video.title, video.createdAt, videoIndex, index, video.id)}>
-                                                        <div className='col-11'>
-                                                            <h6>{videoIndex + 1} {video.title}</h6>
-                                                            <div>
-                                                                <i class="bi bi-youtube" style={{ color: "red" }}></i> <span>{video.duration}</span>
+                                                if (a + videoIndex + 1 < numberOfVideoCompleted + 1) {
+                                                    return (
+                                                        <div className='list-video_title d-flex' style={{ lineHeight: "0.8" }}
+                                                            onClick={() => this.handleShowVideo(video.video_url, video.title, video.createdAt, videoIndex, index, video.id)}>
+                                                            <div className='col-11'>
+                                                                <h6>{videoIndex + 1} {video.title}</h6>
+                                                                <div>
+                                                                    <i class="bi bi-youtube" style={{ color: "red" }}></i> <span>{video.duration}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div className='col-1'>
+                                                                <i style={{ color: "green" }} className="bi bi-check-circle-fill"></i>
                                                             </div>
                                                         </div>
-                                                        <div className='col-1'>
-                                                            <i style={{ color: "green" }} className="bi bi-check-circle-fill"></i>
+                                                    )
+                                                } else if (a + videoIndex + 1 == numberOfVideoCompleted + 1) {
+                                                    return (
+                                                        <div className='list-video_title d-flex' style={{ lineHeight: "0.8" }}
+                                                            onClick={() => this.handleShowVideo(video.video_url, video.title, video.createdAt, videoIndex, index, video.id)}>
+                                                            <div className='col-12'>
+                                                                <h6>{videoIndex + 1} {video.title}</h6>
+                                                                <div>
+                                                                    <i class="bi bi-youtube" style={{ color: "red" }}></i> <span>{video.duration}</span>
+                                                                </div>
+                                                            </div>
+
                                                         </div>
-                                                    </div>
-                                                )
-                                            } else if (a + videoIndex + 1 == numberOfVideoCompleted + 1) {
-                                                return (
-                                                    <div className='list-video_title d-flex' style={{ lineHeight: "0.8" }}
-                                                        onClick={() => this.handleShowVideo(video.video_url, video.title, video.createdAt, videoIndex, index, video.id)}>
-                                                        <div className='col-12'>
+                                                    )
+                                                }
+                                                else {
+                                                    return (
+                                                        <div className='list-video_title-not-complete' style={{ lineHeight: "0.8" }}>
                                                             <h6>{videoIndex + 1} {video.title}</h6>
                                                             <div>
-                                                                <i class="bi bi-youtube" style={{ color: "red" }}></i> <span>{video.duration}</span>
+                                                                <i className="bi bi-youtube"></i> <span>{video.duration}</span>
                                                             </div>
                                                         </div>
+                                                    )
+                                                }
+                                            })}
+                                        </div>}
+                                    </div>
+                                )
+                            })}
 
-                                                    </div>
-                                                )
-                                            }
-                                            else {
-                                                return (
-                                                    <div className='list-video_title-not-complete' style={{ lineHeight: "0.8" }}>
-                                                        <h6>{videoIndex + 1} {video.title}</h6>
-                                                        <div>
-                                                            <i className="bi bi-youtube"></i> <span>{video.duration}</span>
-                                                        </div>
-                                                    </div>
-                                                )
-                                            }
-                                        })}
-                                    </div>}
-                                </div>
-                            )
-                        })}
-
+                        </Scrollbars>
                     </div>
                 </div>
                 <div className='learn_footer'>
