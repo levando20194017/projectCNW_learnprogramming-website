@@ -1,11 +1,11 @@
 import db from '../models/index'
-let getProgressOfCourse = (courseID) => {
+let getProgressOfCourse = (userID, courseID) => {
     return new Promise(async (resolve, reject) => {
         try {
             let progress = '';
-            if (courseID && courseID !== 'ALL') {
-                progress = await db.Progress.findAll({
-                    where: { courseID: courseID },
+            if (courseID && userID) {
+                progress = await db.Progresses.findAll({
+                    where: { courseID: courseID, userID: userID },
                 })
             }
             resolve(progress);
@@ -18,7 +18,7 @@ let createProgressOfCourse = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             if (data.userID && data.courseID && data.videoID) {
-                let isCompletedVideo = await db.Progress.findOne({
+                let isCompletedVideo = await db.Progresses.findOne({
                     where: { courseID: data.courseID, userID: data.userID, videoID: data.videoID }
                 })
                 if (isCompletedVideo) {
@@ -27,7 +27,7 @@ let createProgressOfCourse = (data) => {
                         message: "You have finished learning the video already",
                     });
                 } else {
-                    await db.Progress.create({
+                    await db.Progresses.create({
                         userID: data.userID,
                         courseID: data.courseID,
                         videoID: data.videoID,

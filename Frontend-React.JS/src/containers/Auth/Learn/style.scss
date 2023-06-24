@@ -109,9 +109,9 @@
 .list-video_title {
     padding-left: 25px;
     height: 54px;
-    background-color: rgb(211, 210, 210);
+    background-color: rgb(253, 252, 252);
     padding: "10px 0";
-    opacity: 0.5;
+    opacity: 1;
     padding-top: 6px;
     font-size: 13px;
     cursor: pointer;
@@ -123,6 +123,21 @@
 }
 
 .list-video_title h6 {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.list-video_title-not-complete {
+    padding-left: 25px;
+    height: 54px;
+    background-color: rgb(211, 210, 210);
+    padding: "10px 0";
+    opacity: 0.5;
+    padding-top: 6px;
+    font-size: 13px;
+}
+
+.list-video_title-not-complete h6 {
     font-size: 13px;
     font-weight: 500;
 }
