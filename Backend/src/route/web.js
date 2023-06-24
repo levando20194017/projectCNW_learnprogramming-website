@@ -86,7 +86,7 @@ let initWebRoutes = (app) => {
     router.get('/api/get-all-usersRegisterCourse', enrollmentController.handleGetAllUsersRegisterCourse)
 
     router.post('/api/progress/create-progress-course', progressController.handleCreateProgressOfCourse)
-    router.get('/api/progress/get-progress-course', enrollmentController.handleGetProgress)
+    router.get('/api/progress/get-progress-course', progressController.handleGetProgress)
     return app.use("/", router)
 }
 

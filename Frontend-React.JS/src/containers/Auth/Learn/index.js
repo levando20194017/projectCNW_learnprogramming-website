@@ -4,9 +4,14 @@ import './style.scss'
 import { getAllCourses } from '../../../services/courseService';
 import { getAllLessons } from '../../../services/lessonService';
 import { getAllVideos } from '../../../services/videoService';
+import { getProgressOfCourse, createProgressOfCourse } from '../../../services/progress';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
+import moment, { duration } from 'moment';
 import YouTube from 'react-youtube';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 class Learn extends Component {
 
     constructor(props) {
@@ -23,7 +28,9 @@ class Learn extends Component {
             timerId: null,
             listVideos: [],
             lesssonIndex: 0,
-            videoIndexOfLesson: 0
+            videoIndexOfLesson: 0,
+            videoId: 0,
+            numberOfVideoCompleted: 0,
         }
         this.onPlay = this.onPlay.bind(this);
         this.onPause = this.onPause.bind(this);
@@ -64,6 +71,11 @@ class Learn extends Component {
             if (response && response.errCode === 0) {
                 this.setState({ course: response.courses });
             }
+            const responseOfGetProgress = await getProgressOfCourse(this.userInfo.id, this.props.match.params.id)
+            this.setState({
+                numberOfVideoCompleted: responseOfGetProgress.progress.length
+            })
+            console.log(this.state.numberOfVideoCompleted);
             const responseOfLesson = await getAllLessons(this.props.match.params.id);
             if (responseOfLesson && responseOfLesson.errCode === 0) {
                 const arrLessons = responseOfLesson.lessons.sort((a, b) => a.orderBy - b.orderBy);
@@ -126,7 +138,7 @@ class Learn extends Component {
             isOpen: copyState
         })
     }
-    handleShowVideo = (video_url, videoTitle, videoCreatedAt, videoIndex, lessonIndex) => {
+    handleShowVideo = (video_url, videoTitle, videoCreatedAt, videoIndex, lessonIndex, videoId) => {
         clearInterval(this.state.timerId);
         this.setState({ timerId: null });
         this.setState({
@@ -135,7 +147,8 @@ class Learn extends Component {
             videoCreatedAt: videoCreatedAt,
             time: 0,
             lessonIndex: lessonIndex,
-            videoIndexOfLesson: videoIndex
+            videoIndexOfLesson: videoIndex,
+            videoId: videoId
         })
         const isActive = document.querySelector('.list-video_title.active')
         if (isActive) {
@@ -146,26 +159,62 @@ class Learn extends Component {
             videoTile[videoIndex].classList.add('active');
         }
     }
-    onPlay(lessonIndex, videoIndex) {
+    onPlay() {
         console.log('play');
         const timerId = setInterval(() => {
             this.setState({ time: this.state.time + 1 });
         }, 1000);
         this.setState({ timerId });
-        const durationOfVideo = this.convertTimeToSeconds(this.state.lessons[lessonIndex]?.listVideos[videoIndex]?.duration)
-
-        const completedPercent = this.state.time / durationOfVideo * 100
-        console.log(completedPercent);
 
     }
 
-    onPause(lessonIndex, videoIndex) {
+    onPause() {
         console.log('pause');
         clearInterval(this.state.timerId);
         this.setState({ timerId: null });
     }
+    async componentDidUpdate(prevProps, prevState) {
+        const { lessonIndex, videoIndexOfLesson, videoId } = this.state;
+        var durationOfVideo = 100000;
+        if (this.state.lessons[lessonIndex]?.listVideos && this.state.lessons[lessonIndex]?.listVideos[videoIndexOfLesson]?.duration) {
+            durationOfVideo = this.convertTimeToSeconds(this.state.lessons[lessonIndex]?.listVideos[videoIndexOfLesson]?.duration)
+        }
+        const totalTime = this.convertTimeToSeconds(this.state.lessons.totalTime)
+
+        const currentComplete = this.state.time / durationOfVideo * 100
+        const completionPercent = Math.round((durationOfVideo / totalTime * 100) * 100)
+
+        console.log(currentComplete, completionPercent);
+        if (currentComplete >= 10 && currentComplete < 11) {
+            try {
+                const response = await createProgressOfCourse(
+                    this.props.match.params.id,
+                    this.userInfo.id,
+                    videoId,
+                    completionPercent)
+                if (response && response.errCode === 0) {
+                    toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> You have finished this video!</div>, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "colored",
+                    });
+                    const responseOfGetProgress = await getProgressOfCourse(this.userInfo.id, this.props.match.params.id)
+                    this.setState({
+                        numberOfVideoCompleted: responseOfGetProgress.progress.length
+                    })
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }
     render() {
-        const { isOpen, course, lessons, allVideos, videoShow, videoTitleShow, videoCreatedAt, lessonIndex, videoIndexOfLesson } = this.state
+        const { isOpen, course, lessons, allVideos, videoShow, videoTitleShow, videoCreatedAt, numberOfVideoCompleted } = this.state
         const opts = {
             height: '600',
             width: '100%',
@@ -206,8 +255,8 @@ class Learn extends Component {
                 <div className='learn_body d-flex'>
                     <div className='col-9 learn_body-left'>
                         <YouTube videoId={videoShow} opts={opts}
-                            onPlay={() => this.onPlay(lessonIndex, videoIndexOfLesson)}
-                            onPause={() => this.onPause(lessonIndex, videoIndexOfLesson)} />
+                            onPlay={this.onPlay}
+                            onPause={this.onPause} />
                         <div>
                             {this.state.time} seconds
                         </div>
@@ -232,23 +281,59 @@ class Learn extends Component {
                                                 <h6>{index + 1} {lesson.title}</h6>
                                                 <div style={{ fontSize: "13px" }}>0/{lesson.listVideos && lesson.listVideos.length} | {lesson.duration}</div>
                                             </div>
-                                            <div className='col-1'>
+                                            <div className='col-1' style={{ marginLeft: "13px" }}>
                                                 {isOpen[index] ? <i className="bi bi-chevron-up"></i> : <i className="bi bi-chevron-down"></i>}
-
                                             </div>
                                         </div>
                                     </div>
                                     {isOpen[index] && <div className='list-video'>
                                         {lesson.listVideos && lesson.listVideos.map((video, videoIndex) => {
-                                            return (
-                                                <div className='list-video_title' style={{ lineHeight: "0.8" }}
-                                                    onClick={() => this.handleShowVideo(video.video_url, video.title, video.createdAt, videoIndex, index)}>
-                                                    <h6>{videoIndex + 1} {video.title}</h6>
-                                                    <div>
-                                                        <i class="bi bi-youtube"></i> <span>{video.duration}</span>
+                                            var a = 0;
+                                            if (index != 0) {
+                                                for (var i = 0; i < index; i++) {
+                                                    a += lessons[i].listVideos.length;
+                                                }
+                                            }
+
+                                            if (a + videoIndex + 1 < numberOfVideoCompleted + 1) {
+                                                return (
+                                                    <div className='list-video_title d-flex' style={{ lineHeight: "0.8" }}
+                                                        onClick={() => this.handleShowVideo(video.video_url, video.title, video.createdAt, videoIndex, index, video.id)}>
+                                                        <div className='col-11'>
+                                                            <h6>{videoIndex + 1} {video.title}</h6>
+                                                            <div>
+                                                                <i class="bi bi-youtube" style={{ color: "red" }}></i> <span>{video.duration}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div className='col-1'>
+                                                            <i style={{ color: "green" }} className="bi bi-check-circle-fill"></i>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            )
+                                                )
+                                            } else if (a + videoIndex + 1 == numberOfVideoCompleted + 1) {
+                                                return (
+                                                    <div className='list-video_title d-flex' style={{ lineHeight: "0.8" }}
+                                                        onClick={() => this.handleShowVideo(video.video_url, video.title, video.createdAt, videoIndex, index, video.id)}>
+                                                        <div className='col-12'>
+                                                            <h6>{videoIndex + 1} {video.title}</h6>
+                                                            <div>
+                                                                <i class="bi bi-youtube" style={{ color: "red" }}></i> <span>{video.duration}</span>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                )
+                                            }
+                                            else {
+                                                return (
+                                                    <div className='list-video_title-not-complete' style={{ lineHeight: "0.8" }}>
+                                                        <h6>{videoIndex + 1} {video.title}</h6>
+                                                        <div>
+                                                            <i className="bi bi-youtube"></i> <span>{video.duration}</span>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            }
                                         })}
                                     </div>}
                                 </div>

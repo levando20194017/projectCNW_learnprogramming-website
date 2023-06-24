@@ -33,7 +33,7 @@ class HomePage extends Component {
                     </div>
                     <div id='homepage-slogan'>
                         <h1 id='homepage-h1'>
-                            Học lập trình<br/>mọi lúc,<br/>mọi nơi!
+                            Học lập trình<br />mọi lúc,<br />mọi nơi!
                         </h1>
                         <p>
                             Website học lập trình CodeCrush - bài tập lớn môn Công nghệ Web & Dịch vụ trực tuyến, mã học phần IT4409 - nhóm 11.
@@ -43,8 +43,8 @@ class HomePage extends Component {
                                 <button>Bắt đầu ngay!</button>
                             </div>
                         </Link>
-                    </div> 
-                    
+                    </div>
+
                 </div>
                 <div className='homepage-footer'>
 
