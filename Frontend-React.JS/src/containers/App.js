@@ -23,7 +23,6 @@ import EnrollmentCourse from './Auth/EnrollmentCourse';
 import Learn from './Auth/Learn';
 import D_header_user from './Header/D_header_user';
 import CourseList from "./System/CourseList/CourseList";
-import Test from './Auth/Test';
 import Footer from './Footer';
 import './style.scss'
 class App extends Component {
@@ -64,15 +63,14 @@ class App extends Component {
 
                                     <Switch>
                                         <Route path={path.HOME} exact component={HomePage} />
-                                        <Route path={"/test"} component={Test} />
                                         <Route path={"/forgotpassword"} component={ForgotPassword} />
-                                        <Route path={"/changepassword"} component={ChangePassword} />
-                                        <Route path={"/course/:id"} component={EnrollmentCourse} />
-                                        <Route path={"/blog"} component={Blog} />
-                                        <Route path={"/home"} component={CourseList} />
                                         <Route path={"/signup"} component={SignUp} />
-                                        <Route path={"/profile"} component={Profile} />
-                                        <Route path={"/learn/:id"} component={Learn} />
+                                        <Route path={"/changepassword"} component={userIsAuthenticated(ChangePassword)} />
+                                        <Route path={"/course/:id"} component={userIsAuthenticated(EnrollmentCourse)} />
+                                        <Route path={"/blog"} component={userIsAuthenticated(Blog)} />
+                                        <Route path={"/home"} component={userIsAuthenticated(CourseList)} />
+                                        <Route path={"/profile"} component={userIsAuthenticated(Profile)} />
+                                        <Route path={"/learn/:id"} component={userIsAuthenticated(Learn)} />
                                         <Route path={path.LOGIN} component={adminIsNotAuthenticated(Login)} />
                                         <Route path={path.SYSTEM} component={adminIsAuthenticated(System)} />
                                     </Switch>
