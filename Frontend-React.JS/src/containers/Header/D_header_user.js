@@ -17,7 +17,7 @@ class userHeader extends Component {
             <div className="headerUser">
                 <div id="headerUser-left">
                     <div id="headerUser-left-logo">
-                        <img src={`${process.env.PUBLIC_URL}/assets/img/logo-symbol.png`} alt='avatar' style={{height: "40px", borderRadius: "50%"}} />                        
+                        <img src={`${process.env.PUBLIC_URL}/assets/img/logo-symbol.png`} alt='avatar' style={{ height: "40px", borderRadius: "50%" }} />
                         <div id='headerUser-left-logo-p'>
                             CodeCrush
                         </div>
@@ -26,42 +26,28 @@ class userHeader extends Component {
 
                 <div id="headerUser-center">
                     <ul id="headerUser-nav">
-                        <li ><a href="">HOME</a></li>
-                        <li ><a href="">BLOG</a></li>
-                        <li><a href="">ABOUT US</a></li>
+                        <Link to='/home'>
+                            <li ><a >HOME</a></li>
+                        </Link>
+                        <Link to="/blog">
+                            <li ><a>BLOG</a></li>
+                        </Link>
+                        <li><a>ABOUT US</a></li>
                     </ul>
                 </div>
 
-                <div id='headerUser-right'>                   
-                    <ul id='headerUser-right-nav'>
-                            <li>
-                                <a href="#">
-                                    Khóa học của tôi
-                                </a>
-                                <ul id="subnav-courses">
-                                    <li><a href="">HTML CSS cơ bản</a></li>
-                                    <li><a href="">ReactJS cơ bản</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <img className="headerUser-right-avt" src={userInfo?.img_url} alt='avatar' width={40} height={40} />
-                                </a>
-                                <ul id="subnav-avatar">
-                                    <li><a href="">Trang cá nhân</a></li>
-                                    <li><a href="">Đổi mật khẩu</a></li>
-                                    <li><a href="" onClick={processLogout}><Link to='/'>Đăng xuất</Link></a></li>
-                                </ul>
-                            </li> 
-                            {/* <Link to='/'>
-                                <div className="btn btn-logout" onClick={processLogout}>
-                                    <i className="fas fa-sign-out-alt"></i>
-                                </div>
-                            </Link> */}
-                    </ul>
+                <div id='headerUser-right'>
+                    <div id='headerUser-right-container'>
+                        <img className="rounded-circle" src={userInfo?.img_url} alt='avatar' width={40} height={40} />
+                        <Link to='/'>
+                            <div className="btn btn-logout" onClick={processLogout}>
+                                <i className="fas fa-sign-out-alt"></i>
+                            </div>
+                        </Link>
+                    </div>
                 </div>
             </div>
-            
+
         );
     }
 

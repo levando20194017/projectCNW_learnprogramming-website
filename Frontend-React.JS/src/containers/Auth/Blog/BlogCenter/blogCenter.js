@@ -63,16 +63,17 @@ class BlogCenter extends Component {
     userInfo = JSON.parse(this.userData.userInfo);
 
     componentDidMount() {
-        let isMounted = true;
+        // let isMounted = true;
         const fetchData = async () => {
             const data = await getAllPostById('ALL');
             this.setState({
                 listPosts: data.data.posts,
             });
-            if (isMounted) {
+            if (true) {
                 let userArray = [];
                 let commentsArray = [];
                 let likePostsArray = [];
+                let isLikedArray = [];
                 for (let i = 0; i < data.data.posts.length; i++) {
                     const response = await getAllUsers(data.data.posts[i].userID);
                     const user = response.users;
@@ -85,68 +86,70 @@ class BlogCenter extends Component {
                     const responseOfLikePost = await getAllLikesOfPost(data.data.posts[i].id);
                     const likeposts = responseOfLikePost.data.likes;
                     likePostsArray.push(likeposts);
+
+                    const userIsLiked = likeposts.some(item => item?.userID === this.userInfo.id);
+                    isLikedArray.push(userIsLiked)
                 }
                 this.setState({
                     users: userArray,
                     listComments: commentsArray,
                     likePosts: likePostsArray,
+                    isLiked: isLikedArray
                 });
             }
         };
         fetchData();
-        return () => {
-            isMounted = false;
-        };
+        // return () => {
+        //     isMounted = false;
+        // };
     }
     // Lưu trạng thái like của bài viết vào localStorage
     handleLikeThisPost = async (index, postID) => {
         const response = await handleLikePost(this.userInfo.id, postID);
         if (response.data.errCode === 1) {
-            const newIsLiked = [...this.state.isLiked];
-            newIsLiked[index] = false;
-            this.setState({
-                isLiked: newIsLiked,
-            });
-            localStorage.setItem(postID, false.toString()); // Lưu giá trị false vào localStorage
 
             const likePostsArray = [...this.state.likePosts]
             const responseOfLikePost = await getAllLikesOfPost(postID);
             const likeposts = responseOfLikePost.data.likes;
             likePostsArray[index] = likeposts;
+
+            const isLikeArray = [...this.state.isLiked];
+            const userIsLiked = likeposts.some(item => item?.userID === this.userInfo.id);
+            isLikeArray[index] = userIsLiked
             this.setState({
                 likePosts: likePostsArray,
+                isLiked: isLikeArray
             });
         }
         if (response.data.errCode === 0) {
-            const newIsLiked = [...this.state.isLiked];
-            newIsLiked[index] = true;
-            this.setState({
-                isLiked: newIsLiked,
-            });
-            localStorage.setItem(postID, true.toString()); // Lưu giá trị true vào localStorage
 
             const likePostsArray = [...this.state.likePosts]
             const responseOfLikePost = await getAllLikesOfPost(postID);
             const likeposts = responseOfLikePost.data.likes;
             likePostsArray[index] = likeposts;
+
+            const isLikeArray = [...this.state.isLiked];
+            const userIsLiked = likeposts.some(item => item?.userID === this.userInfo.id);
+            isLikeArray[index] = userIsLiked
             this.setState({
                 likePosts: likePostsArray,
+                isLiked: isLikeArray
             });
         }
     };
     componentDidUpdate(prevProps, prevState) {
-        if (this.state.listPosts !== prevState.listPosts) {
-            const newIsLiked = [...this.state.isLiked];
-            this.state.listPosts.forEach((post, index) => {
-                const isPostLiked = localStorage.getItem(post.id); // Lấy giá trị trạng thái like từ localStorage
-                if (isPostLiked === "true") {
-                    newIsLiked[index] = true;
-                }
-            });
-            this.setState({
-                isLiked: newIsLiked,
-            });
-        }
+        // if (this.state.listPosts !== prevState.listPosts) {
+        //     const newIsLiked = [...this.state.isLiked];
+        //     this.state.listPosts.forEach((post, index) => {
+        //         const isPostLiked = localStorage.getItem(post.id); // Lấy giá trị trạng thái like từ localStorage
+        //         if (isPostLiked === "true") {
+        //             newIsLiked[index] = true;
+        //         }
+        //     });
+        //     this.setState({
+        //         isLiked: newIsLiked,
+        //     });
+        // }
     }
     onDeleteComment = async (postIndex, commentIndex, postId) => {
         console.log(this.state.listComments[postIndex][commentIndex]);
@@ -370,10 +373,10 @@ class BlogCenter extends Component {
         });
     }
     render() {
-        const { listPosts, likePosts, listComments, isLiked, isOpenModalSubmission, post, users } = this.state
+        const { listPosts, likePosts, listComments, isLiked, isOpenModalSubmission, users } = this.state
         return (
             <div className="col-md-8 col-lg-6 vstack gap-4" style={{ marginLeft: "-5px" }}>
-                <Scrollbars style={{ height: "92vh" }}>
+                <Scrollbars style={{ height: "100vh" }}>
                     <Modal isOpen={this.state.isConfirmModalOpen} toggle={this.closeConfirmModal}>
                         <ModalHeader toggle={this.closeConfirmModal}>Confirm delete</ModalHeader>
                         <ModalBody>
@@ -508,19 +511,19 @@ class BlogCenter extends Component {
                                 <ul className="nav nav-stack py-3 small card-footer">
                                     <li className="nav-item">
                                         {isLiked[index] ? (<a style={{ color: "blue" }}
-                                            className="nav-link active" href="#!" data-bs-container="body"
+                                            className="nav-link active" data-bs-container="body"
                                             data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
                                             data-bs-custom-class="tooltip-text-start"
                                             onClick={() => this.handleLikeThisPost(index, post.id)}
                                         > <i className="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({likePosts[index] && (likePosts[index].length)})</a>)
-                                            : (<a className="nav-link active" href="#!" data-bs-container="body"
+                                            : (<a className="nav-link active" data-bs-container="body"
                                                 data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
                                                 data-bs-custom-class="tooltip-text-start"
                                                 onClick={() => this.handleLikeThisPost(index, post.id)}
                                             > <i className="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({likePosts[index] && (likePosts[index].length)})</a>)}
                                     </li>
                                     <li className="nav-item" onClick={() => this.handleAddNewComment(post)}>
-                                        <a className="nav-link" href="#!"> <i className="bi bi-chat-fill pe-1"></i>Comments ({listComments[index] && (listComments[index].length)})</a>
+                                        <a className="nav-link" > <i className="bi bi-chat-fill pe-1"></i>Comments ({listComments[index] && (listComments[index].length)})</a>
                                     </li>
                                     <ModalPost
                                         isOpen={post.isOpenModalComment}
@@ -534,9 +537,10 @@ class BlogCenter extends Component {
                                         onAddNewComment={(contentComment) => this.onAddNewComment(contentComment, index, post.id)}
                                         onSaveComment={(commentID, contentComment) => this.onSaveComment(commentID, contentComment, post.id, index)}
                                         listComments={this.state.listComments[index]}
+                                        handleLikeThisPost={() => this.handleLikeThisPost(index, post.id)}
                                     />
                                     <li className="nav-item dropdown ms-sm-auto">
-                                        <a className="nav-link mb-0" href="#" id="cardShareAction" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <a className="nav-link mb-0" id="cardShareAction" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i className="bi bi-reply-fill flip-horizontal ps-1"></i>
                                             Share (3)
                                         </a>

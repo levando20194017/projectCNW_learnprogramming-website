@@ -18,11 +18,11 @@ let createIsLiked = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             let isLiked = await db.LikeComments.findOne({
-                where: { commentID: data.commentID }
+                where: { commentID: data.commentID, userID: data.userID }
             })
             if (isLiked) {
                 await db.LikeComments.destroy({
-                    where: { commentID: data.commentID }
+                    where: { commentID: data.commentID, userID: data.userID }
                 });
                 resolve({
                     errCode: 1,

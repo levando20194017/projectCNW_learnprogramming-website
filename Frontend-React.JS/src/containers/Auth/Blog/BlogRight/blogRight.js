@@ -49,7 +49,7 @@ class BlogRight extends Component {
                 <div className="col-sm-6 col-lg-12">
                     <Scrollbars style={{ height: "92vh" }}>
                         <div className="cardx">
-                            <div className="card-header pb-0 border-0 mt-3">
+                            <div className="card-header pb-0 border-0 mt-3 suggestion">
                                 <h5 className="card-title mb-0" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>Suggestion</h5>
                             </div>
                             <div className="card-body mt-3">

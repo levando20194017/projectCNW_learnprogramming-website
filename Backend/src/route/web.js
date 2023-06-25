@@ -9,6 +9,7 @@ import commentController from "../controller/commentController";
 import likePostController from "../controller/likePostController";
 import likeCommentController from "../controller/likeCommentController";
 import enrollmentController from "../controller/enrollmentController";
+import progressController from "../controller/progressController"
 import { auth } from "../middleware/auth";
 
 // const auth = (req, res, next) => {
@@ -82,6 +83,10 @@ let initWebRoutes = (app) => {
     router.post('/api/comment/isliked', likeCommentController.handleCreateIsLiked)
 
     router.post('/api/course/register', enrollmentController.handleRegisterCourse)
+    router.get('/api/get-all-usersRegisterCourse', enrollmentController.handleGetAllUsersRegisterCourse)
+
+    router.post('/api/progress/create-progress-course', progressController.handleCreateProgressOfCourse)
+    router.get('/api/progress/get-progress-course', progressController.handleGetProgress)
     return app.use("/", router)
 }
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import './CourseManage.scss'
 import { getAllCourses, createNewCourseService, editCourseService, deleteCourseService } from '../../../services/courseService';
 import { getAllLessons, createNewLessonService, editLessonService, deleteLessonService } from '../../../services/lessonService';
-import { getAllVideos } from '../../../services/videoService';
+import { getAllVideos, createNewVideoService } from '../../../services/videoService';
 import { emitter } from '../../../utils/emitter';
 import ModalCourse from './ModalCourse';
 import ModalEditCourse from './ModalEditCourse';
@@ -31,7 +31,11 @@ class CourseManage extends Component {
 
     constructor(props) {
         super(props);
-
+        this.state = {
+            lessonID: '',
+            title: '',
+            video_url: ''
+        }
     }
     handleCourseClick = (courseBodys, index, courses, course) => {
         const $ = document.querySelector.bind(document);
@@ -222,7 +226,16 @@ class CourseManage extends Component {
             course.removeEventListener('click', this.handleCourseClick);
         });
     }
-
+    createNewVideo = async (data) => {
+        try {
+            let response = await createNewVideoService(data);
+            if (response && response.errCode === 0) {
+                alert(response.message);
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
     render() {
         let allCourses = this.props.arrCourses;
         let allLessons = this.props.arrLessons;
@@ -287,7 +300,14 @@ class CourseManage extends Component {
                                         </div>
                                         <div className='btn btn-primary px-3' style={{ marginLeft: "70px" }} onClick={() => this.handleAddNewLesson(course.id)}><i className='fas fa-plus'></i>Add new lesson</div>
                                         <div className="lesson col-md-10 offset-1 mt-3">
-
+                                            <input className='form-control' value={this.state.lessonID} onChange={(e) => this.setState({ lessonID: e.target.value })} placeholder='lessonID' />
+                                            <input className='form-control' value={this.state.title} onChange={(e) => this.setState({ title: e.target.value })} placeholder='title' />
+                                            <input className='form-control' value={this.state.video_url} onChange={(e) => this.setState({ video_url: e.target.value })} placeholder='video_url' />
+                                            <button className='btn btn-primary' onClick={() => this.createNewVideo({
+                                                lessonID: this.state.lessonID,
+                                                title: this.state.title,
+                                                video_url: this.state.video_url
+                                            })}>Add video</button>
                                             {allLessons.map((lesson, index) => {
                                                 return lesson.courseID === course.id && (
                                                     <div className="card-body lesson-title">

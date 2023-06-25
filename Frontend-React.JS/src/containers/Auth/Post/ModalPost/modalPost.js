@@ -149,10 +149,12 @@ class ModalPost extends Component {
                                             <div className="post-action" style={{ padding: "0 30px" }}>
                                                 <hr />
                                                 <div className="d-flex" style={{ justifyContent: "space-between", padding: "0 100px", marginTop: "-10px" }}>
-                                                    {isLiked ? (<div className="like text-secondary">
-                                                        <i className="fas fa-thumbs-up" style={{ color: "blue" }}></i> <span style={{ color: "blue" }}>Like</span>
+                                                    {isLiked ? (<div className="like text-secondary" onClick={() => this.props.handleLikeThisPost()}>
+                                                        <i className="fas fa-thumbs-up" style={{ color: "blue" }}></i> <span style={{ color: "blue" }}
+
+                                                        >Like</span>
                                                     </div>) :
-                                                        (<div className="like text-secondary" >
+                                                        (<div className="like text-secondary" onClick={() => this.props.handleLikeThisPost()} >
                                                             <i className="fas fa-thumbs-up" ></i> Like
                                                         </div>)}
                                                     <div className="comment text-secondary">
@@ -194,7 +196,7 @@ class ModalPost extends Component {
                     <div className='media d-flex form-input-comment' style={{ width: "100%" }}>
                         <a className="pull-left" href="#"><img className="rounded-circle"
                             width="50" height={50}
-                            src={user.img_url} alt="" /></a>
+                            src={user?.img_url} alt="" /></a>
                         <div className="input-comment">
                             <input className='input-comment__form' placeholder='Post a comment...'
                                 value={contentComment} onChange={e => this.handleOnIputComment(e)}
