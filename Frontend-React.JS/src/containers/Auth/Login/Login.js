@@ -161,7 +161,7 @@ class Login extends Component {
                                         </div>
                                     </div>
                                     <div className="mt-3" style={{ display: "flex", textAlign: "center", justifyContent: "center" }}>
-                                        <p>Không có tài khoản? <Link to="/signup"><a style={{ cursor: "pointer" }}>Đăng kí</a></Link></p>
+                                        <p>Không có tài khoản? <Link to="/signup"><a style={{ cursor: "pointer" }}>Đăng ký</a></Link></p>
                                     </div>
 
 
