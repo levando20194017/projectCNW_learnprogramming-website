@@ -90,6 +90,10 @@ class Learn extends Component {
                     const responseVideosOfLesson = await getAllVideos(lesson.id);
                     const sortVideos = responseVideosOfLesson.videos.sort((a, b) => a.orderBy - b.orderBy);
 
+                    // if (sortVideos.length != 0) {
+                    //     arrOfListVideos = arrOfListVideos.concat(sortVideos)
+                    // }
+
                     const promises = sortVideos.map((video) => {
                         const videoId = video.video_url;
                         const apiKey = process.env.REACT_APP_API_Key_Youtube;
@@ -234,8 +238,18 @@ class Learn extends Component {
                         theme: "colored",
                     });
                     const responseOfGetProgress = await getProgressOfCourse(this.userInfo.id, this.props.match.params.id)
+
+                    const listVideoCompleted = this.state.listVideos.filter(itemA => {
+                        return responseOfGetProgress.progress.some(itemB => {
+                            return itemB.videoID === itemA.id;
+                        })
+                    })
+                    const timeCompleted = this.sumTimes(listVideoCompleted);
+
+                    const percentCompleted = Math.round(this.convertTimeToSeconds(timeCompleted) / this.convertTimeToSeconds(this.state.lessons.totalTime) * 100);
                     this.setState({
-                        numberOfVideoCompleted: responseOfGetProgress.progress.length
+                        numberOfVideoCompleted: responseOfGetProgress.progress.length,
+                        percentCompletedState: percentCompleted
                     })
                 }
             } catch (error) {

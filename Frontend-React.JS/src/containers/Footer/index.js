@@ -26,7 +26,7 @@ class userHeader extends Component {
 
                                         </Link>
                                         <li className="nav-item mb-2"><a href="https://github.com/levando20194017/projectCNW_learnprogramming-website" className="nav-link p-0 text-muted">Link github</a></li>
-                                        <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Project</a></li>
+                                        <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">About us</a></li>
                                     </ul>
                                 </div>
 
@@ -47,7 +47,7 @@ class userHeader extends Component {
                                     <h5>Address</h5>
                                     <ul className="nav flex-column">
                                         <li className="nav-item mb-2">
-                                            <p>1 Đại Cồ Việt, Bách Khoa, Hai Bà Trưng, Hà Nội</p>
+                                            <p>61 Định Công, Hoàng Mai, Hà Nội</p>
                                         </li>
                                     </ul>
                                 </div>
@@ -57,8 +57,8 @@ class userHeader extends Component {
                                         <h5>Subscribe to our newsletter</h5>
                                         <p>Personal information search.</p>
                                         <div className="d-flex w-100 gap-2">
-                                            <label htmlFor="newsletter1" className="visually-hidden">MSSV</label>
-                                            <input id="newsletter1" type="text" className="form-control" placeholder="Search user by MSSV" />
+                                            <label htmlFor="newsletter1" className="visually-hidden">Name</label>
+                                            <input id="newsletter1" type="text" className="form-control" placeholder="Search user by Name" />
                                             <button className="btn btn-primary" type="button">Search</button>
                                         </div>
                                     </form>
@@ -70,9 +70,9 @@ class userHeader extends Component {
                             </div>
                             <br />
                             <br />
-                            <div className="footer-title">
+                            {/* <div className="footer-title">
                                 One love - One future
-                            </div>
+                            </div> */}
                         </footer>
                     </div>
                 </div>
