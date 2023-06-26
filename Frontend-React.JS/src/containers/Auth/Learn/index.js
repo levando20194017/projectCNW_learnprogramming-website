@@ -33,6 +33,7 @@ class Learn extends Component {
             videoIndexOfLesson: 0,
             videoId: 0,
             numberOfVideoCompleted: 0,
+            percentCompletedState: 0
         }
         this.onPlay = this.onPlay.bind(this);
         this.onPause = this.onPause.bind(this);
@@ -77,6 +78,7 @@ class Learn extends Component {
             this.setState({
                 numberOfVideoCompleted: responseOfGetProgress.progress.length
             })
+            const progressCompleted = responseOfGetProgress.progress
             console.log(this.state.numberOfVideoCompleted);
             const responseOfLesson = await getAllLessons(this.props.match.params.id);
             if (responseOfLesson && responseOfLesson.errCode === 0) {
@@ -87,10 +89,6 @@ class Learn extends Component {
 
                     const responseVideosOfLesson = await getAllVideos(lesson.id);
                     const sortVideos = responseVideosOfLesson.videos.sort((a, b) => a.orderBy - b.orderBy);
-
-                    if (sortVideos.length != 0) {
-                        arrOfListVideos = arrOfListVideos.concat(sortVideos)
-                    }
 
                     const promises = sortVideos.map((video) => {
                         const videoId = video.video_url;
@@ -115,6 +113,7 @@ class Learn extends Component {
                                     timeString += seconds.toString().padStart(2, '0');
                                 }
                                 video.duration = timeString; // thời lượng của 1 video
+                                arrOfListVideos.push(video)
                                 return video;
                             });
                     });
@@ -128,11 +127,20 @@ class Learn extends Component {
                 const lessons = await Promise.all(promises);
                 lessons.totalTime = this.sumTimes(lessons);
 
+                const listVideoCompleted = arrOfListVideos.filter(itemA => {
+                    return progressCompleted.some(itemB => {
+                        return itemB.videoID === itemA.id;
+                    })
+                })
+                const timeCompleted = this.sumTimes(listVideoCompleted);
+
+                const percentCompleted = Math.round(this.convertTimeToSeconds(timeCompleted) / this.convertTimeToSeconds(lessons.totalTime) * 100);
                 const allvideo = lessons.reduce((total, lesson) => {
                     return total + lesson.listVideos.length
                 }, 0)
                 console.log(arrOfListVideos[0].video_url);
                 this.setState({
+                    percentCompletedState: percentCompleted,
                     lessons: lessons,
                     videoShow: lessons[0].listVideos[0].video_url,
                     videoTitleShow: lessons[0].listVideos[0].title,
@@ -236,7 +244,7 @@ class Learn extends Component {
         }
     }
     render() {
-        const { isOpen, course, lessons, allVideos, videoShow, videoTitleShow, videoCreatedAt, numberOfVideoCompleted, listVideos } = this.state
+        const { percentCompletedState, isOpen, course, lessons, allVideos, videoShow, videoTitleShow, videoCreatedAt, numberOfVideoCompleted, listVideos } = this.state
         const opts = {
             height: '600',
             width: '100%',
@@ -245,13 +253,9 @@ class Learn extends Component {
                 controls: 1,
             },
         };
-        var totalTimeCompleted = 0;
-        for (var i = 0; i < numberOfVideoCompleted; i++) {
-            totalTimeCompleted += this.convertTimeToSeconds(listVideos[i]?.duration)
-        }
-        var totalPercentCompleted = Math.round(totalTimeCompleted / this.convertTimeToSeconds(lessons.totalTime) * 100)
+
         const progressBarStyle = {
-            transform: `rotate(${(totalPercentCompleted / 100) * 180}deg)`,
+            transform: `rotate(${(percentCompletedState / 100) * 180}deg)`,
         };
         return (
             <div className='learn'>
@@ -276,7 +280,7 @@ class Learn extends Component {
                                 <div className="mask half">
                                     <div className="fill-1" style={progressBarStyle}></div>
                                 </div>
-                                <div className="inside-circle">{totalPercentCompleted}%</div>
+                                <div className="inside-circle">{percentCompletedState}%</div>
                             </div>
                         </div>
                         <div className='abc'>
