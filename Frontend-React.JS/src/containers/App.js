@@ -45,7 +45,7 @@ class App extends Component {
         return (
             <Fragment>
                 <TransitionGroup>
-                    <CSSTransition key={location.key} classNames="fade" timeout={300}>
+                    <CSSTransition key={location.key} classNames="fade" timeout={500}>
                         <Router history={history}>
                             <div className="main-container">
                                 <ConfirmModal />

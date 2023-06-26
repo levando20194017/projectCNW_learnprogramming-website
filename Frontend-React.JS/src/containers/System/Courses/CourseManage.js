@@ -32,67 +32,56 @@ class CourseManage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            lessonID: '',
             title: '',
-            video_url: ''
+            video_url: '',
+            orderBy: '',
+            isOpenListVideo: [false],
+            isOpenListLesson: [false]
         }
     }
-    handleCourseClick = (courseBodys, index, courses, course) => {
-        const $ = document.querySelector.bind(document);
-        const isOpen = $('.course-body.hide');
-        const isActive = $('.course-title.active');
-        const isOpenMenu = Array.from(courseBodys).indexOf(isOpen);
-        if (isOpenMenu == index) {
-            isOpen.classList.remove('hide')
-            isActive.classList.remove('active')
-        } else {
-            if (isOpen) {
-                isOpen.classList.remove('hide');
-                isActive.classList.remove('active')
-            }
-            course.classList.add('active')
-            courseBodys[index].classList.add('hide')
-        }
-    }
-    handleLessonClick = (listVideos, index, lessons, lesson) => {
-        const $ = document.querySelector.bind(document);
-        const isOpen = $('.videos-list.hide');
-        const isActive = $('.lesson-title.active');
-        if (listVideos) {
-            const isOpenMenu = Array.from(listVideos).indexOf(isOpen);
-            if (isOpenMenu == index) {
-                isOpen.classList.remove('hide')
-                isActive.classList.remove('active')
-            } else {
-                if (isOpen) {
-                    isOpen.classList.remove('hide');
-                    isActive.classList.remove('active')
-                }
-                lesson.classList.add('active')
-                if (listVideos[index]) {
-                    listVideos[index].classList.add('hide')
-                }
-            }
-        }
-    }
+    // handleCourseClick = (courseBodys, index, courses, course) => {
+    //     const $ = document.querySelector.bind(document);
+    //     const isOpen = $('.course-body.hide');
+    //     const isActive = $('.course-title.active');
+    //     const isOpenMenu = Array.from(courseBodys).indexOf(isOpen);
+    //     if (isOpenMenu == index) {
+    //         isOpen.classList.remove('hide')
+    //         isActive.classList.remove('active')
+    //     } else {
+    //         if (isOpen) {
+    //             isOpen.classList.remove('hide');
+    //             isActive.classList.remove('active')
+    //         }
+    //         course.classList.add('active')
+    //         courseBodys[index].classList.add('hide')
+    //     }
+    // }
+    // handleLessonClick = (listVideos, index, lessons, lesson) => {
+    //     const $ = document.querySelector.bind(document);
+    //     const isOpen = $('.videos-list.hide');
+    //     const isActive = $('.lesson-title.active');
+    //     if (listVideos) {
+    //         const isOpenMenu = Array.from(listVideos).indexOf(isOpen);
+    //         if (isOpenMenu == index) {
+    //             isOpen.classList.remove('hide')
+    //             isActive.classList.remove('active')
+    //         } else {
+    //             if (isOpen) {
+    //                 isOpen.classList.remove('hide');
+    //                 isActive.classList.remove('active')
+    //             }
+    //             lesson.classList.add('active')
+    //             if (listVideos[index]) {
+    //                 listVideos[index].classList.add('hide')
+    //             }
+    //         }
+    //     }
+    // }
     async componentDidMount() {
         await this.getAllCourseFromReact()
         await this.getAllLessonFromReact()
         await this.getAllVideoFromReact()
 
-        const $$ = document.querySelectorAll.bind(document);
-        const courses = $$('.course-title')
-        const courseBodys = $$('.course-body')
-        const lessons = $$('.lesson-title')
-        const listVideos = $$('.videos-list')
-        Array.from(courses).forEach((course, index) => {
-            course.addEventListener('click', this.handleCourseClick.bind(this, courseBodys, index, courses, course));
-        });
-        if (lessons) {
-            Array.from(lessons).forEach((lesson, index) => {
-                lesson.addEventListener('click', this.handleLessonClick.bind(this, listVideos, index, lessons, lesson));
-            });
-        }
     }
     getAllCourseFromReact = async () => {
         let response = await getAllCourses('ALL');
@@ -231,19 +220,36 @@ class CourseManage extends Component {
             let response = await createNewVideoService(data);
             if (response && response.errCode === 0) {
                 alert(response.message);
+                this.setState({
+                    title: '',
+                    video_url: '',
+                    orderBy: '',
+                })
             }
         } catch (e) {
             console.log(e)
         }
     }
+    handleOpenListVideo = (index) => {
+        const copyState = [...this.state.isOpenListVideo]
+        copyState[index] = !copyState[index];
+        this.setState({
+            isOpenListVideo: copyState
+        })
+    }
+    handleOpenListLesson = (index) => {
+        const copyState = [...this.state.isOpenListLesson]
+        copyState[index] = !copyState[index];
+        this.setState({
+            isOpenListLesson: copyState
+        })
+    }
     render() {
         let allCourses = this.props.arrCourses;
         let allLessons = this.props.arrLessons;
         let allVideos = this.props.arrVideos;
-        console.log(allCourses);
-        console.log(allLessons);
         return (
-            <Scrollbars style={{ height: "80vh" }}>
+            <Scrollbars style={{ height: "85vh" }}>
                 <div className="be-content" style={{ padding: "0 25px" }}>
                     <ModalCourse
                         isOpen={this.props.isOpenModal}
@@ -275,7 +281,7 @@ class CourseManage extends Component {
                         {allCourses && allCourses.map((course, index) => {
                             return (
                                 <div className="course">
-                                    <div className="card-body course-title">
+                                    <div className="card-body course-title" onClick={() => { this.handleOpenListLesson(index) }}>
                                         <div className="row">
                                             <div className="col-11">
                                                 <h4 className="mb-0">{index + 1}. {course.title}</h4>
@@ -288,7 +294,7 @@ class CourseManage extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="course-body">
+                                    {this.state.isOpenListLesson[index] ? <div className="course-body">
                                         <div className="course-content">
                                             <div style={{ fontSize: "16px", fontWeight: "bold", color: "blue" }}>Thời gian tạo: {moment(`${course.createdAt}`).format('HH:mm DD/MM/YYYY')}</div>
                                             <div className="course-img mt-3">
@@ -300,42 +306,50 @@ class CourseManage extends Component {
                                         </div>
                                         <div className='btn btn-primary px-3' style={{ marginLeft: "70px" }} onClick={() => this.handleAddNewLesson(course.id)}><i className='fas fa-plus'></i>Add new lesson</div>
                                         <div className="lesson col-md-10 offset-1 mt-3">
-                                            <input className='form-control' value={this.state.lessonID} onChange={(e) => this.setState({ lessonID: e.target.value })} placeholder='lessonID' />
-                                            <input className='form-control' value={this.state.title} onChange={(e) => this.setState({ title: e.target.value })} placeholder='title' />
-                                            <input className='form-control' value={this.state.video_url} onChange={(e) => this.setState({ video_url: e.target.value })} placeholder='video_url' />
-                                            <button className='btn btn-primary' onClick={() => this.createNewVideo({
-                                                lessonID: this.state.lessonID,
-                                                title: this.state.title,
-                                                video_url: this.state.video_url
-                                            })}>Add video</button>
                                             {allLessons.map((lesson, index) => {
                                                 return lesson.courseID === course.id && (
-                                                    <div className="card-body lesson-title">
-                                                        <div className="row">
-                                                            <div className="col-sm-11">
-                                                                <h5 className="mb-0">{lesson.orderBy}. {lesson.title}</h5>
-                                                            </div>
-                                                            <div className="col-sm-1">
-                                                                <DropdownButton id="my-dropdown" title={<FaEllipsisH />}>
-                                                                    <Dropdown.Item onClick={() => this.handleEditLesson(lesson.id)}><FaEdit /> Edit</Dropdown.Item>
-                                                                    <Dropdown.Item onClick={() => { this.handleDeleteLesson(lesson.id) }}><FaTrash /> Delete</Dropdown.Item>
-                                                                </DropdownButton>
+                                                    <div>
+                                                        <div className="card-body lesson-title">
+                                                            <div className="row" onClick={() => this.handleOpenListVideo(index)}>
+                                                                <div className="col-sm-11">
+                                                                    <h5 className="mb-0">{lesson.orderBy}. {lesson.title}</h5>
+                                                                </div>
+                                                                <div className="col-sm-1">
+                                                                    <DropdownButton id="my-dropdown" title={<FaEllipsisH />}>
+                                                                        <Dropdown.Item onClick={() => this.handleEditLesson(lesson.id)}><FaEdit /> Edit</Dropdown.Item>
+                                                                        <Dropdown.Item onClick={() => { this.handleDeleteLesson(lesson.id) }}><FaTrash /> Delete</Dropdown.Item>
+                                                                    </DropdownButton>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        {allVideos.map((video, index) => {
-                                                            return video.lessonID === lesson.id && (
-                                                                <div className="videos-list">
-                                                                    <div className="video-title text-secondary"><a href="#">{index + 1}. {video.title}</a></div>
-                                                                </div>
-                                                            )
-                                                        })}
+                                                        {this.state.isOpenListVideo[index] ? <div style={{ width: "90%", marginLeft: "30px" }}>
+                                                            <input className='form-control mt-3' value={this.state.title} onChange={(e) => this.setState({ title: e.target.value })} placeholder='title' />
+                                                            <input className='form-control ' value={this.state.video_url} onChange={(e) => this.setState({ video_url: e.target.value })} placeholder='video_url' />
+                                                            <input type="number" className='form-control' value={this.state.orderBy} onChange={(e) => this.setState({ orderBy: e.target.value })} placeholder='orderBy' />
+                                                            <button className='btn btn-primary mt-3' onClick={() => this.createNewVideo({
+                                                                lessonID: lesson.id,
+                                                                title: this.state.title,
+                                                                video_url: this.state.video_url,
+                                                                orderBy: this.state.orderBy
+                                                            })}>Add video</button>
+                                                            {allVideos.map((video, index) => {
+                                                                return video.lessonID === lesson.id && (
+                                                                    <div className="videos-list">
+                                                                        <div className="video-title text-secondary"><a href="#">{index + 1}. {video.title}</a></div>
+
+                                                                    </div>
+                                                                )
+                                                            })}
+
+                                                        </div> : ""}
                                                     </div>
                                                 )
                                             })}
 
                                         </div>
 
-                                    </div>
+                                    </div> : ""}
+
                                 </div>
                             )
                         })

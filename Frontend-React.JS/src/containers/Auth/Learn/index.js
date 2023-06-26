@@ -267,7 +267,7 @@ class Learn extends Component {
                 controls: 1,
             },
         };
-
+        console.log(lessons.totalTime);
         const progressBarStyle = {
             transform: `rotate(${(percentCompletedState / 100) * 180}deg)`,
         };
