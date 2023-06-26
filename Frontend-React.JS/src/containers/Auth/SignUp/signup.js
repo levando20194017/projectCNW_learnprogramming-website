@@ -121,7 +121,7 @@ class SignUp extends Component {
             errors.password = 'Mật khẩu không được để trống';
         } else if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)/.test(this.state.password)) {
             isValid = false;
-            errors.password = 'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái, số và biểu tượng';
+            errors.password = 'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái, chữ cái in hoa, số và biểu tượng';
         }
         if (this.state.confirmPassword.trim() === '') {
             isValid = false;
