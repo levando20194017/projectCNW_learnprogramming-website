@@ -268,7 +268,7 @@ class CourseList extends Component {
     render() {
         const { listCourses, usersOfEnrollment, listPosts, likePosts, listComments, users, isLiked } = this.state
         return (
-            <div className="CourseList">
+            <div className="CourseList" style={{ marginTop: "56px" }}>
                 <div id="myCarousel" className="carousel slide" data-bs-ride="carousel">
                     <div className="carousel-indicators">
                         <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" className="active" aria-current="true"

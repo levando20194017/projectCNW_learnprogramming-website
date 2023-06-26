@@ -12,7 +12,7 @@ class Profile extends Component {
     }
     render() {
         return (
-            <div className="profile-page-container">
+            <div className="profile-page-container" style={{ marginTop: "56px" }}>
                 <div className="container">
                     <Information />
                     <PostSubmission />
