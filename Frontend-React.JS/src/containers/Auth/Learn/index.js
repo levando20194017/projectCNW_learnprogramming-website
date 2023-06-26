@@ -77,7 +77,6 @@ class Learn extends Component {
             this.setState({
                 numberOfVideoCompleted: responseOfGetProgress.progress.length
             })
-            console.log(this.state.numberOfVideoCompleted);
             const responseOfLesson = await getAllLessons(this.props.match.params.id);
             if (responseOfLesson && responseOfLesson.errCode === 0) {
                 let arrOfListVideos = [];

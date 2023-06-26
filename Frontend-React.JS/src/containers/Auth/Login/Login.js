@@ -84,6 +84,7 @@ class Login extends Component {
 
                 if (data.user.role == true) {
                     this.props.adminLoginSuccess(data.user)
+                    // this.props.history.push('/system/user-manage')
                 } else {
                     this.props.userLoginSuccess(data.user)
                     this.props.history.push('/home');

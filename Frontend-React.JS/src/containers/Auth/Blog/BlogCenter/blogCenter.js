@@ -439,7 +439,7 @@ class BlogCenter extends Component {
                     </div>
                     {listPosts && listPosts.map((post, index) => {
                         return (
-                            <div className="cardx card mt-5" style={{ height: "auto", marginBottom: "-30px" }}>
+                            <div className="cardx card mt-5" style={{ height: "auto", marginBottom: "-30px", marginRight: "5px" }}>
 
                                 <div className="card-header border-0 pb-0">
                                     <div className="d-flex align-items-center justify-content-between">

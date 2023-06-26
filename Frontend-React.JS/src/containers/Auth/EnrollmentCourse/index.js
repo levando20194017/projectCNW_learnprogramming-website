@@ -174,7 +174,7 @@ class EnrollmentCourse extends Component {
     render() {
         const { isOpen, course, lessons, allVideos } = this.state
         return (
-            <div className='row course-detail' style={{ width: "100%" }}>
+            <div className='row course-detail' style={{ width: "100%", marginTop: "56px" }}>
                 <div className='col-7 offset-1 pt-5' >
                     <h3>{course.title}</h3>
                     <p>{course.description}</p>
