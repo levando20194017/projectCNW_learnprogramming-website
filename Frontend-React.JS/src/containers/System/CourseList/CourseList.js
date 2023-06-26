@@ -84,36 +84,41 @@ class CourseList extends Component {
         }
     }
     async fetchDataOfPost() {
-        const data = await getAllPostById('ALL');
-        this.setState({
-            listPosts: data.data.posts,
-        });
-        let userArray = [];
-        let commentsArray = [];
-        let likePostsArray = [];
-        let isLikedArray = [];
-        for (let i = 0; i < data.data.posts.length; i++) {
-            const response = await getAllUsers(data.data.posts[i].userID);
-            const user = response.users;
-            userArray.push(user);
+        try {
+            const data = await getAllPostById('ALL');
+            this.setState({
+                listPosts: data.data.posts,
+            });
+            let userArray = [];
+            let commentsArray = [];
+            let likePostsArray = [];
+            let isLikedArray = [];
+            for (let i = 0; i < data.data.posts.length; i++) {
+                const response = await getAllUsers(data.data.posts[i].userID);
+                const user = response.users;
+                userArray.push(user);
 
-            const responseOfCommentPost = await getAllCommentById(data.data.posts[i].id);
-            const comments = responseOfCommentPost.data.comments;
-            commentsArray.push(comments);
+                const responseOfCommentPost = await getAllCommentById(data.data.posts[i].id);
+                const comments = responseOfCommentPost.data.comments;
+                commentsArray.push(comments);
 
-            const responseOfLikePost = await getAllLikesOfPost(data.data.posts[i].id);
-            const likeposts = responseOfLikePost.data.likes;
-            likePostsArray.push(likeposts);
-
-            const userIsLiked = likeposts.some(item => item?.userID === this.userInfo.id);
-            isLikedArray.push(userIsLiked)
+                const responseOfLikePost = await getAllLikesOfPost(data.data.posts[i].id);
+                const likeposts = responseOfLikePost.data.likes;
+                likePostsArray.push(likeposts);
+                if (this.userInfo && this.userInfo.id) {
+                    const userIsLiked = likeposts.some(item => item?.userID === this.userInfo.id);
+                    isLikedArray.push(userIsLiked)
+                }
+            }
+            this.setState({
+                users: userArray,
+                listComments: commentsArray,
+                likePosts: likePostsArray,
+                isLiked: isLikedArray
+            });
+        } catch (error) {
+            console.log(error);
         }
-        this.setState({
-            users: userArray,
-            listComments: commentsArray,
-            likePosts: likePostsArray,
-            isLiked: isLikedArray
-        });
     }
     onDeleteComment = async (postIndex, commentIndex, postId) => {
         console.log(this.state.listComments[postIndex][commentIndex]);
