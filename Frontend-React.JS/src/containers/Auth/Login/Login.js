@@ -81,7 +81,6 @@ class Login extends Component {
                     progress: undefined,
                     theme: "colored",
                 });
-                console.log(data.user);
                 if (data.user.role == true) {
                     this.props.adminLoginSuccess(data.user)
                 } else {

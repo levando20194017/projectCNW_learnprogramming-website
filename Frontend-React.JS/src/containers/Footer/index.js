@@ -18,10 +18,10 @@ class userHeader extends Component {
                                 <div className="col-2">
                                     <h5>Menu</h5>
                                     <ul className="nav flex-column">
-                                        <Link to="/home">
+                                        <Link to="/home" onClick={() => window.scrollTo(0, 0)}>
                                             <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Home</a></li>
                                         </Link>
-                                        <Link to="/blog">
+                                        <Link to="/blog" onClick={() => window.scrollTo(0, 0)}>
                                             <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Blog</a></li>
 
                                         </Link>

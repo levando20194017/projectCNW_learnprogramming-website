@@ -292,7 +292,7 @@ class CourseList extends Component {
                                 <div className="carousel-caption text-start">
                                     <h1>Khóa học Fullstack.</h1>
                                     <p>Đây là khóa học chi tiết, đầy đủ nhất bạn có thể tìm thấy trên CodeCrush.</p>
-                                    <Link to="/course/12">
+                                    <Link to="/course/12" onClick={() => window.scrollTo(0, 0)}>
                                         <button className="button-registerCourse" >Đăng ký ngay</button>
                                     </Link>
                                 </div>
@@ -309,7 +309,7 @@ class CourseList extends Component {
                                 <div className="carousel-caption text-start" style={{ width: "600px" }}>
                                     <h1>Khoá học ReactJS miễn phí.</h1>
                                     <p>Khóa học ReactJS từ cơ bản tới nâng cao. Kết quả của khóa học này là bạn có thể làm hầu hết các dự án thường gặp với ReactJS.</p>
-                                    <Link to="/course/10">
+                                    <Link to="/course/10" onClick={() => window.scrollTo(0, 0)}>
                                         <button className="button-registerCourse" href="#">Đăng ký ngay</button>
                                     </Link>
                                 </div>
@@ -327,7 +327,7 @@ class CourseList extends Component {
                                 <div className="carousel-caption text-start">
                                     <h1>Khóa học HTML CSS Miễn phí.</h1>
                                     <p>CodeCrush cung cấp cho học viên các kiến thức cơ bản về HTML/CSS/Website.</p>
-                                    <Link to="/course/4">
+                                    <Link to="/course/4" onClick={() => window.scrollTo(0, 0)}>
                                         <button className="button-registerCourse" href="#">Đăng ký ngay</button>
                                     </Link>
                                 </div>
@@ -370,12 +370,12 @@ class CourseList extends Component {
 
                                                     <div className="location-details">
                                                         {this.state.isRegister[index] ?
-                                                            <Link to={`/learn/${course.id}`}>
+                                                            <Link to={`/learn/${course.id}`} onClick={() => window.scrollTo(0, 0)}>
                                                                 <a className="location-btn">Tiếp tục học</a>
                                                             </Link>
                                                             :
-                                                            <Link to={`/course/${course.id}`}>
-                                                                <a className="location-btn">Xem khóa học</a>
+                                                            <Link to={`/course/${course.id}`} onClick={() => window.scrollTo(0, 0)}>
+                                                                <a className="location-btn" onClick={() => window.scrollTo(0, 0)}>Xem khóa học</a>
                                                             </Link>}
                                                     </div>
                                                 </div>

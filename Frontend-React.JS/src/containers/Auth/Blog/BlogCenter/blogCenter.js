@@ -404,7 +404,7 @@ class BlogCenter extends Component {
                     <div className="cardx card card-body">
                         <div className="d-flex mb-3">
                             <div className="avatar avatar-xs me-2">
-                                <Link to="/profile">
+                                <Link to={`/profile/${this.userInfo.id}`} onClick={() => window.scrollTo(0, 0)}>
                                     <img className="avatar-img rounded-circle" src={this.userInfo.img_url} alt="Avatar" />
                                 </Link>
 
@@ -444,7 +444,7 @@ class BlogCenter extends Component {
                                 <div className="card-header border-0 pb-0">
                                     <div className="d-flex align-items-center justify-content-between">
                                         <div className="d-flex align-items-center">
-                                            <Link to={`/profile/${users[index]?.id}`}>
+                                            <Link to={`/profile/${users[index]?.id}`} onClick={() => window.scrollTo(0, 0)}>
                                                 <div className="avatar avatar-story me-2">
                                                     <a href="#!"> <img className="avatar-img rounded-circle" src={users[index]?.img_url} alt="Avatar" /> </a>
                                                 </div>
