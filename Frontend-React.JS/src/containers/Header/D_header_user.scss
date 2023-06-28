@@ -210,35 +210,33 @@
     display: block;
 }
 
-#headerUser-right #headerUser-right-nav {
-    .course-item {
-        cursor: pointer;
-    }
+.course-item {
+    cursor: pointer;
+}
 
-    .progress-container {
-        display: flex;
-        align-items: center;
-        height: 30px;
-        width: 100%;
-    }
+.progress-container {
+    display: flex;
+    align-items: center;
+    height: 30px;
+    width: 100%;
+}
 
-    .progress-bar {
-        width: 100%;
-        height: 10px;
-        -webkit-appearance: none;
-        appearance: none;
-        border-radius: 5px;
-        background-color: #f1f1f1;
-        margin-right: 10px;
-    }
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    margin-right: 10px;
+}
 
-    .progress-bar::-webkit-progress-value {
-        background-color: #f65a22;
-        border-radius: 5px;
-    }
+.progress-bar::-webkit-progress-value {
+    background-color: #f65a22;
+    border-radius: 5px;
+}
 
-    .progress-value {
-        font-size: 14px;
-        color: #222;
-    }
+.progress-value {
+    font-size: 14px;
+    color: #222;
 }

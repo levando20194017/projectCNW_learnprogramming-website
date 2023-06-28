@@ -130,6 +130,7 @@ class Learn extends Component {
                 });
                 const lessons = await Promise.all(promises);
                 lessons.totalTime = this.sumTimes(lessons);
+                console.log(lessons);
 
                 const listVideoCompleted = arrOfListVideos.filter(itemA => {
                     return progressCompleted.some(itemB => {
@@ -142,18 +143,18 @@ class Learn extends Component {
                 const allvideo = lessons.reduce((total, lesson) => {
                     return total + lesson.listVideos.length
                 }, 0)
-                console.log(arrOfListVideos[0].video_url);
+                // console.log(arrOfListVideos[0].video_url);
                 this.setState({
                     percentCompletedState: percentCompleted,
                     lessons: lessons,
-                    videoShow: lessons[0].listVideos[0].video_url,
-                    videoTitleShow: lessons[0].listVideos[0].title,
-                    videoCreatedAt: lessons[0].listVideos[0].createdAt,
+                    videoShow: lessons[0].listVideos[0]?.video_url,
+                    videoTitleShow: lessons[0].listVideos[0]?.title,
+                    videoCreatedAt: lessons[0].listVideos[0]?.createdAt,
                     allVideos: allvideo,
                     listVideos: arrOfListVideos,
                     videoIndexOfLesson: 0,
                     lessonIndex: 0,
-                    videoId: arrOfListVideos[0].id
+                    videoId: arrOfListVideos[0]?.id
                 });
             }
         } catch (error) {
@@ -267,7 +268,7 @@ class Learn extends Component {
                 controls: 1,
             },
         };
-        console.log(lessons.totalTime);
+        // console.log(lessons);
         const progressBarStyle = {
             transform: `rotate(${(percentCompletedState / 100) * 180}deg)`,
         };
