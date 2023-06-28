@@ -81,12 +81,13 @@ class Login extends Component {
                     progress: undefined,
                     theme: "colored",
                 });
-
+                console.log(data.user);
                 if (data.user.role == true) {
                     this.props.adminLoginSuccess(data.user)
                 } else {
                     this.props.userLoginSuccess(data.user)
                     this.props.history.push('/home');
+                    window.location.reload();
                 }
                 console.log('login success')
             }
