@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import * as actions from "../../store/actions";
-import { adminMenu } from './menuApp';
 import { Link } from 'react-router-dom';
 
 // import { AppBar, Toolbar, Typography } from '@mui/material';
@@ -10,7 +9,7 @@ import { Link } from 'react-router-dom';
 import './D_header_user.scss';
 import { getAllUsersEnrollment } from '../../services/enrollmentCourse';
 import { getAllCourses } from '../../services/courseService';
-import { getProgressOfCourse, createProgressOfCourse } from '../../services/progress';
+import { getProgressOfCourse } from '../../services/progress';
 import { getAllLessons } from '../../services/lessonService';
 import { getAllVideos } from '../../services/videoService';
 import moment from 'moment';
@@ -174,7 +173,9 @@ class userHeader extends Component {
                                 <div className="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction" style={{ width: "400px" }}>
                                     <div className='dropdown-item d-flex' style={{ justifyContent: "space-between" }}>
                                         <div style={{ fontWeight: "bold", color: "black" }}>Khóa học của tôi</div>
-                                        <div style={{ fontSize: "12px", color: "orange", cursor: "pointer" }}>Xem tất cả</div>
+                                        <Link to="/mycourses">
+                                            <div style={{ fontSize: "12px", color: "orange", cursor: "pointer" }}>Xem tất cả</div>
+                                        </Link>
                                     </div>
                                     <div><hr className="dropdown-divider" /></div>
                                     {listCoursesRegister && listCoursesRegister.map((course) => {

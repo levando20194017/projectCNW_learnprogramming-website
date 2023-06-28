@@ -49,9 +49,6 @@ class App extends Component {
                         <Router history={history}>
                             <div className="main-container">
                                 <ConfirmModal />
-                                {/* {this.userData.isLoggedIn
-                                    && location.pathname !== "/learn/7"
-                                    && <D_header_user />} */}
                                 <span className="content-container">
 
                                     <Switch>
@@ -60,18 +57,6 @@ class App extends Component {
                                         <Route path={"/signup"} component={SignUp} />
                                         <Route path={"/changepassword"} component={ChangePassword} />
                                         <Route path={"/learn/:id"} component={Learn} />
-                                        {/* <Route path={"/login"} component={Login} /> */}
-                                        {/* <Route path={"/"} component={BlogScreen} /> */}
-                                        {/* <Route path={"/forgotpassword"} component={ForgotPassword} />
-                                        <Route path={"/signup"} component={SignUp} />
-                                        <Route path={"/changepassword"} component={ChangePassword} />
-                                        <Route path={"/course/:id"} component={EnrollmentCourse} />
-                                        <Route path={"/blog"} component={Blog} />
-                                        <Route path={"/home"} component={CourseList} />
-                                        <Route path={"/profile"} component={Profile} />
-                                        <Route path={"/learn/:id"} component={Learn} /> */}
-
-                                        {/* <Route path={path.SYSTEM} component={adminIsAuthenticated(System)} /> */}
                                         <Route path={path.LOGIN} component={adminIsNotAuthenticated(Login)} />
                                         <Route path={"/system"} component={adminIsAuthenticated(System)} />
                                         <Route path={"/"} component={(SystemOfUser)} />

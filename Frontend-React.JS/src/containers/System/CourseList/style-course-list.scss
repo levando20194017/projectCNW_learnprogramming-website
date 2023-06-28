@@ -218,3 +218,60 @@
 #myCarousel {
   position: sticky;
 }
+
+.popular-location .single-location .location-img-add {
+  border-radius: 15px;
+  border: 2px dashed rgb(206, 199, 199);
+  overflow: hidden;
+  position: relative;
+  z-index: 0
+}
+
+.popular-location .single-location .location-img-add::before {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  content: "";
+  z-index: 1;
+  -webkit-transition: all .4s ease-out 0s;
+  -moz-transition: all .4s ease-out 0s;
+  -ms-transition: all .4s ease-out 0s;
+  -o-transition: all .4s ease-out 0s;
+  transition: all .4s ease-out 0s
+}
+
+.popular-location .single-location .location-img-add img {
+  width: 100%;
+  transform: scale(1);
+  -webkit-transition: all .4s ease-out 0s;
+  -moz-transition: all .4s ease-out 0s;
+  -ms-transition: all .4s ease-out 0s;
+  -o-transition: all .4s ease-out 0s;
+  transition: all .4s ease-out 0s
+}
+
+.popular-location .single-location .location-img-add:hover {
+  color: #f05123;
+  border: 2px dashed #f05123;
+  transition: all .4s ease-out 0s
+}
+
+.popular-location .single-location .location-img-add i {
+  font-size: 25px;
+  color: #f05123;
+}
+
+
+.add-course-btn {
+  border: 2px solid #f05123;
+  color: #f05123;
+  background-color: white;
+  height: 40px;
+  width: 150px;
+  border-radius: 20px;
+  font-weight: 600;
+}
