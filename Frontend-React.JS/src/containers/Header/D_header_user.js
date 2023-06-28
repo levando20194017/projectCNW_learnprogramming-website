@@ -18,7 +18,8 @@ class userHeader extends Component {
         super(props);
         this.state = {
             listCourses: [],
-            listCoursesRegister: []
+            listCoursesRegister: [],
+            isLoading: true
         }
     }
     userData = JSON.parse(localStorage.getItem("persist:user"));
@@ -129,7 +130,8 @@ class userHeader extends Component {
                 return course.isRegister === true
             })
             this.setState({
-                listCoursesRegister: arrListCourseRegister
+                listCoursesRegister: arrListCourseRegister,
+                isLoading: false
             })
         } catch (error) {
             console.log(error);
@@ -197,6 +199,11 @@ class userHeader extends Component {
                                             </Link>
                                         )
                                     })}
+                                    {this.state.isLoading &&
+                                        <div style={{ justifyContent: "center", display: "flex" }}>
+                                            <div className="spinner"></div>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                             <li>
