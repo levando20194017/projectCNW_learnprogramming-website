@@ -444,9 +444,11 @@ class BlogCenter extends Component {
                                 <div className="card-header border-0 pb-0">
                                     <div className="d-flex align-items-center justify-content-between">
                                         <div className="d-flex align-items-center">
-                                            <div className="avatar avatar-story me-2">
-                                                <a href="#!"> <img className="avatar-img rounded-circle" src={users[index]?.img_url} alt="Avatar" /> </a>
-                                            </div>
+                                            <Link to={`/profile/${users[index]?.id}`}>
+                                                <div className="avatar avatar-story me-2">
+                                                    <a href="#!"> <img className="avatar-img rounded-circle" src={users[index]?.img_url} alt="Avatar" /> </a>
+                                                </div>
+                                            </Link>
                                             <div>
                                                 <div className="nav nav-divider">
                                                     <h6 className="nav-item card-title mb-0"> <a href="#!" style={{ color: "black", textDecoration: "none" }}>{users[index]?.fullName}</a></h6>
