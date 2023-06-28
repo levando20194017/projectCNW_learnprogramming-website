@@ -57,12 +57,12 @@ class BlogLeft extends Component {
                                         <div className="h-50px"></div>
                                         <div className="text-center">
                                             <div className="avatar avatar-lg mt-n5 mb-3">
-                                                <Link to="/profile">
+                                                <Link to={`/profile/${this.userInfo.id}`}>
                                                     <img className="rounded-circle" src={this.userInfo.img_url} alt="Avatar" width={75} height={75} />
                                                 </Link>
                                             </div>
                                             <h5 className="mb-0">
-                                                <Link to="/profile" style={{ textDecoration: "none", color: "black" }}>{this.userInfo.fullName}</Link>
+                                                <Link to={`/profile/${this.userInfo.id}`} style={{ textDecoration: "none", color: "black" }}>{this.userInfo.fullName}</Link>
                                             </h5>
                                             <div className="d-flex hstack gap-2 gap-xl-3 justify-content-center mt-3">
                                                 <div>
@@ -115,7 +115,7 @@ class BlogLeft extends Component {
                                             </ul>
                                         </div>
                                         <div className="card-footer text-center py-2">
-                                            <Link to="/profile">
+                                            <Link to={`/profile/${this.userInfo.id}`}>
                                                 <a className="btn btn-link btn-sm text-primary">View profile</a>
                                             </Link>
                                         </div>
