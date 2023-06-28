@@ -212,7 +212,7 @@ class userHeader extends Component {
                                         <img className="headerUser-right-avt rounded-circle" src={userInfo?.img_url} alt='avatar' width={40} height={40} />
                                     </a>
                                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
-                                        <Link to="/profile">
+                                        <Link to={`/profile/${this.userInfo.id}`}>
                                             <li><div className="dropdown-item d-flex">
                                                 <div>
                                                     <img className="headerUser-right-avt rounded-circle" src={userInfo?.img_url} alt='avatar' width={40} height={40} />
@@ -228,7 +228,7 @@ class userHeader extends Component {
                                         </Link>
 
                                         <div style={{ marginTop: "25px" }}>
-                                            <Link to="/profile">
+                                            <Link to={`/profile/${this.userInfo.id}`}>
                                                 <a className="dropdown-item" style={{ height: "40px", borderBottom: "1px solid rgb(213, 219, 225)", paddingTop: "10px", borderTop: "1px solid rgb(213, 219, 225)" }}> Trang cá nhân</a>
                                             </Link>
                                         </div>

@@ -33,7 +33,7 @@ class SystemOfUser extends Component {
                     <Route path={"/course/:id"} component={EnrollmentCourse} />
                     <Route path={"/blog"} component={Blog} />
                     <Route path={"/home"} component={CourseList} />
-                    <Route path={"/profile"} component={Profile} />
+                    <Route path={"/profile/:id"} component={Profile} />
                     <Route path={"/mycourses"} component={MyCourse} />
                     {/* <Route path={"/learn/:id"} component={Learn} /> */}
                     {/* <Route path={path.LOGIN} component={userIsNotAuthenticated(Login)} /> */}

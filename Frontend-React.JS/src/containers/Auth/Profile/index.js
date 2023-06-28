@@ -14,9 +14,9 @@ class Profile extends Component {
         return (
             <div className="profile-page-container" style={{ marginTop: "56px" }}>
                 <div className="container">
-                    <Information />
+                    <Information userID={this.props.match.params.id} />
                     <PostSubmission />
-                    <ListPost />
+                    <ListPost userID={this.props.match.params.id} />
                 </div>
             </div>
         )

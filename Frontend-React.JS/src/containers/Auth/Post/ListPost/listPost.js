@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Spinner from "react-bootstrap/Spinner";
 import { getAllPostById, getAllLikesOfPost, handleLikePost, editPost, deletePost } from '../../../../services/postService';
 import { getAllCommentById, handleDeleteComment, handleAddNewComment, handleEditComment } from '../../../../services/commentService';
+import { getAllUsers } from '../../../../services/userService';
 import './style.scss'
 import moment from 'moment';
 import ModalPost from '../ModalPost/modalPost';
@@ -25,6 +26,7 @@ class ListPost extends Component {
             likePosts: [],
             isLiked: [],
             contentPost: "",
+            userInfomation: "",
             post: {
                 id: "",
                 content: "",
@@ -50,12 +52,15 @@ class ListPost extends Component {
     };
     userData = JSON.parse(localStorage.getItem("persist:user"));
     userInfo = JSON.parse(this.userData.userInfo);
+    userID = this.props.userID
     componentDidMount() {
         // let isMounted = true;
         const fetchData = async () => {
-            const data = await getAllPostById(this.userInfo.id);
+            const data = await getAllPostById(this.userID);
+            const responseOfUser = await getAllUsers(this.userID)
             this.setState({
                 listPosts: data.data.posts,
+                userInfomation: responseOfUser.users
             });
             if (true) {
                 let commentsArray = [];
@@ -360,6 +365,7 @@ class ListPost extends Component {
     }
     render() {
         const userInfo = this.userInfo
+        const { userInfomation } = this.state
         return (
             <div className="main-profile" style={{ marginTop: "-42px", padding: "10px" }}>
                 <div className="profile-main-body">
@@ -381,11 +387,11 @@ class ListPost extends Component {
                                         <div className="card-body d-flex mt-4">
                                             <div className="col-11 d-flex">
                                                 <div>
-                                                    <img src={userInfo?.img_url} alt="Admin" className="rounded-circle"
+                                                    <img src={userInfomation?.img_url} alt="Admin" className="rounded-circle"
                                                         width="50" height={50} />
                                                 </div>
                                                 <div style={{ marginLeft: "8px" }}>
-                                                    <div style={{ fontWeight: "bold" }} className="author">{userInfo?.fullName}</div>
+                                                    <div style={{ fontWeight: "bold" }} className="author">{userInfomation?.fullName}</div>
                                                     <div className="text-secondary">{moment(`${post.createdAt}`).format('HH:mm DD/MM/YYYY')}. <i className="bi bi-globe-central-south-asia"></i></div>
                                                 </div>
                                             </div>
