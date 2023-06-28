@@ -276,10 +276,10 @@ class Learn extends Component {
             <div className='learn'>
                 <div className='learn_header d-flex'>
                     <div className='d-flex learn_header-left'>
-                        <Link to='/home'>
+                        <Link to='/home' onClick={() => window.scrollTo(0, 0)}>
                             <i className="bi bi-chevron-left"></i>
                         </Link>
-                        <Link to='/home'>
+                        <Link to='/home' onClick={() => window.scrollTo(0, 0)}>
                             <div style={{ marginLeft: "20px" }}>
                                 <img src={`${process.env.PUBLIC_URL}/assets/img/logo-symbol.png`} height={30} width={30} />
                             </div>

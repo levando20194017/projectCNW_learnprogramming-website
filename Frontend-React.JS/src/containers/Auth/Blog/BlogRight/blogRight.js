@@ -58,7 +58,7 @@ class BlogRight extends Component {
                             <div className="card-body mt-3">
                                 {visibleUsers && visibleUsers.map((user, index) => {
                                     return (
-                                        <Link to={`/profile/${user.id}`}>
+                                        <Link to={`/profile/${user.id}`} onClick={() => window.scrollTo(0, 0)}>
                                             <div className="hstack gap-2 mb-3 row d-flex" key={index}>
                                                 <div className="avatar col-2">
                                                     <a href="#!"><img className="avatar-img rounded-circle" src={user.img_url} alt="avatar" width={50} height={50} /></a>

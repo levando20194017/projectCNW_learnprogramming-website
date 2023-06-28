@@ -165,11 +165,11 @@ class MyCourses extends Component {
 
                                                         <div className="location-details">
                                                             {course.percentCompleted ?
-                                                                <Link to={`/learn/${course.id}`}>
+                                                                <Link to={`/learn/${course.id}`} onClick={() => window.scrollTo(0, 0)}>
                                                                     <a className="location-btn">Tiếp tục học</a>
                                                                 </Link>
                                                                 :
-                                                                <Link to={`/learn/${course.id}`}>
+                                                                <Link to={`/learn/${course.id}`} onClick={() => window.scrollTo(0, 0)}>
                                                                     <a className="location-btn">Bắt đầu học</a>
                                                                 </Link>
                                                             }
@@ -189,7 +189,7 @@ class MyCourses extends Component {
                                             <div className="single-location mb-20">
                                                 <div className="location-img-add">
                                                     <div style={{ height: "250px", background: "white" }}>
-                                                        <Link to="/home">
+                                                        <Link to="/home" onClick={() => window.scrollTo(0, 0)}>
                                                             <a className="stretched-link btn btn-light rounded-circle icon-md pt-5" style={{ justifyContent: "center", display: "flex" }}>
                                                                 <i className="bi bi-plus-circle"></i>
                                                             </a>

@@ -154,10 +154,10 @@ class userHeader extends Component {
 
                 <div id="headerUser-center">
                     <ul id="headerUser-nav">
-                        <Link to="/home">
+                        <Link to="/home" onClick={() => window.scrollTo(0, 0)}>
                             <li ><a >HOME</a></li>
                         </Link>
-                        <Link to='/blog'>
+                        <Link to='/blog' onClick={() => window.scrollTo(0, 0)}>
                             <li ><a >BLOG</a></li>
                         </Link>
                         <li><a >ABOUT US</a></li>
@@ -175,14 +175,14 @@ class userHeader extends Component {
                                 <div className="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction" style={{ width: "400px" }}>
                                     <div className='dropdown-item d-flex' style={{ justifyContent: "space-between" }}>
                                         <div style={{ fontWeight: "bold", color: "black" }}>Khóa học của tôi</div>
-                                        <Link to="/mycourses">
+                                        <Link to="/mycourses" onClick={() => window.scrollTo(0, 0)}>
                                             <div style={{ fontSize: "12px", color: "orange", cursor: "pointer" }}>Xem tất cả</div>
                                         </Link>
                                     </div>
                                     <div><hr className="dropdown-divider" /></div>
                                     {listCoursesRegister && listCoursesRegister.map((course) => {
                                         return (
-                                            <Link to={`/learn/${course.id}`}>
+                                            <Link to={`/learn/${course.id}`} onClick={() => window.scrollTo(0, 0)}>
                                                 <div className="dropdown-item">
                                                     <div className='d-flex course-item'>
                                                         <img src={course.img_url} width={110} height={60} style={{ borderRadius: "5px" }} />
@@ -212,7 +212,7 @@ class userHeader extends Component {
                                         <img className="headerUser-right-avt rounded-circle" src={userInfo?.img_url} alt='avatar' width={40} height={40} />
                                     </a>
                                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
-                                        <Link to={`/profile/${this.userInfo?.id}`}>
+                                        <Link to={`/profile/${this.userInfo?.id}`} onClick={() => window.scrollTo(0, 0)}>
                                             <li><div className="dropdown-item d-flex">
                                                 <div>
                                                     <img className="headerUser-right-avt rounded-circle" src={userInfo?.img_url} alt='avatar' width={40} height={40} />
@@ -228,7 +228,7 @@ class userHeader extends Component {
                                         </Link>
 
                                         <div style={{ marginTop: "25px" }}>
-                                            <Link to={`/profile/${this.userInfo?.id}`}>
+                                            <Link to={`/profile/${this.userInfo?.id}`} onClick={() => window.scrollTo(0, 0)}>
                                                 <a className="dropdown-item" style={{ height: "40px", borderBottom: "1px solid rgb(213, 219, 225)", paddingTop: "10px", borderTop: "1px solid rgb(213, 219, 225)" }}> Trang cá nhân</a>
                                             </Link>
                                         </div>
