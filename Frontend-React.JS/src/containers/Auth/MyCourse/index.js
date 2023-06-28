@@ -8,12 +8,14 @@ import { getAllLessons } from '../../../services/lessonService';
 import { getAllVideos } from '../../../services/videoService';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import './style.scss'
 class MyCourses extends Component {
     constructor(props) {
         super(props);
         this.state = {
             listCourses: [],
-            listCoursesRegister: []
+            listCoursesRegister: [],
+            isLoading: true
         }
     }
     userData = JSON.parse(localStorage.getItem("persist:user"));
@@ -124,17 +126,25 @@ class MyCourses extends Component {
                 return course.isRegister === true
             })
             this.setState({
-                listCoursesRegister: arrListCourseRegister
+                listCoursesRegister: arrListCourseRegister,
+                isLoading: false
             })
         } catch (error) {
             console.log(error);
         }
     }
     render() {
-        const { listCoursesRegister } = this.state
+        const { listCoursesRegister, isLoading } = this.state
         const courseComplete = listCoursesRegister.filter((course) => {
             return course.percentCompleted === 100
         }).length
+        if (this.state.isLoading) {
+            return (
+                <div style={{ height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <div class="spinner"> </div>
+                </div>
+            )
+        }
         return (
             <div style={{ marginTop: "80px" }}>
                 <div className="CourseList">
