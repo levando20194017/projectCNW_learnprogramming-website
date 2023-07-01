@@ -162,8 +162,8 @@ class userHeader extends Component {
                         <Link to='/blog' onClick={() => window.scrollTo(0, 0)}>
                             <li ><a >BLOG</a></li>
                         </Link>
-                        <Link to='/aboutme'>
-                            <li><a >ABOUT ME</a></li>
+                        <Link to='/aboutus'>
+                            <li><a >ABOUT US</a></li>
                         </Link>
                     </ul>
                 </div>
