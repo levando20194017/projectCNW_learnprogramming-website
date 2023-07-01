@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import HeaderAdmin from '../../Header/HeaderAdmin';
 import './style_homepage.scss'
 import { Link } from 'react-router-dom';
+import { transform } from 'lodash';
 class HomePage extends Component {
 
     state = {
@@ -20,7 +21,12 @@ class HomePage extends Component {
             <div className="homepage">
                 <div id="homepage-header">
 
-                    <div id="homepage-logo"></div>
+                    <div id="homepage-logo-app">
+                            <img src={`${process.env.PUBLIC_URL}/assets/img/logo-symbol.png`} alt='avatar' style={{ height: "40px", borderRadius: "50%" }} />
+                            <div id='headerUser-left-logo-p'>
+                                CodeCrush
+                            </div>
+                    </div>
                     <ul id="homepage-nav">
                         <li ><a href="">Tính năng</a></li>
                         <li ><a href="">Trợ giúp</a></li>
@@ -35,8 +41,8 @@ class HomePage extends Component {
                         <h1 id='homepage-h1'>
                             Học lập trình<br />mọi lúc,<br />mọi nơi!
                         </h1>
-                        <p style={{ color: "white" }}>
-                            Website học lập trình CodeCrush - Học lập trình để đi làm.
+                        <p>
+                            Website học lập trình CodeCrush - Học lập trình để đi làm.<br/>BTL học phần Công nghệ Web & Dịch vụ trực tuyến nhóm 11.
                         </p>
                         <Link to="/login">
                             <div id='homepage-login_button'>

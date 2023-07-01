@@ -17,6 +17,7 @@ import { CustomToastCloseButton } from '../components/CustomToast';
 import ConfirmModal from '../components/ConfirmModal';
 import Learn from './Auth/Learn';
 // import AboutMe from './Auth/AboutMe';
+import AboutUs from './Auth/AboutUs/AboutUs';
 import './style.scss'
 import SystemOfUser from '../routes/SystemOfUser';
 class App extends Component {
@@ -59,6 +60,7 @@ class App extends Component {
                                         <Route path={"/changepassword"} component={ChangePassword} />
                                         <Route path={"/learn/:id"} component={Learn} />
                                         {/* <Route path={"/aboutme"} component={AboutMe} /> */}
+                                        <Route path={"/aboutus"} component={AboutUs} />
                                         <Route path={path.LOGIN} component={adminIsNotAuthenticated(Login)} />
                                         <Route path={"/system"} component={adminIsAuthenticated(System)} />
                                         <Route path={"/"} component={(SystemOfUser)} />

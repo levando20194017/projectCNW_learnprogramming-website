@@ -1,0 +1,168 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+  }
+  
+  html {
+    box-sizing: border-box;
+  }
+  
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
+  
+  .column {
+    float: left;
+    width: 33.3%;
+    margin-bottom: 16px;
+    padding: 0 8px;
+  }
+  
+  .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    margin: 8px;
+  }
+  
+  .about-section {
+    padding: 50px;
+    text-align: center;
+    background-color: #474e5d;
+    color: white;
+  }
+  
+  .container {
+    padding: 0 16px;
+  }
+  
+  .container::after, .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  
+  .title {
+    color: grey;
+  }
+  
+  .button {
+    border: none;
+    outline: 0;
+    display: inline-block;
+    padding: 8px;
+    color: white;
+    background-color: #000;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .button:hover {
+    background-color: #555;
+  }
+  
+  @media screen and (max-width: 650px) {
+    .column {
+      width: 100%;
+      display: block;
+    }
+  }
+.about-us {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    background-color: #272727;
+    color: #fff;
+    height: 100vh;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1;
+
+    .home {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .hihi {
+        background-image: linear-gradient(to right, rgba(39, 39, 39, 0.9), rgba(39, 39, 39, 0.3)), url("../../../assets/img/img1.jpg");
+        background-size: cover;
+        height: 100%;
+        padding-top: 40vh;
+        overflow: hidden;
+        align-items: center;
+        text-align: center;
+    }
+
+    span {
+        transition: all .4s ease-out 0s
+    }
+
+    .home__name {
+        font-size: 5rem;
+        padding: 1rem;
+        top: 1rem;
+        border-bottom: 2px solid #fff;
+    }
+
+    .home__name--last {
+        color: #ff652f;
+        font-weight: 700;
+    }
+
+    h1,
+    h2,
+    h3 {
+        font-weight: 400;
+    }
+
+    h5 {
+        color: #ff652f;
+    }
+
+    a {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .text-secondary {
+        color: #ff652f;
+    }
+
+    header {
+        position: fixed;
+        z-index: 2;
+        width: 100%;
+        padding: 1rem;
+    }
+
+    main {
+        height: 100%;
+        width: 100%;
+    }
+
+    main .social-icons {
+        position: fixed;
+        bottom: 1rem;
+        left: 1rem;
+    }
+
+    main .social-icons a {
+        padding: 0.4rem;
+        transition: all 0.5s ease-in-out;
+    }
+
+    main .social-icons a:hover {
+        color: #ff652f;
+    }
+
+    footer {
+        font-size: 1rem;
+        bottom: 0.4rem;
+        position: fixed;
+        right: 1rem;
+        padding: 1rem;
+        color: #fff;
+        text-align: right;
+    }
+
+    /*# sourceMappingURL=main.css.map */
+}
