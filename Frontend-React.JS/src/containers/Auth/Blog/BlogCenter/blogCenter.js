@@ -63,96 +63,100 @@ class BlogCenter extends Component {
     userInfo = JSON.parse(this.userData.userInfo);
 
     componentDidMount() {
-        let isMounted = true;
+        // let isMounted = true;
         const fetchData = async () => {
             const data = await getAllPostById('ALL');
             this.setState({
-                listPosts: data.data.posts,
+                listPosts: data.posts,
             });
-            if (isMounted) {
+            if (true) {
                 let userArray = [];
                 let commentsArray = [];
                 let likePostsArray = [];
-                for (let i = 0; i < data.data.posts.length; i++) {
-                    const response = await getAllUsers(data.data.posts[i].userID);
+                let isLikedArray = [];
+                for (let i = 0; i < data.posts.length; i++) {
+                    const response = await getAllUsers(data.posts[i].userID);
                     const user = response.users;
                     userArray.push(user);
 
-                    const responseOfCommentPost = await getAllCommentById(data.data.posts[i].id);
-                    const comments = responseOfCommentPost.data.comments;
+                    const responseOfCommentPost = await getAllCommentById(data.posts[i].id);
+                    // console.log(responseOfCommentPost);
+                    const comments = responseOfCommentPost.comments;
                     commentsArray.push(comments);
 
-                    const responseOfLikePost = await getAllLikesOfPost(data.data.posts[i].id);
-                    const likeposts = responseOfLikePost.data.likes;
+                    const responseOfLikePost = await getAllLikesOfPost(data.posts[i].id);
+                    const likeposts = responseOfLikePost.likes;
                     likePostsArray.push(likeposts);
+
+                    const userIsLiked = likeposts.some(item => item?.userID === this.userInfo.id);
+                    isLikedArray.push(userIsLiked)
                 }
                 this.setState({
                     users: userArray,
                     listComments: commentsArray,
                     likePosts: likePostsArray,
+                    isLiked: isLikedArray
                 });
             }
         };
         fetchData();
-        return () => {
-            isMounted = false;
-        };
+        // return () => {
+        //     isMounted = false;
+        // };
     }
     // Lưu trạng thái like của bài viết vào localStorage
     handleLikeThisPost = async (index, postID) => {
         const response = await handleLikePost(this.userInfo.id, postID);
-        if (response.data.errCode === 1) {
-            const newIsLiked = [...this.state.isLiked];
-            newIsLiked[index] = false;
-            this.setState({
-                isLiked: newIsLiked,
-            });
-            localStorage.setItem(postID, false.toString()); // Lưu giá trị false vào localStorage
+        if (response.errCode === 1) {
 
             const likePostsArray = [...this.state.likePosts]
             const responseOfLikePost = await getAllLikesOfPost(postID);
-            const likeposts = responseOfLikePost.data.likes;
+            const likeposts = responseOfLikePost.likes;
             likePostsArray[index] = likeposts;
+
+            const isLikeArray = [...this.state.isLiked];
+            const userIsLiked = likeposts.some(item => item?.userID === this.userInfo.id);
+            isLikeArray[index] = userIsLiked
             this.setState({
                 likePosts: likePostsArray,
+                isLiked: isLikeArray
             });
         }
-        if (response.data.errCode === 0) {
-            const newIsLiked = [...this.state.isLiked];
-            newIsLiked[index] = true;
-            this.setState({
-                isLiked: newIsLiked,
-            });
-            localStorage.setItem(postID, true.toString()); // Lưu giá trị true vào localStorage
+        if (response.errCode === 0) {
 
             const likePostsArray = [...this.state.likePosts]
             const responseOfLikePost = await getAllLikesOfPost(postID);
-            const likeposts = responseOfLikePost.data.likes;
+            const likeposts = responseOfLikePost.likes;
             likePostsArray[index] = likeposts;
+
+            const isLikeArray = [...this.state.isLiked];
+            const userIsLiked = likeposts.some(item => item?.userID === this.userInfo.id);
+            isLikeArray[index] = userIsLiked
             this.setState({
                 likePosts: likePostsArray,
+                isLiked: isLikeArray
             });
         }
     };
     componentDidUpdate(prevProps, prevState) {
-        if (this.state.listPosts !== prevState.listPosts) {
-            const newIsLiked = [...this.state.isLiked];
-            this.state.listPosts.forEach((post, index) => {
-                const isPostLiked = localStorage.getItem(post.id); // Lấy giá trị trạng thái like từ localStorage
-                if (isPostLiked === "true") {
-                    newIsLiked[index] = true;
-                }
-            });
-            this.setState({
-                isLiked: newIsLiked,
-            });
-        }
+        // if (this.state.listPosts !== prevState.listPosts) {
+        //     const newIsLiked = [...this.state.isLiked];
+        //     this.state.listPosts.forEach((post, index) => {
+        //         const isPostLiked = localStorage.getItem(post.id); // Lấy giá trị trạng thái like từ localStorage
+        //         if (isPostLiked === "true") {
+        //             newIsLiked[index] = true;
+        //         }
+        //     });
+        //     this.setState({
+        //         isLiked: newIsLiked,
+        //     });
+        // }
     }
     onDeleteComment = async (postIndex, commentIndex, postId) => {
         console.log(this.state.listComments[postIndex][commentIndex]);
         try {
             const response = await handleDeleteComment(this.state.listComments[postIndex][commentIndex].id, this.userInfo)
-            if (response.data && response.data.errCode === 0) {
+            if (response && response.errCode === 0) {
                 toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Delete comment success!</div>, {
                     position: "top-center",
                     autoClose: 5000,
@@ -188,15 +192,15 @@ class BlogCenter extends Component {
     }
     getAllComments = async (postId) => {
         const response = await getAllCommentById(postId)
-        if (response.data && response.data.errCode === 0) {
-            console.log(response.data.comments);
-            return response.data.comments
+        if (response && response.errCode === 0) {
+            console.log(response.comments);
+            return response.comments
         }
     }
     onAddNewComment = async (contentComment, postIndex, postId) => {
         try {
             const response = await handleAddNewComment(this.userInfo.id, contentComment, postId)
-            if (response.data && response.data.errCode === 0) {
+            if (response && response.errCode === 0) {
                 toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Add new comment success!</div>, {
                     position: "top-center",
                     autoClose: 5000,
@@ -214,7 +218,7 @@ class BlogCenter extends Component {
                 this.setState({
                     listComments: updatedListComments
                 });
-            } else if (response.data && response.data.errCode !== 0) {
+            } else if (response && response.errCode !== 0) {
                 toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Add comment failed!</div>, {
                     position: "top-center",
                     autoClose: 5000,
@@ -233,7 +237,7 @@ class BlogCenter extends Component {
     onSaveComment = async (commentID, contentComment, postId, postIndex) => {
         try {
             const response = await handleEditComment(commentID, contentComment, this.userInfo)
-            if (response.data && response.data.errCode === 0) {
+            if (response && response.errCode === 0) {
                 toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Edit comment success!</div>, {
                     position: "top-center",
                     autoClose: 5000,
@@ -278,7 +282,7 @@ class BlogCenter extends Component {
         try {
             const response = await editPost(post.id, this.state.contentPost, this.userInfo)
             console.log(response);
-            if (response.data && response.data.errCode === 0) {
+            if (response && response.errCode === 0) {
                 const updatedPost = { ...post, isEditPost: !post.isEditPost, content: this.state.contentPost };
                 this.setState({
                     listPosts: this.state.listPosts.map(p => p.id === post.id ? updatedPost : p),
@@ -320,7 +324,7 @@ class BlogCenter extends Component {
         try {
             const response = await deletePost(this.state.postToDeleteId, this.userInfo)
             console.log(response);
-            if (response.data && response.data.errCode === 0) {
+            if (response && response.errCode === 0) {
                 toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Delete post success!</div>, {
                     position: "top-center",
                     autoClose: 5000,
@@ -370,10 +374,10 @@ class BlogCenter extends Component {
         });
     }
     render() {
-        const { listPosts, likePosts, listComments, isLiked, isOpenModalSubmission, post, users } = this.state
+        const { listPosts, likePosts, listComments, isLiked, isOpenModalSubmission, users } = this.state
         return (
             <div className="col-md-8 col-lg-6 vstack gap-4" style={{ marginLeft: "-5px" }}>
-                <Scrollbars style={{ height: "92vh" }}>
+                <Scrollbars style={{ height: "100vh" }}>
                     <Modal isOpen={this.state.isConfirmModalOpen} toggle={this.closeConfirmModal}>
                         <ModalHeader toggle={this.closeConfirmModal}>Confirm delete</ModalHeader>
                         <ModalBody>
@@ -401,7 +405,7 @@ class BlogCenter extends Component {
                     <div className="cardx card card-body">
                         <div className="d-flex mb-3">
                             <div className="avatar avatar-xs me-2">
-                                <Link to="/profile">
+                                <Link to={`/profile/${this.userInfo.id}`} onClick={() => window.scrollTo(0, 0)}>
                                     <img className="avatar-img rounded-circle" src={this.userInfo.img_url} alt="Avatar" />
                                 </Link>
 
@@ -441,9 +445,11 @@ class BlogCenter extends Component {
                                 <div className="card-header border-0 pb-0">
                                     <div className="d-flex align-items-center justify-content-between">
                                         <div className="d-flex align-items-center">
-                                            <div className="avatar avatar-story me-2">
-                                                <a href="#!"> <img className="avatar-img rounded-circle" src={users[index]?.img_url} alt="Avatar" /> </a>
-                                            </div>
+                                            <Link to={`/profile/${users[index]?.id}`} onClick={() => window.scrollTo(0, 0)}>
+                                                <div className="avatar avatar-story me-2">
+                                                    <a href="#!"> <img className="avatar-img rounded-circle" src={users[index]?.img_url} alt="Avatar" /> </a>
+                                                </div>
+                                            </Link>
                                             <div>
                                                 <div className="nav nav-divider">
                                                     <h6 className="nav-item card-title mb-0"> <a href="#!" style={{ color: "black", textDecoration: "none" }}>{users[index]?.fullName}</a></h6>
@@ -508,19 +514,19 @@ class BlogCenter extends Component {
                                 <ul className="nav nav-stack py-3 small card-footer">
                                     <li className="nav-item">
                                         {isLiked[index] ? (<a style={{ color: "blue" }}
-                                            className="nav-link active" href="#!" data-bs-container="body"
+                                            className="nav-link active" data-bs-container="body"
                                             data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
                                             data-bs-custom-class="tooltip-text-start"
                                             onClick={() => this.handleLikeThisPost(index, post.id)}
                                         > <i className="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({likePosts[index] && (likePosts[index].length)})</a>)
-                                            : (<a className="nav-link active" href="#!" data-bs-container="body"
+                                            : (<a className="nav-link active" data-bs-container="body"
                                                 data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
                                                 data-bs-custom-class="tooltip-text-start"
                                                 onClick={() => this.handleLikeThisPost(index, post.id)}
                                             > <i className="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({likePosts[index] && (likePosts[index].length)})</a>)}
                                     </li>
                                     <li className="nav-item" onClick={() => this.handleAddNewComment(post)}>
-                                        <a className="nav-link" href="#!"> <i className="bi bi-chat-fill pe-1"></i>Comments ({listComments[index] && (listComments[index].length)})</a>
+                                        <a className="nav-link" > <i className="bi bi-chat-fill pe-1"></i>Comments ({listComments[index] && (listComments[index].length)})</a>
                                     </li>
                                     <ModalPost
                                         isOpen={post.isOpenModalComment}
@@ -534,9 +540,10 @@ class BlogCenter extends Component {
                                         onAddNewComment={(contentComment) => this.onAddNewComment(contentComment, index, post.id)}
                                         onSaveComment={(commentID, contentComment) => this.onSaveComment(commentID, contentComment, post.id, index)}
                                         listComments={this.state.listComments[index]}
+                                        handleLikeThisPost={() => this.handleLikeThisPost(index, post.id)}
                                     />
                                     <li className="nav-item dropdown ms-sm-auto">
-                                        <a className="nav-link mb-0" href="#" id="cardShareAction" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <a className="nav-link mb-0" id="cardShareAction" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i className="bi bi-reply-fill flip-horizontal ps-1"></i>
                                             Share (3)
                                         </a>

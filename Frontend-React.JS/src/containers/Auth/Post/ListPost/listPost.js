@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Spinner from "react-bootstrap/Spinner";
 import { getAllPostById, getAllLikesOfPost, handleLikePost, editPost, deletePost } from '../../../../services/postService';
 import { getAllCommentById, handleDeleteComment, handleAddNewComment, handleEditComment } from '../../../../services/commentService';
+import { getAllUsers } from '../../../../services/userService';
 import './style.scss'
 import moment from 'moment';
 import ModalPost from '../ModalPost/modalPost';
@@ -25,6 +26,7 @@ class ListPost extends Component {
             likePosts: [],
             isLiked: [],
             contentPost: "",
+            userInfomation: "",
             post: {
                 id: "",
                 content: "",
@@ -50,91 +52,101 @@ class ListPost extends Component {
     };
     userData = JSON.parse(localStorage.getItem("persist:user"));
     userInfo = JSON.parse(this.userData.userInfo);
+    userID = this.props.userID
     componentDidMount() {
-        let isMounted = true;
+        // let isMounted = true;
         const fetchData = async () => {
-            const data = await getAllPostById(this.userInfo.id);
+            const data = await getAllPostById(this.userID);
+            const responseOfUser = await getAllUsers(this.userID)
             this.setState({
-                listPosts: data.data.posts,
+                listPosts: data.posts,
+                userInfomation: responseOfUser.users
             });
-            if (isMounted) {
+            if (true) {
                 let commentsArray = [];
                 let likePostsArray = [];
-                for (let i = 0; i < data.data.posts.length; i++) {
-                    const response = await getAllCommentById(data.data.posts[i].id);
-                    const comments = response.data.comments;
+                let isLikedArray = [];
+                for (let i = 0; i < data.posts.length; i++) {
+                    const response = await getAllCommentById(data.posts[i].id);
+                    const comments = response.comments;
                     commentsArray.push(comments);
 
-                    const responseOfLikePost = await getAllLikesOfPost(data.data.posts[i].id);
-                    const likeposts = responseOfLikePost.data.likes;
+                    const responseOfLikePost = await getAllLikesOfPost(data.posts[i].id);
+                    const likeposts = responseOfLikePost.likes;
+
+                    if (data.posts[i].id === 9) {
+                        console.log(likeposts);
+                    }
                     likePostsArray.push(likeposts);
+
+                    const userIsLiked = likeposts.some(item => item?.userID === this.userInfo.id);
+                    isLikedArray.push(userIsLiked)
                 }
                 this.setState({
                     listComments: commentsArray,
                     likePosts: likePostsArray,
+                    isLiked: isLikedArray
                 });
             }
         };
         fetchData();
-        return () => {
-            isMounted = false;
-        };
+        // return () => {
+        //     isMounted = false;
+        // };
     }
     // Lưu trạng thái like của bài viết vào localStorage
     handleLikeThisPost = async (index, postID) => {
         const response = await handleLikePost(this.userInfo.id, postID);
-        if (response.data.errCode === 1) {
-            const newIsLiked = [...this.state.isLiked];
-            newIsLiked[index] = false;
-            this.setState({
-                isLiked: newIsLiked,
-            });
-            localStorage.setItem(postID, false.toString()); // Lưu giá trị false vào localStorage
-
+        if (response.errCode === 1) {
             const likePostsArray = [...this.state.likePosts]
             const responseOfLikePost = await getAllLikesOfPost(postID);
-            const likeposts = responseOfLikePost.data.likes;
+            const likeposts = responseOfLikePost.likes;
             likePostsArray[index] = likeposts;
+
+            const isLikeArray = [...this.state.isLiked];
+            const userIsLiked = likeposts.some(item => item?.userID === this.userInfo.id);
+            isLikeArray[index] = userIsLiked
+
             this.setState({
                 likePosts: likePostsArray,
+                isLiked: isLikeArray
             });
         }
-        if (response.data.errCode === 0) {
-            const newIsLiked = [...this.state.isLiked];
-            newIsLiked[index] = true;
-            this.setState({
-                isLiked: newIsLiked,
-            });
-            localStorage.setItem(postID, true.toString()); // Lưu giá trị true vào localStorage
+        if (response.errCode === 0) {
 
             const likePostsArray = [...this.state.likePosts]
             const responseOfLikePost = await getAllLikesOfPost(postID);
-            const likeposts = responseOfLikePost.data.likes;
+            const likeposts = responseOfLikePost.likes;
             likePostsArray[index] = likeposts;
+
+            const isLikeArray = [...this.state.isLiked];
+            const userIsLiked = likeposts.some(item => item?.userID === this.userInfo.id);
+            isLikeArray[index] = userIsLiked
             this.setState({
                 likePosts: likePostsArray,
+                isLiked: isLikeArray
             });
         }
     };
     componentDidUpdate(prevProps, prevState) {
-        if (this.state.listPosts !== prevState.listPosts) {
-            const newIsLiked = [...this.state.isLiked];
-            this.state.listPosts.forEach((post, index) => {
-                const isPostLiked = localStorage.getItem(post.id); // Lấy giá trị trạng thái like từ localStorage
-                if (isPostLiked === "true") {
-                    newIsLiked[index] = true;
-                }
-            });
-            this.setState({
-                isLiked: newIsLiked,
-            });
-        }
+        // if (this.state.listPosts !== prevState.listPosts) {
+        //     const newIsLiked = [...this.state.isLiked];
+        //     this.state.listPosts.forEach((post, index) => {
+        //         const isPostLiked = localStorage.getItem(post.id); // Lấy giá trị trạng thái like từ localStorage
+        //         if (isPostLiked === "true") {
+        //             newIsLiked[index] = true;
+        //         }
+        //     });
+        //     this.setState({
+        //         isLiked: newIsLiked,
+        //     });
+        // }
     }
     onDeleteComment = async (postIndex, commentIndex, postId) => {
         console.log(this.state.listComments[postIndex][commentIndex]);
         try {
             const response = await handleDeleteComment(this.state.listComments[postIndex][commentIndex].id, this.userInfo)
-            if (response.data && response.data.errCode === 0) {
+            if (response && response.errCode === 0) {
                 toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Delete comment success!</div>, {
                     position: "top-center",
                     autoClose: 5000,
@@ -170,15 +182,15 @@ class ListPost extends Component {
     }
     getAllComments = async (postId) => {
         const response = await getAllCommentById(postId)
-        if (response.data && response.data.errCode === 0) {
-            console.log(response.data.comments);
-            return response.data.comments
+        if (response && response.errCode === 0) {
+            console.log(response.comments);
+            return response.comments
         }
     }
     onAddNewComment = async (contentComment, postIndex, postId) => {
         try {
             const response = await handleAddNewComment(this.userInfo.id, contentComment, postId)
-            if (response.data && response.data.errCode === 0) {
+            if (response && response.errCode === 0) {
                 toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Add new comment success!</div>, {
                     position: "top-center",
                     autoClose: 5000,
@@ -196,7 +208,7 @@ class ListPost extends Component {
                 this.setState({
                     listComments: updatedListComments
                 });
-            } else if (response.data && response.data.errCode !== 0) {
+            } else if (response && response.errCode !== 0) {
                 toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Add comment failed!</div>, {
                     position: "top-center",
                     autoClose: 5000,
@@ -215,7 +227,7 @@ class ListPost extends Component {
     onSaveComment = async (commentID, contentComment, postId, postIndex) => {
         try {
             const response = await handleEditComment(commentID, contentComment, this.userInfo)
-            if (response.data && response.data.errCode === 0) {
+            if (response && response.errCode === 0) {
                 toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Edit comment success!</div>, {
                     position: "top-center",
                     autoClose: 5000,
@@ -260,7 +272,7 @@ class ListPost extends Component {
         try {
             const response = await editPost(post.id, this.state.contentPost, this.userInfo)
             console.log(response);
-            if (response.data && response.data.errCode === 0) {
+            if (response && response.errCode === 0) {
                 const updatedPost = { ...post, isEditPost: !post.isEditPost, content: this.state.contentPost };
                 this.setState({
                     listPosts: this.state.listPosts.map(p => p.id === post.id ? updatedPost : p),
@@ -302,7 +314,7 @@ class ListPost extends Component {
         try {
             const response = await deletePost(this.state.postToDeleteId, this.userInfo)
             console.log(response);
-            if (response.data && response.data.errCode === 0) {
+            if (response && response.errCode === 0) {
                 toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Delete post success!</div>, {
                     position: "top-center",
                     autoClose: 5000,
@@ -353,6 +365,7 @@ class ListPost extends Component {
     }
     render() {
         const userInfo = this.userInfo
+        const { userInfomation } = this.state
         return (
             <div className="main-profile" style={{ marginTop: "-42px", padding: "10px" }}>
                 <div className="profile-main-body">
@@ -374,11 +387,11 @@ class ListPost extends Component {
                                         <div className="card-body d-flex mt-4">
                                             <div className="col-11 d-flex">
                                                 <div>
-                                                    <img src={userInfo?.img_url} alt="Admin" className="rounded-circle"
+                                                    <img src={userInfomation?.img_url} alt="Admin" className="rounded-circle"
                                                         width="50" height={50} />
                                                 </div>
                                                 <div style={{ marginLeft: "8px" }}>
-                                                    <div style={{ fontWeight: "bold" }} className="author">{userInfo?.fullName}</div>
+                                                    <div style={{ fontWeight: "bold" }} className="author">{userInfomation?.fullName}</div>
                                                     <div className="text-secondary">{moment(`${post.createdAt}`).format('HH:mm DD/MM/YYYY')}. <i className="bi bi-globe-central-south-asia"></i></div>
                                                 </div>
                                             </div>
@@ -459,6 +472,7 @@ class ListPost extends Component {
                                                         onAddNewComment={(contentComment) => this.onAddNewComment(contentComment, index, post.id)}
                                                         onSaveComment={(commentID, contentComment) => this.onSaveComment(commentID, contentComment, post.id, index)}
                                                         listComments={this.state.listComments[index]}
+                                                        handleLikeThisPost={() => this.handleLikeThisPost(index, post.id)}
                                                     />
                                                 </div>
                                             </div>

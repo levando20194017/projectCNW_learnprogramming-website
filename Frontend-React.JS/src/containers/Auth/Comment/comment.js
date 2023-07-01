@@ -100,13 +100,17 @@ class Comment extends Component {
             const data = await getAllUsers(this.props.comment.userID);
             if (data && data.errCode === 0) {
                 const userComment = data.users;
-                this.setState({ userComment });
+                this.setState({ userComment: userComment });
             }
 
             const responseOfLikeComment = await getAllLikesOfComment(this.props.comment.id);
-            if (responseOfLikeComment.data && responseOfLikeComment.data.errCode === 0) {
-                const likeComments = responseOfLikeComment.data.likes;
-                this.setState({ likeComments });
+            if (responseOfLikeComment && responseOfLikeComment.errCode === 0) {
+                const likeComments = responseOfLikeComment.likes;
+                const isLikedComment = likeComments.some(item => item?.userID === this.props.user.id)
+                this.setState({
+                    likeComments: likeComments,
+                    isLiked: isLikedComment
+                });
             }
         } catch (error) {
             console.log(error);
@@ -117,16 +121,16 @@ class Comment extends Component {
         try {
             const response = await handleLikeComment(this.props.user.id, commentID);
             console.log(response);
-            if (response.data.errCode === 1) {
+            if (response.errCode === 1) {
                 this.setState({ isLiked: false }); // Cập nhật giá trị isLiked dựa trên giá trị hiện tại
                 const responseOfLikeComment = await getAllLikesOfComment(commentID);
-                const likeComments = responseOfLikeComment?.data?.likes;
+                const likeComments = responseOfLikeComment?.likes;
                 this.setState({ likeComments: likeComments || [] });
             }
-            if (response.data.errCode === 0) {
+            if (response.errCode === 0) {
                 this.setState({ isLiked: true }); // Cập nhật giá trị isLiked dựa trên giá trị hiện tại
                 const responseOfLikeComment = await getAllLikesOfComment(commentID);
-                const likeComments = responseOfLikeComment?.data?.likes;
+                const likeComments = responseOfLikeComment?.likes;
                 this.setState({ likeComments: likeComments || [] });
             }
         } catch (error) {

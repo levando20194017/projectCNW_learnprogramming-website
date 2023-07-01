@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import './style.scss'
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as actions from "../../../store/actions";
 import { editUserProfileService } from '../../../services/userService';
@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { getAllUsers } from '../../../services/userService';
 class Information extends Component {
     static propTypes = {
         history: PropTypes.object.isRequired,
@@ -25,11 +26,26 @@ class Information extends Component {
             isConfirmModalOpen: false,
             isEditing: false,
             message: '',
-            updatedUserData: this.userInfo
+            updatedUserData: '',
+            userInfomation: ''
         }
         this.handleCancelClick = this.handleCancelClick.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSelectChange = this.handleSelectChange.bind(this);
+    }
+    userID = this.props.userID
+    componentDidMount = async () => {
+        try {
+            const response = await getAllUsers(this.userID)
+            if (response && response.errCode === 0) {
+                this.setState({
+                    userInfomation: response.users,
+                    updatedUserData: response.users
+                })
+            }
+        } catch (error) {
+            console.log();
+        }
     }
     openConfirmModal = (commentId) => {
         this.setState({
@@ -47,9 +63,9 @@ class Information extends Component {
             isEditing: true
         })
     };
-    handleChangePassword = () => {
-        this.props.history.push('./changepassword')
-    }
+    // handleChangePassword = () => {
+    //     this.props.history.push('./changepassword')
+    // }
     handleChangeAvatar = async () => {
         const response = await editUserProfileService(this.state.updatedUserData);
         if (response && response.errCode === 0) {
@@ -64,8 +80,10 @@ class Information extends Component {
                 theme: "colored",
             });
             this.props.updateUser(this.state.updatedUserData)
+            const responseOfUser = await getAllUsers(this.userID)
             this.setState({
                 isConfirmModalOpen: false,
+                userInfomation: responseOfUser.users
             })
         }
         if (response && response.errCode !== 0) {
@@ -84,7 +102,6 @@ class Information extends Component {
     }
     handleSaveClick = async () => {
         const result = await editUserProfileService(this.state.updatedUserData);
-        console.log(result);
         this.setState({
             message: result.message
         })
@@ -100,8 +117,10 @@ class Information extends Component {
                 theme: "colored",
             });
             this.props.updateUser(this.state.updatedUserData)
+            const responseOfUser = await getAllUsers(this.userID)
             this.setState({
-                isEditing: false
+                isEditing: false,
+                userInfomation: responseOfUser.users
             })
         }
         if (result && result.errCode !== 0) {
@@ -145,19 +164,23 @@ class Information extends Component {
     }
     render() {
         const userInfo = this.props.userInfo;
+        const { userInfomation } = this.state
         return (
             <div className="main-profile">
                 <div className="profile-main-body">
                     <div className="row gutters-sm">
                         <div className="col-md-4 mb-3">
                             <div className="card">
-                                {userInfo && (
+                                {userInfomation && (
                                     <div className="card-body">
                                         <div className="d-flex flex-column align-items-center text-center">
                                             <div className='d-flex avatar-profile' style={{ position: "relative" }}>
-                                                <img src={userInfo.img_url} alt="Avatar" className="rounded-circle"
+                                                <img src={userInfomation.img_url} alt="Avatar" className="rounded-circle"
                                                     width="150" height={150} />
-                                                <i onClick={() => this.openConfirmModal()} className="bi bi-camera-fill"></i>
+                                                {userInfomation.id === userInfo.id ?
+                                                    <i onClick={() => this.openConfirmModal()} className="bi bi-camera-fill"></i>
+                                                    : ""
+                                                }
                                             </div>
                                             <Modal isOpen={this.state.isConfirmModalOpen} toggle={this.closeConfirmModal}>
                                                 <ModalHeader toggle={this.closeConfirmModal}>Change image profile</ModalHeader>
@@ -171,11 +194,14 @@ class Information extends Component {
                                                 </ModalFooter>
                                             </Modal>
                                             <div className='mt-3'>
-                                                <h4>{userInfo.fullName}</h4>
+                                                <h4>{userInfomation.fullName}</h4>
                                                 <p className="text-secondary mb-1 mt-4">Full Stack Developer</p>
                                                 <p className="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
-                                                <button className="btn btn-primary">Follow</button>
-                                                <button className="btn btn-outline-primary" style={{ marginLeft: "10px" }}>Message</button>
+                                                {userInfomation.id === userInfo.id ? <div style={{ height: "38px" }}>
+                                                </div> : <div>
+                                                    <button className="btn btn-primary">Follow</button>
+                                                    <button className="btn btn-outline-primary" style={{ marginLeft: "10px" }}>Message</button>
+                                                </div>}
                                             </div>
                                         </div>
                                     </div>
@@ -236,7 +262,7 @@ class Information extends Component {
                                 </ul>
                             </div>
                         </div>
-                        {userInfo && (<div className="col-md-8">
+                        {userInfomation && (<div className="col-md-8">
                             <div className="card mb-3 infor">
                                 <div className="card-body">
                                     <div className="row">
@@ -252,7 +278,7 @@ class Information extends Component {
                                                     onChange={this.handleInputChange}
                                                 />
                                             ) : (
-                                                userInfo.fullName
+                                                userInfomation.fullName
                                             )}
                                         </div>
                                     </div>
@@ -262,7 +288,7 @@ class Information extends Component {
                                             <h6 className="mb-0">Email</h6>
                                         </div>
                                         <div className="col-sm-9 text-secondary">
-                                            {userInfo.email}
+                                            {userInfomation.email}
                                         </div>
                                     </div>
                                     <hr />
@@ -279,7 +305,7 @@ class Information extends Component {
                                                     onChange={this.handleInputChange}
                                                 />
                                             ) : (
-                                                userInfo.phoneNumber
+                                                userInfomation.phoneNumber
                                             )}
                                         </div>
                                     </div>
@@ -297,7 +323,7 @@ class Information extends Component {
                                                     onChange={this.handleInputChange}
                                                 />
                                             ) : (
-                                                userInfo.address
+                                                userInfomation.address
                                             )}
                                         </div>
                                     </div>
@@ -317,35 +343,39 @@ class Information extends Component {
                                                     <option value={true.toString()}>Nam</option>
                                                 </select>
                                             ) : (
-                                                userInfo.gender ? "Nam" : "Nữ"
+                                                userInfomation.gender ? "Nam" : "Nữ"
                                             )}
                                         </div>
                                     </div>
                                     <hr />
-
-                                    <div className="row">
-                                        <div className="col-2">
-                                            {this.state.isEditing ? (
-                                                <div className="d-flex">
-                                                    <button className="btn btn-success" onClick={this.handleSaveClick}>
-                                                        Save
+                                    {userInfomation.id === userInfo.id ?
+                                        <div className="row">
+                                            <div className="col-2">
+                                                {this.state.isEditing ? (
+                                                    <div className="d-flex">
+                                                        <button className="btn btn-success" onClick={this.handleSaveClick}>
+                                                            Save
+                                                        </button>
+                                                        <button className="btn btn-danger" onClick={this.handleCancelClick}>
+                                                            Cancel
+                                                        </button>
+                                                    </div>
+                                                ) : (
+                                                    <button className="btn btn-info" onClick={this.handleEditClick}>
+                                                        Edit
                                                     </button>
-                                                    <button className="btn btn-danger" onClick={this.handleCancelClick}>
-                                                        Cancel
+                                                )}
+                                            </div>
+                                            <div className="col-3">
+                                                <Link to="/changepassword">
+                                                    <button className="btn btn-info">
+                                                        Change password
                                                     </button>
-                                                </div>
-                                            ) : (
-                                                <button className="btn btn-info" onClick={this.handleEditClick}>
-                                                    Edit
-                                                </button>
-                                            )}
-                                        </div>
-                                        <div className="col-3">
-                                            <button className="btn btn-info" onClick={this.handleChangePassword}>
-                                                Change password
-                                            </button>
-                                        </div>
-                                    </div>
+                                                </Link>
+                                            </div>
+                                        </div> :
+                                        <div style={{ height: '38px' }}> </div>
+                                    }
                                 </div>
                             </div>
                             <div className="card mb-3">

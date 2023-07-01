@@ -28,10 +28,10 @@ app.use(session({
     saveUninitialized: true,
 }));
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: process.env.URL_REACT,
     credentials: true
 }));
-
+console.log(process.env.URL_REACT);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

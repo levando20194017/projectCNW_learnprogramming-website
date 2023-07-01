@@ -1,5 +1,7 @@
+@import "../../styles/variables";
+
 html {
-    font-family: inherit;
+    font-family: $fontmain;
 }
 
 a {
@@ -3421,16 +3423,15 @@ label {
 // }
 
 .course-body {
-    height: 0;
-    overflow: hidden;
+    height: auto;
     transition: height 0.5s ease;
     /* thêm transition */
 }
 
-.course-body.hide {
-    height: 100vh;
-    border-bottom: 1px solid rgb(187, 184, 184);
-}
+// .course-body.hide {
+//     height: 100vh;
+//     border-bottom: 1px solid rgb(187, 184, 184);
+// }
 
 .course-title {
     height: 50px;

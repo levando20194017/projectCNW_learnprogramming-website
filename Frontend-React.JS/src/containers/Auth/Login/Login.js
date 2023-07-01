@@ -12,7 +12,8 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-
+import { Link } from 'react-router-dom';
+import Spinner from "react-bootstrap/Spinner";
 class Login extends Component {
     static propTypes = {
         history: PropTypes.object.isRequired,
@@ -24,6 +25,7 @@ class Login extends Component {
             email: '',
             password: '',
             isShowPassword: false,
+            isLoading: false
         }
     }
     handleOnChangeEmail = (event) => {
@@ -50,7 +52,8 @@ class Login extends Component {
     handleLogin = async () => {
         // event.preventDefault()
         this.setState({
-            errMessage: ''
+            errMessage: '',
+            isLoading: true
         })
         try {
             let data = await handleLoginApi(this.state.email, this.state.password)
@@ -80,14 +83,18 @@ class Login extends Component {
                     progress: undefined,
                     theme: "colored",
                 });
-
                 if (data.user.role == true) {
                     this.props.adminLoginSuccess(data.user)
                 } else {
                     this.props.userLoginSuccess(data.user)
+                    this.props.history.push('/home');
+                    window.location.reload();
                 }
                 console.log('login success')
             }
+            this.setState({
+                isLoading: false
+            })
         } catch (e) {
             if (e.response) {
                 if (e.response.data) {
@@ -144,16 +151,27 @@ class Login extends Component {
                                     </div>
                                     <div className="textShow"> Hiện mật khẩu</div>
                                 </div>
+                                <div className="col-4 offset-8">
+                                    <Link to="/forgotpassword">
+                                        <a className="btn-forgot" style={{ cursor: "pointer" }}>Forgot password</a>
+                                    </Link>
+                                </div>
                                 <div>
-                                    <div className="button-list mt-4">
-                                        <div>
+                                    <div className="button-list mt-4" style={{ display: "flex", alignItems: "center", textAlign: "center", justifyContent: "center" }}>
+                                        {/* <div>
                                             <button className="btn-forgot" onClick={this.handleForgotPassword}>Forgot password</button>
-                                        </div>
+                                        </div> */}
                                         <div>
-                                            <button type="submit" className="btn-next" onClick={this.handleLogin}>Đăng nhập</button>
-                                        </div>
+                                            {this.state.isLoading ? <div className="text-center">
+                                                <Spinner animation="border" variant="primary" />
+                                            </div> : <button type="submit" className="btn-next" onClick={this.handleLogin}>Đăng nhập</button>}
 
+                                        </div>
                                     </div>
+                                    <div className="mt-3" style={{ display: "flex", textAlign: "center", justifyContent: "center" }}>
+                                        <p>Không có tài khoản? <Link to="/signup"><a style={{ cursor: "pointer" }}>Đăng ký</a></Link></p>
+                                    </div>
+
 
                                 </div>
                             </form>

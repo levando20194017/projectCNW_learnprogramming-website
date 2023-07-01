@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import Spinner from "react-bootstrap/Spinner";
 class ChangePassword extends Component {
 
     constructor(props) {
@@ -15,6 +16,7 @@ class ChangePassword extends Component {
             curPassword: '',
             newPassword: '',
             verPassword: '',
+            isLoading: false,
             errors: {
                 curPassword: '',
                 newPassword: '',
@@ -36,7 +38,8 @@ class ChangePassword extends Component {
         if (isValid && this.state.newPassword === this.state.verPassword) {
             const id = this.props.userInfo?.id;
             this.setState({
-                message: ''
+                message: '',
+                isLoading: true
             })
             try {
                 const response = await userChangePassword(id, this.state.curPassword, this.state.newPassword);
@@ -54,7 +57,7 @@ class ChangePassword extends Component {
                         progress: undefined,
                         theme: "colored",
                     });
-                    this.props.history.push('/');
+                    this.props.history.push('/home');
                 }
                 if (response && response.errCode !== 0) {
                     this.setState({
@@ -72,6 +75,9 @@ class ChangePassword extends Component {
                     });
 
                 }
+                this.setState({
+                    isLoading: false
+                })
             } catch (error) {
                 console.log(error);
 
@@ -144,7 +150,11 @@ class ChangePassword extends Component {
                                 </div>
                                 <div className="button-list mt-4" style={{ justifyContent: "center" }}>
                                     <div>
-                                        <button className="btn-next">Đổi</button>
+                                        {this.state.isLoading ? <div className="text-center">
+                                            <Spinner animation="border" variant="primary" />
+                                        </div> :
+                                            <button className="btn-next">Đổi</button>
+                                        }
                                     </div>
                                 </div>
                             </form>
