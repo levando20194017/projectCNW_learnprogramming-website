@@ -67,24 +67,25 @@ class BlogCenter extends Component {
         const fetchData = async () => {
             const data = await getAllPostById('ALL');
             this.setState({
-                listPosts: data.data.posts,
+                listPosts: data.posts,
             });
             if (true) {
                 let userArray = [];
                 let commentsArray = [];
                 let likePostsArray = [];
                 let isLikedArray = [];
-                for (let i = 0; i < data.data.posts.length; i++) {
-                    const response = await getAllUsers(data.data.posts[i].userID);
+                for (let i = 0; i < data.posts.length; i++) {
+                    const response = await getAllUsers(data.posts[i].userID);
                     const user = response.users;
                     userArray.push(user);
 
-                    const responseOfCommentPost = await getAllCommentById(data.data.posts[i].id);
-                    const comments = responseOfCommentPost.data.comments;
+                    const responseOfCommentPost = await getAllCommentById(data.posts[i].id);
+                    // console.log(responseOfCommentPost);
+                    const comments = responseOfCommentPost.comments;
                     commentsArray.push(comments);
 
-                    const responseOfLikePost = await getAllLikesOfPost(data.data.posts[i].id);
-                    const likeposts = responseOfLikePost.data.likes;
+                    const responseOfLikePost = await getAllLikesOfPost(data.posts[i].id);
+                    const likeposts = responseOfLikePost.likes;
                     likePostsArray.push(likeposts);
 
                     const userIsLiked = likeposts.some(item => item?.userID === this.userInfo.id);
@@ -106,11 +107,11 @@ class BlogCenter extends Component {
     // Lưu trạng thái like của bài viết vào localStorage
     handleLikeThisPost = async (index, postID) => {
         const response = await handleLikePost(this.userInfo.id, postID);
-        if (response.data.errCode === 1) {
+        if (response.errCode === 1) {
 
             const likePostsArray = [...this.state.likePosts]
             const responseOfLikePost = await getAllLikesOfPost(postID);
-            const likeposts = responseOfLikePost.data.likes;
+            const likeposts = responseOfLikePost.likes;
             likePostsArray[index] = likeposts;
 
             const isLikeArray = [...this.state.isLiked];
@@ -121,11 +122,11 @@ class BlogCenter extends Component {
                 isLiked: isLikeArray
             });
         }
-        if (response.data.errCode === 0) {
+        if (response.errCode === 0) {
 
             const likePostsArray = [...this.state.likePosts]
             const responseOfLikePost = await getAllLikesOfPost(postID);
-            const likeposts = responseOfLikePost.data.likes;
+            const likeposts = responseOfLikePost.likes;
             likePostsArray[index] = likeposts;
 
             const isLikeArray = [...this.state.isLiked];
@@ -155,7 +156,7 @@ class BlogCenter extends Component {
         console.log(this.state.listComments[postIndex][commentIndex]);
         try {
             const response = await handleDeleteComment(this.state.listComments[postIndex][commentIndex].id, this.userInfo)
-            if (response.data && response.data.errCode === 0) {
+            if (response && response.errCode === 0) {
                 toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Delete comment success!</div>, {
                     position: "top-center",
                     autoClose: 5000,
@@ -191,15 +192,15 @@ class BlogCenter extends Component {
     }
     getAllComments = async (postId) => {
         const response = await getAllCommentById(postId)
-        if (response.data && response.data.errCode === 0) {
-            console.log(response.data.comments);
-            return response.data.comments
+        if (response && response.errCode === 0) {
+            console.log(response.comments);
+            return response.comments
         }
     }
     onAddNewComment = async (contentComment, postIndex, postId) => {
         try {
             const response = await handleAddNewComment(this.userInfo.id, contentComment, postId)
-            if (response.data && response.data.errCode === 0) {
+            if (response && response.errCode === 0) {
                 toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Add new comment success!</div>, {
                     position: "top-center",
                     autoClose: 5000,
@@ -217,7 +218,7 @@ class BlogCenter extends Component {
                 this.setState({
                     listComments: updatedListComments
                 });
-            } else if (response.data && response.data.errCode !== 0) {
+            } else if (response && response.errCode !== 0) {
                 toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Add comment failed!</div>, {
                     position: "top-center",
                     autoClose: 5000,
@@ -236,7 +237,7 @@ class BlogCenter extends Component {
     onSaveComment = async (commentID, contentComment, postId, postIndex) => {
         try {
             const response = await handleEditComment(commentID, contentComment, this.userInfo)
-            if (response.data && response.data.errCode === 0) {
+            if (response && response.errCode === 0) {
                 toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Edit comment success!</div>, {
                     position: "top-center",
                     autoClose: 5000,
@@ -281,7 +282,7 @@ class BlogCenter extends Component {
         try {
             const response = await editPost(post.id, this.state.contentPost, this.userInfo)
             console.log(response);
-            if (response.data && response.data.errCode === 0) {
+            if (response && response.errCode === 0) {
                 const updatedPost = { ...post, isEditPost: !post.isEditPost, content: this.state.contentPost };
                 this.setState({
                     listPosts: this.state.listPosts.map(p => p.id === post.id ? updatedPost : p),
@@ -323,7 +324,7 @@ class BlogCenter extends Component {
         try {
             const response = await deletePost(this.state.postToDeleteId, this.userInfo)
             console.log(response);
-            if (response.data && response.data.errCode === 0) {
+            if (response && response.errCode === 0) {
                 toast.success(<div style={{ width: "300px", fontSize: "14px" }}><i className="fas fa-check-circle"></i> Delete post success!</div>, {
                     position: "top-center",
                     autoClose: 5000,

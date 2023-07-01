@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import Spinner from "react-bootstrap/Spinner";
 class SignUp extends Component {
     static propTypes = {
         history: PropTypes.object.isRequired,
@@ -22,6 +23,7 @@ class SignUp extends Component {
             password: '',
             confirmPassword: '',
             isShowPassword: false,
+            isLoading: false,
             errors: {
                 fullName: '',
                 email: '',
@@ -52,7 +54,8 @@ class SignUp extends Component {
         if (isValid && this.state.password === this.state.confirmPassword) {
 
             this.setState({
-                message: ''
+                message: '',
+                isLoading: true
             })
             try {
                 const response = await handleSignUpApi(this.state.email, this.state.password, this.state.fullName);
@@ -86,8 +89,10 @@ class SignUp extends Component {
                         progress: undefined,
                         theme: "light",
                     });
-
                 }
+                this.setState({
+                    isLoading: false
+                })
             } catch (error) {
                 console.log(error);
 
@@ -194,7 +199,11 @@ class SignUp extends Component {
                                         <button className="btn-signUP" onClick={this.handleClickBtnLogin}>Đăng nhập</button>
                                     </div>
                                     <div>
-                                        <button type="submit" className="btn-next">Tiếp theo</button>
+                                        {this.state.isLoading ? <div className="text-center">
+                                            <Spinner animation="border" variant="primary" />
+                                        </div> :
+                                            <button type="submit" className="btn-next">Tiếp theo</button>
+                                        }
                                     </div>
                                 </div>
                                 {this.state.message === 'Ok' ? <div className="text-success">{this.state.message}</div> : <div className="text-danger mt-3" style={{ fontSize: "14px" }}>{this.state.message}</div>}

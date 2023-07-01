@@ -31,8 +31,8 @@ class BlogLeft extends Component {
     async fetchData(userId) {
         try {
             const data = await getAllPostById(userId);
-            if (data.data && data.data.errCode === 0) {
-                this.setState({ listPosts: data.data.posts });
+            if (data && data.errCode === 0) {
+                this.setState({ listPosts: data.posts });
             }
         } catch (error) {
             console.log(error);

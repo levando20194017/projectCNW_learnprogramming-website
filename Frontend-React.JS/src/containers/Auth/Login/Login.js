@@ -13,7 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-
+import Spinner from "react-bootstrap/Spinner";
 class Login extends Component {
     static propTypes = {
         history: PropTypes.object.isRequired,
@@ -25,6 +25,7 @@ class Login extends Component {
             email: '',
             password: '',
             isShowPassword: false,
+            isLoading: false
         }
     }
     handleOnChangeEmail = (event) => {
@@ -51,7 +52,8 @@ class Login extends Component {
     handleLogin = async () => {
         // event.preventDefault()
         this.setState({
-            errMessage: ''
+            errMessage: '',
+            isLoading: true
         })
         try {
             let data = await handleLoginApi(this.state.email, this.state.password)
@@ -90,6 +92,9 @@ class Login extends Component {
                 }
                 console.log('login success')
             }
+            this.setState({
+                isLoading: false
+            })
         } catch (e) {
             if (e.response) {
                 if (e.response.data) {
@@ -157,7 +162,10 @@ class Login extends Component {
                                             <button className="btn-forgot" onClick={this.handleForgotPassword}>Forgot password</button>
                                         </div> */}
                                         <div>
-                                            <button type="submit" className="btn-next" onClick={this.handleLogin}>Đăng nhập</button>
+                                            {this.state.isLoading ? <div className="text-center">
+                                                <Spinner animation="border" variant="primary" />
+                                            </div> : <button type="submit" className="btn-next" onClick={this.handleLogin}>Đăng nhập</button>}
+
                                         </div>
                                     </div>
                                     <div className="mt-3" style={{ display: "flex", textAlign: "center", justifyContent: "center" }}>
