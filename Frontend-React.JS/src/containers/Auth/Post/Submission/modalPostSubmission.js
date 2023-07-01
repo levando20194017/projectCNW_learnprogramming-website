@@ -52,9 +52,9 @@ class ModalPostSubmission extends Component {
         const userID = userData.id;
         try {
             const response = await handleAddNewPost(userID, content, img_url);
-            if (response.data && response.data.errCode === 0) {
+            if (response && response.errCode === 0) {
                 this.setState({
-                    message: response.data.message,
+                    message: response.message,
                     content: '',
                     img_url: ''
                 });
@@ -70,8 +70,8 @@ class ModalPostSubmission extends Component {
                     theme: "colored",
                 });
             }
-            if (response.data && response.data.errCode !== 0) {
-                this.setState({ message: response.data.message });
+            if (response && response.errCode !== 0) {
+                this.setState({ message: response.message });
                 toast.error(<div style={{ width: "300px", fontSize: "14px" }}><FontAwesomeIcon icon={faExclamationTriangle} /> Add new post failed!</div>, {
                     position: "top-center",
                     autoClose: 5000,

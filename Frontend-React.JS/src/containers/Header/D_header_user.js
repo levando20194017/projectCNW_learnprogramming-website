@@ -144,12 +144,14 @@ class userHeader extends Component {
         return (
             <div className="headerUser">
                 <div id="headerUser-left">
-                    <div id="headerUser-left-logo">
-                        <img src={`${process.env.PUBLIC_URL}/assets/img/logo-symbol.png`} alt='avatar' style={{ height: "40px", borderRadius: "50%" }} />
-                        <div id='headerUser-left-logo-p'>
-                            CodeCrush
+                    <Link to="/home">
+                        <div id="headerUser-left-logo">
+                            <img src={`${process.env.PUBLIC_URL}/assets/img/logo-symbol.png`} alt='avatar' style={{ height: "40px", borderRadius: "50%" }} />
+                            <div id='headerUser-left-logo-p'>
+                                CodeCrush
+                            </div>
                         </div>
-                    </div>
+                    </Link>
                 </div>
 
                 <div id="headerUser-center">
@@ -160,7 +162,9 @@ class userHeader extends Component {
                         <Link to='/blog' onClick={() => window.scrollTo(0, 0)}>
                             <li ><a >BLOG</a></li>
                         </Link>
-                        <li><a >ABOUT US</a></li>
+                        <Link to='/aboutme'>
+                            <li><a >ABOUT ME</a></li>
+                        </Link>
                     </ul>
                 </div>
 
@@ -168,7 +172,7 @@ class userHeader extends Component {
                     <ul id='headerUser-right-nav'>
                         {this.userData.isLoggedIn ? <div>
                             <div className="dropdown">
-                                <div style={{ fontSize: "13px", fontWeight: "600" }} className="btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div style={{ fontSize: "13px", fontWeight: "600", color: "#ff652f" }} className="btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction" data-bs-toggle="dropdown" aria-expanded="false">
                                     Khóa học của tôi
                                 </div>
 

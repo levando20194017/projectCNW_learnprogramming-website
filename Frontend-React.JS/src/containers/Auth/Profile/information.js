@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import './style.scss'
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as actions from "../../../store/actions";
 import { editUserProfileService } from '../../../services/userService';
@@ -26,7 +26,7 @@ class Information extends Component {
             isConfirmModalOpen: false,
             isEditing: false,
             message: '',
-            updatedUserData: this.userInfo,
+            updatedUserData: '',
             userInfomation: ''
         }
         this.handleCancelClick = this.handleCancelClick.bind(this);
@@ -39,7 +39,8 @@ class Information extends Component {
             const response = await getAllUsers(this.userID)
             if (response && response.errCode === 0) {
                 this.setState({
-                    userInfomation: response.users
+                    userInfomation: response.users,
+                    updatedUserData: response.users
                 })
             }
         } catch (error) {
@@ -62,9 +63,9 @@ class Information extends Component {
             isEditing: true
         })
     };
-    handleChangePassword = () => {
-        this.props.history.push('./changepassword')
-    }
+    // handleChangePassword = () => {
+    //     this.props.history.push('./changepassword')
+    // }
     handleChangeAvatar = async () => {
         const response = await editUserProfileService(this.state.updatedUserData);
         if (response && response.errCode === 0) {
@@ -101,7 +102,6 @@ class Information extends Component {
     }
     handleSaveClick = async () => {
         const result = await editUserProfileService(this.state.updatedUserData);
-        console.log(result);
         this.setState({
             message: result.message
         })
@@ -367,9 +367,11 @@ class Information extends Component {
                                                 )}
                                             </div>
                                             <div className="col-3">
-                                                <button className="btn btn-info" onClick={this.handleChangePassword}>
-                                                    Change password
-                                                </button>
+                                                <Link to="/changepassword">
+                                                    <button className="btn btn-info">
+                                                        Change password
+                                                    </button>
+                                                </Link>
                                             </div>
                                         </div> :
                                         <div style={{ height: '38px' }}> </div>
