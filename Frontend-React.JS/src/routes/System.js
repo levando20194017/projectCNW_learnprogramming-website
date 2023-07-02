@@ -11,7 +11,6 @@ import CommentManage from '../containers/System/Posts/CommentManage';
 import HeaderAdmin from '../containers/Header/HeaderAdmin';
 import Sidebar from '../containers/Sidebar';
 
-// import HomePage from '../containers/System/Home/HomePage'
 
 class System extends Component {
     render() {
