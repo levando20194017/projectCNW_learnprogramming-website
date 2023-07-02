@@ -12,6 +12,12 @@
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgb(214, 214, 214);
 }
+.btn-myCourse-header:hover {
+    // background: linear-gradient(83.84deg, #0088FF -6.87%, #A033FF 26.54%, #FF5C87 58.58%);
+    // background-clip: text;
+    // color: transparent;
+    color: "#ff652f";
+}
 
 #headerUser-center {
     display: inline-block;
