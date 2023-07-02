@@ -15,7 +15,7 @@ import Login from '../containers/Auth/Login/Login';
 import D_header_user from '../containers/Header/D_header_user';
 import Footer from '../containers/Footer';
 import MyCourse from '../containers/Auth/MyCourse';
-
+import AboutUs from '../containers/Auth/AboutUs/AboutUs.js';
 class SystemOfUser extends Component {
     userData = JSON.parse(localStorage.getItem("persist:user"));
     render() {
@@ -35,6 +35,7 @@ class SystemOfUser extends Component {
                     <Route path={"/home"} component={CourseList} />
                     <Route path={"/profile/:id"} component={Profile} />
                     <Route path={"/mycourses"} component={MyCourse} />
+                    <Route path={"/aboutus"} component={AboutUs} />
                     {/* <Route path={"/learn/:id"} component={Learn} /> */}
                     {/* <Route path={path.LOGIN} component={userIsNotAuthenticated(Login)} /> */}
                     {/* <Route component={() => { return (<Redirect to={systemMenuPath} />) }} /> */}

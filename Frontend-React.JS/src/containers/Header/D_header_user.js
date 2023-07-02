@@ -162,8 +162,8 @@ class userHeader extends Component {
                         <Link to='/blog' onClick={() => window.scrollTo(0, 0)}>
                             <li ><a >BLOG</a></li>
                         </Link>
-                        <Link to='/aboutme'>
-                            <li><a >ABOUT ME</a></li>
+                        <Link to='/aboutus'>
+                            <li><a >ABOUT US</a></li>
                         </Link>
                     </ul>
                 </div>
@@ -172,7 +172,11 @@ class userHeader extends Component {
                     <ul id='headerUser-right-nav'>
                         {this.userData.isLoggedIn ? <div>
                             <div className="dropdown">
-                                <div style={{ fontSize: "13px", fontWeight: "600", color: "#ff652f" }} className="btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction" data-bs-toggle="dropdown" aria-expanded="false">
+                                {/* style={{ fontSize: "13px", fontWeight: "600",color: "#ff652f"  }} */}
+                                {/* background: linear-gradient(83.84deg, #0088FF -6.87%, #A033FF 26.54%, #FF5C87 58.58%);
+                                background-clip: text;color: "#ff652f"
+                                color: transparent; */}
+                                <div style={{fontSize: "13px", fontWeight: "600", color: "#ff652f"}} className="btn-myCourse-header btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction" data-bs-toggle="dropdown" aria-expanded="false">
                                     Khóa học của tôi
                                 </div>
 

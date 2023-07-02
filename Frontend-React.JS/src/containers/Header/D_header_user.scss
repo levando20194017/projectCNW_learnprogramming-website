@@ -13,6 +13,13 @@
     border-bottom: 1px solid rgb(214, 214, 214);
 }
 
+.btn-myCourse-header:hover {
+    // background: linear-gradient(83.84deg, #0088FF -6.87%, #A033FF 26.54%, #FF5C87 58.58%);
+    // background-clip: text;
+    // color: transparent;
+    color: "#ff652f";
+}
+
 #headerUser-center {
     display: inline-block;
     width: 40%;
@@ -144,6 +151,29 @@
 }
 
 
+#headerUser-right-nav>li {
+    display: inline-block;
+}
+
+#headerUser-right-nav>li>a {
+    // color: #333;
+    background: linear-gradient(83.84deg, #0088FF -6.87%, #A033FF 26.54%, #FF5C87 58.58%);
+    background-clip: text;
+    color: transparent;
+    font-weight: 520;
+
+    color: #333;
+    font-weight: 480;
+    font-size: 18px;
+    text-decoration: none;
+    line-height: 46px;
+    // padding: 0 8px;
+    padding: 5px 5px;
+    transform: translateX(-20%);
+    display: block;
+}
+
+
 .btn-logout {
     color: #000;
     line-height: 40px;
@@ -167,6 +197,7 @@
     min-width: 200px;
     position: absolute;
     background-color: #fff;
+    // box-shadow: 0 0 10px rgba(0,0,0,0.3);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     right: 15px;
     top: 101%;
