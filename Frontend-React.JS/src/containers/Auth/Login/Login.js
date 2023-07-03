@@ -119,7 +119,7 @@ class Login extends Component {
                         <img src={`${process.env.PUBLIC_URL}/assets/img/logo-symbol.png`} alt="Avatar" style={{ height: "50px" }} />
                         <h4 style={{ color: "blue", marginLeft: "10px" }}>C</h4><h4 style={{ color: "red" }}>-</h4>
                         <h4 style={{ color: "green" }}>C</h4><h4 style={{ color: "orange" }}>r</h4><h4 style={{ color: "blue" }}>u</h4><h4 style={{ color: "red" }}>s</h4><h4 style={{ color: "blue" }}>h</h4></div>
-                    <h2 className="mt-4">Đăng nhập</h2>
+                    <h2 className="mt-4 text-center">Đăng nhập</h2>
                     <div className="main__form mt-4">
                         <div className="main__form__children d-flex">
                             <form action="" method="POST" className="form" id="form-1"
