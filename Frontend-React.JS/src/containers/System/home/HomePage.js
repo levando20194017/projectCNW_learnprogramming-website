@@ -30,7 +30,7 @@ class HomePage extends Component {
                     <ul id="homepage-nav">
                         <li ><a href="">Tính năng</a></li>
                         <li ><a href="">Trợ giúp</a></li>
-                        <li><a href="">Nhóm thực hiện</a></li>
+                        <li><a href="./aboutus">Nhóm thực hiện</a></li>
                     </ul>
                 </div>
                 <div id='homepage-content'>
