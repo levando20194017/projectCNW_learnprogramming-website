@@ -325,7 +325,7 @@ class CourseList extends Component {
 
                             <div>
                                 <div className="carousel-caption text-start">
-                                    <h1>Khóa học HTML CSS Miễn phí.</h1>
+                                    <h1>Khóa học HTML CSS miễn phí.</h1>
                                     <p>CodeCrush cung cấp cho học viên các kiến thức cơ bản về HTML/CSS/Website.</p>
                                     <Link to="/course/4" onClick={() => window.scrollTo(0, 0)}>
                                         <button className="button-registerCourse" href="#">Đăng ký ngay</button>
@@ -354,7 +354,7 @@ class CourseList extends Component {
                                 <div className="row">
                                     <div className="col-lg-12">
                                         <div className="section-tittle text-center mb-40">
-                                            <h2 className="display-2">Các khóa học Miễn phí</h2>
+                                            <h2 className="display-2">Các khóa học miễn phí</h2>
                                             <p>Tham gia các khóa học chất lượng nhất</p>
                                         </div>
                                     </div>
